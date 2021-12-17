@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-require("./userModel.js");
 
 const addressSchema = new mongoose.Schema({
     user_id: {
-        type: mongoose.Types.ObjectId, ref: "user" // Referring object_id from user module
+        type: mongoose.Types.ObjectId, ref: "user" 
     },
     permanent: {
         country: {
