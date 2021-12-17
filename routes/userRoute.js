@@ -74,16 +74,16 @@ router.post("/user/login", (req, res)=> {
                     else {                        
                         // now lets generate token
                         const token = jwt.sign({userId: userData1._id}, "mountainDuke");
-                        if(!userData1.active) {
+                        if(!userData1.is_active) {
                             res.json({message: "Sorry, your account has been deactivated."});
                         }
-                        else if (!userData1.admin && !userData1.super){
+                        else if (!userData1.admin && !userData1.superuser){
                             res.json({token: token, message: "Login success"});                              
                         }
                         else if(userData1.admin) {
                             res.json({token: token, message: "Login success as admin."});  
                         }
-                        else if(userData1.super) {
+                        else if(userData1.superuser) {
                             res.json({token: token, message: "Login success as super."});  
                         }
                     }          
@@ -98,16 +98,16 @@ router.post("/user/login", (req, res)=> {
                 }
                 // now lets generate token
                 const token = jwt.sign({userId: userData._id}, "mountainDuke");
-                if(!userData1.active) {
+                if(!userData.is_active) {
                     res.json({message: "Sorry, your account has been deactivated."});
                 }
-                else if (!userData1.admin && !userData1.super){
+                else if (!userData.admin && !userData.superuser){
                     res.json({token: token, message: "Login success"});                              
                 }
-                else if(userData1.admin) {
+                else if(userData.admin) {
                     res.json({token: token, message: "Login success as admin."});  
                 }
-                else if(userData1.super) {
+                else if(userData.superuser) {
                     res.json({token: token, message: "Login success as super."});  
                 }
             });

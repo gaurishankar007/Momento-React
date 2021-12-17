@@ -5,24 +5,37 @@ const addressSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Types.ObjectId, ref: "user" // Referring object_id from user module
     },
-    first_name: {
-        type: String
+    permanent: {
+        country: {
+            type: String, default: null
+        },
+        state: {
+            type: String, default: null
+        },
+        city: {
+            type: String, default: null
+        },
+        street: {
+            type: String, default: null
+        },
     },
-    last_name: {
-        type: String
+    temporary: {
+        country: {
+            type: String, default: null
+        },
+        state: {
+            type: String, default: null
+        },
+        city: {
+            type: String, default: null
+        },
+        street: {
+            type: String, default: null
+        },
     },
-    gender: {
-        type: String
+    hide: {
+        type: Boolean, default: false
     },
-    birthday: {
-        type: Date
-    },
-    hobbies:[ 
-        {type: String}
-    ],
-    biography: {
-        type: String
-    }
 }, 
 {
     timestamps: true,

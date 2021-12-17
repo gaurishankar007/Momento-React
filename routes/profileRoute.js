@@ -5,11 +5,6 @@ const user = require("../models/userModel.js");
 const auth = require("../auth/auth.js");
 
 router.post("/profile/add/:user_id", auth.verifyUser, (req, res)=> {
-    var username;
-    user.findOne({_id: req.params.user_id}).then(function(userData) {
-        username=userData.username;
-    });
-
     const newProfile = new profile({
         user_id: req.params.user_id,
         first_name: req.body.first_name,
@@ -21,7 +16,7 @@ router.post("/profile/add/:user_id", auth.verifyUser, (req, res)=> {
     });
     newProfile.save().
     then(function(){
-        res.json({message: "Profile successfully added for the user '"+username+"'."})
+        res.json({message: "Profile successfully added."})
     })
     .catch(function(e) {
         res.json(e);
@@ -29,13 +24,8 @@ router.post("/profile/add/:user_id", auth.verifyUser, (req, res)=> {
    
 });
 
-router.put("/profile/update/:user_id", auth.verifyUser, (req, res)=> {
-    var username;
-    user.findOne({_id: req.params.user_id}).then(function(userData) {
-        username=userData.username;
-    });
-
-    profile.updateOne({_id: req.params.user_id}, {
+router.put("/profile/update/:profile_id", auth.verifyUser, (req, res)=> {
+    profile.updateOne({_id: req.params.profile_id}, {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         gender: req.body.gender,
@@ -45,7 +35,7 @@ router.put("/profile/update/:user_id", auth.verifyUser, (req, res)=> {
         }
     )
     .then(function(){
-        res.json({message: "Profile successfully updated for the user '"+username+"'."})
+        res.json({message: "Profile successfully updated."})
     }) 
     .catch(function(e) {
         res.json(e);
