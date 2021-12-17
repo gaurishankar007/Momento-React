@@ -4,12 +4,13 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
 
-const user = require("../models/userModel.js");
+const user = require("../models/userModel")
 const auth = require("../auth/auth.js");
 
 router.post("/user/register", (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
+    const phone = req.body.phone;
     user.findOne({username : username}).then(function(userData) {
         if(userData!=null) {
             res.json({message: "User already exists. try another username."});
@@ -17,31 +18,35 @@ router.post("/user/register", (req, res) => {
         }
         user.findOne({email: email}).then(function(userData){
             if(userData!=null) {
-                res.json({message: "This email address is already used. please! try another email address."});
+                res.json({message: "This email address is already used. try another email address."});
                 return;
-            }
-            
-            // now this place is for the user which is available in db
-            const password = req.body.password;
-            const profile_pic = req.body.profile_pic;
-            const cover_pic = req.body.cover_pic;
-            const phone = req.body.phone;
-            bcryptjs.hash(password, 10, function(e, hashed_value) {
-                const newUser = new user({
-                    username: username,
-                    password: hashed_value,
-                    profile_pic: profile_pic,
-                    cover_pic: cover_pic,
-                    email: email,
-                    phone: phone,
+            }            
+            user.findOne({phone: phone}).then(function(userData){
+                if(userData!=null) {
+                    res.json({message: "This phone number is already used. try another phone number."});
+                    return;
+                }                
+                // now this place is for the user which is available in db
+                const password = req.body.password;
+                const profile_pic = req.body.profile_pic;
+                const cover_pic = req.body.cover_pic;
+                bcryptjs.hash(password, 10, function(e, hashed_value) {
+                    const newUser = new user({
+                        username: username,
+                        password: hashed_value,
+                        profile_pic: profile_pic,
+                        cover_pic: cover_pic,
+                        email: email,
+                        phone: phone,
+                    });
+                    newUser.save()
+                    .then(function() {
+                        res.json({message: "New user has been registered."})
+                    })
+                    .catch(function(e) {
+                        res.json({error: e});
+                    })
                 });
-                newUser.save()
-                .then(function() {
-                    res.json({message: "New user has been registered."})
-                })
-                .catch(function(e) {
-                    res.json(e)
-                })
             });
         });
     })
@@ -69,7 +74,18 @@ router.post("/user/login", (req, res)=> {
                     else {                        
                         // now lets generate token
                         const token = jwt.sign({userId: userData1._id}, "mountainDuke");
-                        res.json({token: token, message: "Success"});  
+                        if(!userData1.active) {
+                            res.json({message: "Sorry, your account has been deactivated."});
+                        }
+                        else if (!userData1.admin && !userData1.super){
+                            res.json({token: token, message: "Login success"});                              
+                        }
+                        else if(userData1.admin) {
+                            res.json({token: token, message: "Login success as admin."});  
+                        }
+                        else if(userData1.super) {
+                            res.json({token: token, message: "Login success as super."});  
+                        }
                     }          
                 }); 
             });
@@ -82,7 +98,18 @@ router.post("/user/login", (req, res)=> {
                 }
                 // now lets generate token
                 const token = jwt.sign({userId: userData._id}, "mountainDuke");
-                res.json({token: token, message: "Success"});            
+                if(!userData1.active) {
+                    res.json({message: "Sorry, your account has been deactivated."});
+                }
+                else if (!userData1.admin && !userData1.super){
+                    res.json({token: token, message: "Login success"});                              
+                }
+                else if(userData1.admin) {
+                    res.json({token: token, message: "Login success as admin."});  
+                }
+                else if(userData1.super) {
+                    res.json({token: token, message: "Login success as super."});  
+                }
             });
         }
     });

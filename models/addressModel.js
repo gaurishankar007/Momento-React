@@ -1,38 +1,34 @@
 const mongoose = require("mongoose");
 require("./userModel.js");
 
-const address = mongoose.model("address", {
+const addressSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Types.ObjectId, ref: "user" // Referring object_id from user module
     },
-    permanent: {
-        country: {
-            type: String, default: null
-        },
-        state: {
-            type: String, default: null
-        },
-        city: {
-            type: String, default: null
-        },
-        street: {
-            type: String, default: null
-        },
+    first_name: {
+        type: String
     },
-    temporary: {
-        country: {
-            type: String, default: null
-        },
-        state: {
-            type: String, default: null
-        },
-        city: {
-            type: String, default: null
-        },
-        street: {
-            type: String, default: null
-        },
+    last_name: {
+        type: String
     },
-});
+    gender: {
+        type: String
+    },
+    birthday: {
+        type: Date
+    },
+    hobbies:[ 
+        {type: String}
+    ],
+    biography: {
+        type: String
+    }
+}, 
+{
+    timestamps: true,
+}
+);
+
+const address = mongoose.model("address", addressSchema);
 
 module.exports = address;

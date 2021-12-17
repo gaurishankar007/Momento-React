@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const user = mongoose.model("User", {
+const userSchema = new mongoose.Schema({
     username: {
         type: String, unique: true
     },
@@ -17,7 +17,7 @@ const user = mongoose.model("User", {
         type: String, unique: true
     },
     phone: {
-        type: Number,
+        type: Number, unique: true
     },
     admin: {
         type: Boolean, default: false
@@ -34,9 +34,12 @@ const user = mongoose.model("User", {
     is_active: {
         type: Boolean, default: true
     },
-    registration_date: {
-        type: Date, default: Date.now
-    }
-});
+},
+{
+    timestamps: true,
+}
+);
+
+const user = mongoose.model("User", userSchema);
 
 module.exports = user;

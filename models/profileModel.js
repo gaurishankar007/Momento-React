@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("./userModel.js");
 
-const profile = mongoose.model("Profile", {
+const profileSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Types.ObjectId, ref: "user" // Referring object_id from user module
     },
@@ -23,6 +23,12 @@ const profile = mongoose.model("Profile", {
     biography: {
         type: String
     }
-});
+}, 
+{
+    timestamps: true,
+}
+);
+
+const profile = mongoose.model("Profile", profileSchema);
 
 module.exports = profile;

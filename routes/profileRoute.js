@@ -1,10 +1,10 @@
 const express = require("express");
 const router = new express.Router();
-
 const profile = require("../models/profileModel.js");
 const user = require("../models/userModel.js");
+const auth = require("../auth/auth.js");
 
-router.post("/profile/add/:user_id", (req, res)=> {
+router.post("/profile/add/:user_id", auth.verifyUser, (req, res)=> {
     var username;
     user.findOne({_id: req.params.user_id}).then(function(userData) {
         username=userData.username;
@@ -19,8 +19,36 @@ router.post("/profile/add/:user_id", (req, res)=> {
         hobbies: req.body.hobbies,
         biography: req.body.biography,
     });
-    newProfile.save().then(function(){
+    newProfile.save().
+    then(function(){
         res.json({message: "Profile successfully added for the user '"+username+"'."})
+    })
+    .catch(function(e) {
+        res.json(e);
+    });
+   
+});
+
+router.put("/profile/update/:user_id", auth.verifyUser, (req, res)=> {
+    var username;
+    user.findOne({_id: req.params.user_id}).then(function(userData) {
+        username=userData.username;
+    });
+
+    profile.updateOne({_id: req.params.user_id}, {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        gender: req.body.gender,
+        birthday: req.body.birthday,
+        hobbies: req.body.hobbies,
+        biography: req.body.biography,
+        }
+    )
+    .then(function(){
+        res.json({message: "Profile successfully updated for the user '"+username+"'."})
+    }) 
+    .catch(function(e) {
+        res.json(e);
     });
 });
 
