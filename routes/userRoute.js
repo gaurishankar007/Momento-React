@@ -133,7 +133,7 @@ router.post("/user/passResetLink", function(req, res) {
 
 });
 
-router.post("/user/passReset/:resetToken/:newPass", function(req, res) {
+router.put("/user/passReset/:resetToken/:newPass", function(req, res) {
     try{
         const token = req.params.resetToken;
         const userData = jwt.verify(token, "passResetKey");          
