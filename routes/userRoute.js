@@ -3,9 +3,9 @@ const router = new express.Router();
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
-
 const user = require("../models/userModel")
 const auth = require("../auth/auth.js");
+const sendEmail = require("../utils/sendEmail.js");
 
 router.post("/user/register", (req, res) => {
     const username = req.body.username;
@@ -59,11 +59,11 @@ router.post("/user/login", (req, res)=> {
     const email = req.body.email;
     user.findOne({username: username}).then((userData)=> {
         if(userData==null) {
+            if(!validator.isEmail(email)) {
+                return res.json({message: "User with that username does not exist or provide valid email address."});
+            }
             user.findOne({email: email}).then((userData1)=> {
-                if(!validator.isEmail(email)) {
-                    return res.json({message: "User with that username does not exist or provide valid email address."});
-                }
-                else if(userData1==null) {
+                if(userData1==null) {
                     return res.json({message: "User with that email address does not exist."});
                 }
                 // now comparing client password with the given password
@@ -73,7 +73,7 @@ router.post("/user/login", (req, res)=> {
                     }
                     else {                        
                         // now lets generate token
-                        const token = jwt.sign({userId: userData1._id}, "mountainDuke");
+                        const token = jwt.sign({userId: userData1._id}, "loginKey");
                         if(!userData1.is_active) {
                             res.json({message: "Sorry, your account has been deactivated."});
                         }
@@ -97,7 +97,7 @@ router.post("/user/login", (req, res)=> {
                     return res.json({message: "Incorrect password, try again."});
                 }
                 // now lets generate token
-                const token = jwt.sign({userId: userData._id}, "mountainDuke");
+                const token = jwt.sign({userId: userData._id}, "loginKey");
                 if(!userData.is_active) {
                     res.json({message: "Sorry, your account has been deactivated."});
                 }
@@ -113,6 +113,45 @@ router.post("/user/login", (req, res)=> {
             });
         }
     });
+});
+
+router.post("/user/passResetLink", function(req, res) {
+    const email = req.body.email;
+    const newPass = req.body.newPass;
+    if(!validator.isEmail(email)) {
+        return res.json({message: "Provide a valid email address."});
+    }
+    user.findOne({email: email}).then(function(userData) {
+        if(userData==null) {
+            return res.json({message: "User with that email address does not exist."});
+        }
+        const token = jwt.sign({userId: userData._id}, "passResetKey", {expiresIn: "1m"});
+        const link = `${process.env.PRB_URL}/user/passReset/${token}/${newPass}`;
+        sendEmail(email, "Password Reset Link", link);
+        res.json({message: link});
+    });
+
+});
+
+router.post("/user/passReset/:resetToken/:newPass", function(req, res) {
+    try{
+        const token = req.params.resetToken;
+        const userData = jwt.verify(token, "passResetKey");          
+        console.log("entered"); 
+        bcryptjs.hash(req.params.newPass, 10, (e, hashed_pass)=> {           
+            console.log("entered bcryptjs"); 
+            user.updateOne({_id: userData.userId}, {password: hashed_pass})
+            .then(function() {
+                res.json({message: "Your password has been reset."})
+            })
+            .catch(function(e) {
+                res.json({error: e});
+            });
+        });        
+    }
+    catch(e) {
+        res.json({error: e});
+    }
 });
 
 router.get("/testUser", auth.verifyUser, function(req, res) {
