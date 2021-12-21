@@ -1,5 +1,6 @@
 const express = require("express");
 const router = new express.Router();
+const bcryptjs = require("bcryptjs");
 const user = require("../models/userModel.js");
 const auth = require("../auth/auth.js");
 
@@ -60,6 +61,20 @@ router.put("/admin/deactivate/:id", auth.verifySuper, (req, res)=>{
     });
 });
 
+router.put("/admin/activate/:id", auth.verifySuper, (req, res)=>{
+    var username = "";
+    user.findOne({_id: req.params.id}).then((userData)=> {
+        username = userData.username;
+    });
+    user.updateOne({_id: req.params.id}, {is_active: true})
+    .then(()=>{
+        res.json({message: `${username} has been activated.`});
+    })
+    .catch((e)=> {
+        res.json({error: e})
+    });
+});
+
 router.delete("/admin/delete/:id", auth.verifySuper, (req, res)=>{
     var username = "";
     user.findOne({_id: req.params.id}).then((userData)=> {
@@ -68,34 +83,6 @@ router.delete("/admin/delete/:id", auth.verifySuper, (req, res)=>{
     user.findByIdAndDelete({_id: req.params.id})
     .then(()=>{
         res.json({message:  `${username} has been deleted.`});
-    })
-    .catch((e)=> {
-        res.json({error: e})
-    });
-});
-
-router.put("/user/makeVerifiedBySuper/:id", auth.verifySuper, (req, res)=>{
-    var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
-        username = userData.username;
-    });
-    user.findByIdAndDelete({_id: req.params.id})
-    .then(()=>{
-        res.json({message: `${username} has been verified.`});
-    })
-    .catch((e)=> {
-        res.json({error: e})
-    });
-});
-
-router.put("/user/deactivateBySuper/:id", auth.verifySuper, (req, res)=>{
-    var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
-        username = userData.username;
-    });
-    user.updateOne({_id: req.params.id}, {is_active: false})
-    .then(()=>{
-        res.json({message: `${username} has been deactivated.`});
     })
     .catch((e)=> {
         res.json({error: e})

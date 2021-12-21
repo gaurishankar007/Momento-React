@@ -1,5 +1,6 @@
 const express = require("express");
 const router = new express.Router();
+const bcryptjs = require("bcryptjs");
 const user = require("../models/userModel.js");
 const auth = require("../auth/auth.js");
 
@@ -73,12 +74,12 @@ router.put("/admin/ChangePhone/:id", auth.verifyAdmin, (req, res)=> {
     }); 
 });
 
-router.put("/user/makeVerifiedByAdmin/:id", auth.verifyAdmin, (req, res)=>{
+router.put("/user/makeVerified/:id", auth.verifyAdminSuper, (req, res)=>{
     var username = "";
     user.findOne({_id: req.params.id}).then((userData)=> {
         username = userData.username;
     });
-    user.findByIdAndDelete({_id: req.params.id})
+    user.updateOne({_id: req.params.id}, {verified: true})
     .then(()=>{
         res.json({message: `${username} has been verified.`});
     })
@@ -87,7 +88,21 @@ router.put("/user/makeVerifiedByAdmin/:id", auth.verifyAdmin, (req, res)=>{
     });
 });
 
-router.put("/user/deactivateByAdmin/:id", auth.verifyAdmin, (req, res)=>{
+router.put("/user/makeUnverified/:id", auth.verifyAdminSuper, (req, res)=>{
+    var username = "";
+    user.findOne({_id: req.params.id}).then((userData)=> {
+        username = userData.username;
+    });
+    user.updateOne({_id: req.params.id}, {verified: false})
+    .then(()=>{
+        res.json({message: `${username} has been unverified.`});
+    })
+    .catch((e)=> {
+        res.json({error: e})
+    });
+});
+
+router.put("/user/deactivate/:id", auth.verifyAdminSuper, (req, res)=>{
     var username = "";
     user.findOne({_id: req.params.id}).then((userData)=> {
         username = userData.username;
@@ -95,6 +110,20 @@ router.put("/user/deactivateByAdmin/:id", auth.verifyAdmin, (req, res)=>{
     user.updateOne({_id: req.params.id}, {is_active: false})
     .then(()=>{
         res.json({message: `${username} has been deactivated.`});
+    })
+    .catch((e)=> {
+        res.json({error: e})
+    });
+});
+
+router.put("/user/activate/:id", auth.verifyAdminSuper, (req, res)=>{
+    var username = "";
+    user.findOne({_id: req.params.id}).then((userData)=> {
+        username = userData.username;
+    });
+    user.updateOne({_id: req.params.id}, {is_active: true})
+    .then(()=>{
+        res.json({message: `${username} has been activated.`});
     })
     .catch((e)=> {
         res.json({error: e})

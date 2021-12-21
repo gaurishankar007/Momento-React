@@ -30,7 +30,7 @@ module.exports.verifyAdmin = function(req, res, next) {
         const token = req.headers.authorization.split(" ")[1];
         const userData = jwt.verify(token, "loginKey");
         user.findOne({_id: userData.userId}).then((aUser)=>{
-            req.userInfo = aUser;
+            req.adminInfo = aUser;
             if(aUser.admin) {
                 next();
             }
@@ -52,12 +52,34 @@ module.exports.verifySuper = function(req, res, next) {
         const token = req.headers.authorization.split(" ")[1];
         const userData = jwt.verify(token, "loginKey");
         user.findOne({_id: userData.userId}).then((sUser)=>{
-            req.userInfo = sUser;
+            req.superInfo = sUser;
             if(sUser.superuser) {
                 next();
             }
             else {
-                res.json({message: "Only superuser are allowed."});
+                res.json({message: "Only superusers are allowed."});
+            }
+        }).catch(function(e){
+            res.json({error: e});
+        });
+    }
+    catch(e) {
+        res.json({error: e});
+    }
+} 
+
+// guard for admin or super user
+module.exports.verifyAdminSuper = function(req, res, next) {
+    try{
+        const token = req.headers.authorization.split(" ")[1];
+        const userData = jwt.verify(token, "loginKey");
+        user.findOne({_id: userData.userId}).then((asUser)=>{
+            req.adminSuperInfo = asUser;
+            if(asUser.admin || asUser.superuser) {
+                next();
+            }
+            else {
+                res.json({message: "Only admins or superusers are allowed."});
             }
         }).catch(function(e){
             res.json({error: e});
