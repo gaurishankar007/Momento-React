@@ -9,7 +9,7 @@ module.exports.verifyUser = function(req, res, next) {
         const userData = jwt.verify(token, "loginKey");
         user.findOne({_id: userData.userId}).then((nUser)=>{
             req.userInfo = nUser;
-            if (!nUser.admin && !nUser.super) {
+            if (nUser.admin==false && nUser.super==false) {
                 next();
             }
             else {
