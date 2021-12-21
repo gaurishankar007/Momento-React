@@ -15,6 +15,12 @@ app.use(profileRoute);
 const addressRoute = require("./routes/addressRoute");
 app.use(addressRoute);
 
+const adminRoute = require("./routes/adminRoute");
+app.use(adminRoute);
+
+const superRoute = require("./routes/superRoute");
+app.use(superRoute);
+
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 4040;

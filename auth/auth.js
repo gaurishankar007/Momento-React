@@ -53,7 +53,7 @@ module.exports.verifySuper = function(req, res, next) {
         const userData = jwt.verify(token, "loginKey");
         user.findOne({_id: userData.userId}).then((sUser)=>{
             req.userInfo = sUser;
-            if(sUser.super) {
+            if(sUser.superuser) {
                 next();
             }
             else {
