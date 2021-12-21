@@ -18,12 +18,12 @@ router.post("/user/register", (req, res) => {
         }
         user.findOne({email: email}).then(function(userData){
             if(userData!=null) {
-                res.json({message: "This email address is already used. try another email address."});
+                res.json({message: "This email is already used, try another."});
                 return;
             }            
             user.findOne({phone: phone}).then(function(userData){
                 if(userData!=null) {
-                    res.json({message: "This phone number is already used. try another phone number."});
+                    res.json({message: "This phone number is already used, try another."});
                     return;
                 }                
                 // now this place is for the user which is available in db
@@ -154,15 +154,106 @@ router.put("/user/passReset/:resetToken/:newPass", function(req, res) {
     }
 });
 
-router.get("/testUser", auth.verifyUser, function(req, res) {
-    res.json({message: "user phone number: "+ req.userInfo.phone + "."});
+router.put("/user/changePassword/:id", auth.verifyUser, (req, res)=> {
+    const currPassword = req.body.currPassword;
+    const newPassword = req.body.newPassword;
+
+    user.findOne({_id: req.params.id}).then((userData)=> {
+        bcryptjs.compare(currPassword, userData.password, function(e, result) {
+            if(!result) {
+                return res.json({message: "Current Password did not match."});
+            }
+            bcryptjs.hash(newPassword, 10, (e, hashed_pass)=> {
+                user.updateOne({_id: userData._id}, {password: hashed_pass})
+                .then(()=> {
+                    res.json({message: "Your password has been changed."});
+                })
+                .catch((e)=> {
+                    res.json({error: e});
+                });
+            });
+        });
+    });
 });
 
-router.get("/testAdmin", auth.verifyAdmin, function(req, res) {
-    res.json({message: "success"});
+router.put("/user/changeProfile/:id", auth.verifyUser, (req, res)=> {   
+    const profile_pic = req.body.profile_pic;    
+    
+    user.updateOne({_id: req.params.id}, {profile_pic: profile_pic})
+    .then(()=>{
+        res.json({message: "You have changed your profile picture."});
+    })
+    .catch((e)=> {
+        res.json({error: e})
+    });
 });
 
-router.get("/testSuper", auth.verifySuper, function(req, res) {
-    res.json({message: "success"});
+router.put("/user/changeCover/:id", auth.verifyUser, (req, res)=> {
+    const cover_pic = req.body.cover_pic;
+    
+    user.updateOne({_id: req.params.id}, {cover_pic: cover_pic})
+    .then(()=>{
+        res.json({message: "You have changed your cover picture."});
+    })
+    .catch((e)=> {
+        res.json({error: e})
+    });
 });
+
+router.put("/user/changeEmail/:id", auth.verifyUser, (req, res)=> {  
+    const email = req.body.email;
+    
+    user.findOne({email: email}).then(function(userData){
+        if(userData!=null) {
+            res.json({message: "This email is already used, try another."});
+            return;
+        }  
+        user.updateOne({_id: req.params.id}, {email: email})
+        .then(()=>{
+            res.json({message: "Your email address has been changed."});
+        })
+        .catch((e)=> {
+            res.json({error: e})
+        });
+    });  
+});
+
+router.put("/user/ChangePhone/:id", auth.verifyUser, (req, res)=> {  
+    const phone = req.body.phone;    
+             
+    user.findOne({phone: phone}).then(function(userData){
+        if(userData!=null) {
+            res.json({message: "This phone number is already used, try another."});
+            return;
+        } 
+        user.updateOne({_id: req.params.id}, {phone: phone})
+        .then(()=>{
+            res.json({message: "Your phone number has been changed."});
+        })
+        .catch((e)=> {
+            res.json({error: e})
+        });
+    }); 
+});
+
+router.put("/user/bePrivate/:id", auth.verifyUser, (req, res)=> {    
+    user.updateOne({_id: req.params.id}, {private: true})
+    .then(()=>{
+        res.json({message: "You have become private."});
+    })
+    .catch((e)=> {
+        res.json({error: e})
+    });
+});
+
+router.put("/user/bePublic/:id", auth.verifyUser, (req, res)=> {    
+    user.updateOne({_id: req.params.id}, {private: false})
+    .then(()=>{
+        res.json({message: "You have become public."});
+    })
+    .catch((e)=> {
+        res.json({error: e})
+    });
+});
+
 module.exports = router;

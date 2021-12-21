@@ -7,13 +7,13 @@ module.exports.verifyUser = function(req, res, next) {
     try{
         const token = req.headers.authorization.split(" ")[1];
         const userData = jwt.verify(token, "loginKey");
-        user.findOne({_id: userData.userId}).then((userData2)=>{
-            req.userInfo = userData2;
-            if (!userData2.admin && !userData2.super) {
+        user.findOne({_id: userData.userId}).then((nUser)=>{
+            req.userInfo = nUser;
+            if (!nUser.admin && !nUser.super) {
                 next();
             }
             else {
-                res.json({message: "Only normal users are allowed. Not for admins and super users."});
+                res.json({message: "Only normal users are allowed. Not for admin or super users."});
             }
         }).catch(function(e){
             res.json({error: e});
@@ -29,9 +29,9 @@ module.exports.verifyAdmin = function(req, res, next) {
     try{
         const token = req.headers.authorization.split(" ")[1];
         const userData = jwt.verify(token, "loginKey");
-        user.findOne({_id: userData.userId}).then((userData2)=>{
-            req.userInfo = userData2;
-            if(userData2.admin) {
+        user.findOne({_id: userData.userId}).then((aUser)=>{
+            req.userInfo = aUser;
+            if(aUser.admin) {
                 next();
             }
             else {
@@ -51,9 +51,9 @@ module.exports.verifySuper = function(req, res, next) {
     try{
         const token = req.headers.authorization.split(" ")[1];
         const userData = jwt.verify(token, "loginKey");
-        user.findOne({_id: userData.userId}).then((userData2)=>{
-            req.userInfo = userData2;
-            if(userData2.super) {
+        user.findOne({_id: userData.userId}).then((sUser)=>{
+            req.userInfo = sUser;
+            if(sUser.super) {
                 next();
             }
             else {
