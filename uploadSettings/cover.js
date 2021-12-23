@@ -2,7 +2,7 @@ const multer = require("multer");
 
 const storageNavigation = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, "./files/covers");
+        cb(null, "./uploadedFiles/covers");
     },
     filename: function(req, file, cb) {
         cb(null, Date.now()+"_cover_"+file.originalname);
