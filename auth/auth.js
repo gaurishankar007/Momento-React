@@ -1,15 +1,14 @@
-const e = require("express");
 const jwt = require("jsonwebtoken");
 const user = require("../models/userModel.js");
 
-// guard for normal user
+// Guard for normal user
 module.exports.verifyUser = function(req, res, next) {
     try{
         const token = req.headers.authorization.split(" ")[1];
         const userData = jwt.verify(token, "loginKey");
         user.findOne({_id: userData.userId}).then((nUser)=>{
             req.userInfo = nUser;
-            if (nUser.admin==false && nUser.super==false) {
+            if (nUser.admin==false && nUser.superuser==false) {
                 next();
             }
             else {
@@ -24,7 +23,7 @@ module.exports.verifyUser = function(req, res, next) {
     }
 } 
 
-// guard for admin user
+// Guard for admin user
 module.exports.verifyAdmin = function(req, res, next) {
     try{
         const token = req.headers.authorization.split(" ")[1];
@@ -46,7 +45,7 @@ module.exports.verifyAdmin = function(req, res, next) {
     }
 } 
 
-// guard for super user
+// Guard for super user
 module.exports.verifySuper = function(req, res, next) {
     try{
         const token = req.headers.authorization.split(" ")[1];
@@ -68,7 +67,7 @@ module.exports.verifySuper = function(req, res, next) {
     }
 } 
 
-// guard for admin or super user
+// Guard for admin or super user
 module.exports.verifyAdminSuper = function(req, res, next) {
     try{
         const token = req.headers.authorization.split(" ")[1];

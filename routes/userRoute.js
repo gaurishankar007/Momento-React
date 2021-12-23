@@ -1,12 +1,19 @@
+// Importing installed packages.....
 const express = require("express");
 const router = new express.Router();
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
+
+// Importing self made js files....
 const user = require("../models/userModel")
 const auth = require("../auth/auth.js");
 const sendEmail = require("../utils/sendEmail.js");
+const profileUpload = require("../uploadSettings/profile.js");
+const coverUpload = require("../uploadSettings/cover.js");
 
+
+// User routes.....
 router.post("/user/register", (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
@@ -26,16 +33,12 @@ router.post("/user/register", (req, res) => {
                     res.json({message: "This phone number is already used, try another."});
                     return;
                 }                
-                // now this place is for the user which is available in db
+                // Now this place is for the user which is available in db
                 const password = req.body.password;
-                const profile_pic = req.body.profile_pic;
-                const cover_pic = req.body.cover_pic;
                 bcryptjs.hash(password, 10, function(e, hashed_value) {
                     const newUser = new user({
                         username: username,
                         password: hashed_value,
-                        profile_pic: profile_pic,
-                        cover_pic: cover_pic,
                         email: email,
                         phone: phone,
                     });
@@ -52,32 +55,31 @@ router.post("/user/register", (req, res) => {
     })
 });
 
-// login route for user using username or email
+// Login route for user using username or email
 router.post("/user/login", (req, res)=> {
-    const username = req.body.username;
+    const username_email = req.body.username_email;
     const password = req.body.password;
-    const email = req.body.email;
-    user.findOne({username: username}).then((userData)=> {
+    user.findOne({username: username_email}).then((userData)=> {
         if(userData==null) {
-            if(!validator.isEmail(email)) {
-                return res.json({message: "User with that username does not exist or provide valid email address."});
+            if(!validator.isEmail(username_email)) {
+                return res.json({message: "User with that username does not exist or provide a valid email address."});
             }
-            user.findOne({email: email}).then((userData1)=> {
+            user.findOne({email: username_email}).then((userData1)=> {
                 if(userData1==null) {
                     return res.json({message: "User with that email address does not exist."});
                 }
-                // now comparing client password with the given password
+                // Now comparing client password with the given password
                 bcryptjs.compare(password, userData1.password, function(e, result){
                     if(!result) {
                         res.json({message: "Incorrect password, try again."});
                     }
                     else {                        
-                        // now lets generate token
+                        // Now lets generate token
                         const token = jwt.sign({userId: userData1._id}, "loginKey");
                         if(!userData1.is_active) {
                             res.json({message: "Sorry, your account has been deactivated."});
                         }
-                        else if (!userData1.admin && !userData1.superuser){
+                        else if (userData1.admin==false && userData1.superuser==false) {
                             res.json({token: token, message: "Login success"});                              
                         }
                         else if(userData1.admin) {
@@ -91,17 +93,17 @@ router.post("/user/login", (req, res)=> {
             });
         }
         else {            
-            // now comparing client password with the given password
+            // Now comparing client password with the given password
             bcryptjs.compare(password, userData.password, function(e, result){
                 if(!result) {
                     return res.json({message: "Incorrect password, try again."});
                 }
-                // now lets generate token
+                // Now lets generate token
                 const token = jwt.sign({userId: userData._id}, "loginKey");
                 if(!userData.is_active) {
                     res.json({message: "Sorry, your account has been deactivated."});
                 }
-                else if (!userData.admin && !userData.superuser){
+                else if (userData.admin==false && userData.superuser==false){
                     res.json({token: token, message: "Login success"});                              
                 }
                 else if(userData.admin) {
@@ -176,27 +178,31 @@ router.put("/user/changePassword/:id", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.put("/user/changeProfile/:id", auth.verifyUser, (req, res)=> {   
-    const profile_pic = req.body.profile_pic;    
+router.put("/user/changeProfile/:id", auth.verifyUser, profileUpload.single("profile"), (req, res)=> {  
+    if(req.file==undefined) {
+        return res.json({error: "Invalid image format, only supports png or jpeg image format."});
+    }
     
-    user.updateOne({_id: req.params.id}, {profile_pic: profile_pic})
+    user.updateOne({_id: req.params.id}, {profile_pic: req.file.filename})
     .then(()=>{
-        res.json({message: "You have changed your profile picture."});
+        res.json({message: "New profile picture added."});
     })
     .catch((e)=> {
-        res.json({error: e})
+        res.json({error: e});
     });
 });
 
-router.put("/user/changeCover/:id", auth.verifyUser, (req, res)=> {
-    const cover_pic = req.body.cover_pic;
+router.put("/user/changeCover/:id", auth.verifyUser, coverUpload.single("cover"), (req, res)=> {
+    if(req.file==undefined) {
+        return res.json({error: "Invalid image format, only supports png or jpeg image format."});
+    }
     
-    user.updateOne({_id: req.params.id}, {cover_pic: cover_pic})
+    user.updateOne({_id: req.params.id}, {cover_pic: req.file.filename})
     .then(()=>{
-        res.json({message: "You have changed your cover picture."});
+        res.json({message: "New cover picture added."});
     })
     .catch((e)=> {
-        res.json({error: e})
+        res.json({error: e});
     });
 });
 

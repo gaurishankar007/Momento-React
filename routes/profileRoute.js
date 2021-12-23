@@ -1,5 +1,8 @@
+// Importing installed packages.....
 const express = require("express");
 const router = new express.Router();
+
+// Importing self made js files....
 const profile = require("../models/profileModel.js");
 const user = require("../models/userModel.js");
 const auth = require("../auth/auth.js");

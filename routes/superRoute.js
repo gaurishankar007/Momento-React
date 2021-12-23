@@ -1,6 +1,9 @@
+// Importing installed packages.....
 const express = require("express");
 const router = new express.Router();
 const bcryptjs = require("bcryptjs");
+
+// Importing self made js files....
 const user = require("../models/userModel.js");
 const auth = require("../auth/auth.js");
 
