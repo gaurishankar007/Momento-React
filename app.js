@@ -15,6 +15,9 @@ app.use(profileRoute);
 const addressRoute = require("./routes/addressRoute");
 app.use(addressRoute);
 
+const postRoute = require("./routes/postRoute");
+app.use(postRoute);
+
 const adminRoute = require("./routes/adminRoute");
 app.use(adminRoute);
 
