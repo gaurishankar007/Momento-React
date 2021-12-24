@@ -13,19 +13,19 @@ router.post("/post/add/:user_id", auth.verifyUser, postUpload.array("image_video
         return res.json({error: "Invalid image or video format, only supports png or jpeg or mp4 or mkv."});
     }
 
+    // Making array of filenames
     const filesArray = req.files;
     const filesNameArray = [];
     for(i=0; i<filesArray.length; i++) {
         filesNameArray.push(filesArray[i].filename);
     }
-    
-    console.log(req.files)
+
     const userPost = new post({
         user_id: req.params.user_id,
         caption: req.body.caption,
         description: req.body.description,
         attach_file: filesNameArray,
-        tag_friend: req.body.tag_friend 
+        tag_friend: req.body.tag_friend, 
     });
     userPost.save()
     .then(()=> {
@@ -34,6 +34,30 @@ router.post("/post/add/:user_id", auth.verifyUser, postUpload.array("image_video
     .catch((e)=> {
         res.json({error: e});
     })
+});
+
+router.put("/post/edit/:id", auth.verifyUser, (req, res)=> {
+    post.updateOne({_id: req.params.id}, {
+        caption: req.body.caption,
+        description: req.body.description,
+        }
+    )
+    .then(function(){
+        res.json({message: "Post has been edited updated."})
+    }) 
+    .catch(function(e) {
+        res.json(e);
+    });
+});
+
+router.delete("/post/delete/id", auth.verifyUser, (req, res)=> {
+    post.findByIdAndDelete({_id: req.params.id})
+    .then(function() {
+        res.json({message: "Post Deleted."});
+    })
+    .catch((e)=> {
+        res.json({error: e});
+    });
 });
 
 module.exports = router;

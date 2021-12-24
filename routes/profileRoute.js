@@ -45,15 +45,4 @@ router.put("/profile/update/:profile_id", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.get("/user/get/:profile_id", function(req, res){
-    profile.findOne({_id: req.params.profile_id}).then((profileData)=>{
-        if(profileData==null) {
-            return res.json({message: "Profile does not exist."});
-        }
-        user.findOne({_id: profileData.user_id}).then(function(userData){
-            return res.json({message: "This profile be longs to user '"+userData.username+"'."})
-        });
-    });
-});
-
 module.exports = router;
