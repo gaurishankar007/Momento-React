@@ -4,6 +4,7 @@ const router = new express.Router();
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
+const fs = require("fs");
 
 // Importing self made js files....
 const user = require("../models/userModel")
@@ -182,10 +183,21 @@ router.put("/user/changeProfile/:id", auth.verifyUser, profileUpload.single("pro
     if(req.file==undefined) {
         return res.json({error: "Invalid image format, only supports png or jpeg image format."});
     }
+
+    user.findOne({_id: req.params.id})
+    .then((userData)=> {
+        if(userData.profile_pic!="defaultProfile.png") {
+            const profile_pic_path = `./uploadedFiles/profiles/${userData.profile_pic}`;
+            fs.unlinkSync(profile_pic_path);
+        }  
     
-    user.updateOne({_id: req.params.id}, {profile_pic: req.file.filename})
-    .then(()=>{
-        res.json({message: "New profile picture added."});
+        user.updateOne({_id: req.params.id}, {profile_pic: req.file.filename})
+        .then(()=>{
+            res.json({message: "New profile picture added."});
+        })
+        .catch((e)=> {
+            res.json({error: e});
+        });
     })
     .catch((e)=> {
         res.json({error: e});
@@ -196,10 +208,21 @@ router.put("/user/changeCover/:id", auth.verifyUser, coverUpload.single("cover")
     if(req.file==undefined) {
         return res.json({error: "Invalid image format, only supports png or jpeg image format."});
     }
-    
-    user.updateOne({_id: req.params.id}, {cover_pic: req.file.filename})
-    .then(()=>{
-        res.json({message: "New cover picture added."});
+
+    user.findOne({_id: req.params.id})
+    .then((userData)=> {
+        if(userData.cover_pic!=undefined) {
+            const cover_pic_path = `./uploadedFiles/covers/${userData.cover_pic}`;
+            fs.unlinkSync(cover_pic_path);
+        }    
+
+        user.updateOne({_id: req.params.id}, {cover_pic: req.file.filename})
+        .then(()=>{
+            res.json({message: "New cover picture added."});
+        })
+        .catch((e)=> {
+            res.json({error: e});
+        });
     })
     .catch((e)=> {
         res.json({error: e});
