@@ -157,11 +157,11 @@ router.put("/user/passReset/:resetToken/:newPass", function(req, res) {
     }
 });
 
-router.put("/user/changePassword/:id", auth.verifyUser, (req, res)=> {
+router.put("/user/changePassword", auth.verifyUser, (req, res)=> {
     const currPassword = req.body.currPassword;
     const newPassword = req.body.newPassword;
 
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.userInfo._id}).then((userData)=> {
         bcryptjs.compare(currPassword, userData.password, function(e, result) {
             if(!result) {
                 return res.json({message: "Current Password did not match."});
@@ -179,19 +179,19 @@ router.put("/user/changePassword/:id", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.put("/user/changeProfile/:id", auth.verifyUser, profileUpload.single("profile"), (req, res)=> {  
+router.put("/user/changeProfile", auth.verifyUser, profileUpload.single("profile"), (req, res)=> {  
     if(req.file==undefined) {
         return res.json({error: "Invalid image format, only supports png or jpeg image format."});
     }
 
-    user.findOne({_id: req.params.id})
+    user.findOne({_id: req.userInfo._id})
     .then((userData)=> {
         if(userData.profile_pic!="defaultProfile.png") {
             const profile_pic_path = `./uploadedFiles/profiles/${userData.profile_pic}`;
             fs.unlinkSync(profile_pic_path);
         }  
     
-        user.updateOne({_id: req.params.id}, {profile_pic: req.file.filename})
+        user.updateOne({_id: req.userInfo._id}, {profile_pic: req.file.filename})
         .then(()=>{
             res.json({message: "New profile picture added."});
         })
@@ -204,19 +204,19 @@ router.put("/user/changeProfile/:id", auth.verifyUser, profileUpload.single("pro
     });
 });
 
-router.put("/user/changeCover/:id", auth.verifyUser, coverUpload.single("cover"), (req, res)=> {
+router.put("/user/changeCover", auth.verifyUser, coverUpload.single("cover"), (req, res)=> {
     if(req.file==undefined) {
         return res.json({error: "Invalid image format, only supports png or jpeg image format."});
     }
 
-    user.findOne({_id: req.params.id})
+    user.findOne({_id: req.userInfo._id})
     .then((userData)=> {
         if(userData.cover_pic!=undefined) {
             const cover_pic_path = `./uploadedFiles/covers/${userData.cover_pic}`;
             fs.unlinkSync(cover_pic_path);
         }    
 
-        user.updateOne({_id: req.params.id}, {cover_pic: req.file.filename})
+        user.updateOne({_id: req.userInfo._id}, {cover_pic: req.file.filename})
         .then(()=>{
             res.json({message: "New cover picture added."});
         })
@@ -229,7 +229,7 @@ router.put("/user/changeCover/:id", auth.verifyUser, coverUpload.single("cover")
     });
 });
 
-router.put("/user/changeEmail/:id", auth.verifyUser, (req, res)=> {  
+router.put("/user/changeEmail", auth.verifyUser, (req, res)=> {  
     const email = req.body.email;
     
     user.findOne({email: email}).then(function(userData){
@@ -237,7 +237,7 @@ router.put("/user/changeEmail/:id", auth.verifyUser, (req, res)=> {
             res.json({message: "This email is already used, try another."});
             return;
         }  
-        user.updateOne({_id: req.params.id}, {email: email})
+        user.updateOne({_id: req.userInfo._id}, {email: email})
         .then(()=>{
             res.json({message: "Your email address has been changed."});
         })
@@ -247,7 +247,7 @@ router.put("/user/changeEmail/:id", auth.verifyUser, (req, res)=> {
     });  
 });
 
-router.put("/user/ChangePhone/:id", auth.verifyUser, (req, res)=> {  
+router.put("/user/ChangePhone", auth.verifyUser, (req, res)=> {  
     const phone = req.body.phone;    
              
     user.findOne({phone: phone}).then(function(userData){
@@ -255,7 +255,7 @@ router.put("/user/ChangePhone/:id", auth.verifyUser, (req, res)=> {
             res.json({message: "This phone number is already used, try another."});
             return;
         } 
-        user.updateOne({_id: req.params.id}, {phone: phone})
+        user.updateOne({_id: req.userInfo._id}, {phone: phone})
         .then(()=>{
             res.json({message: "Your phone number has been changed."});
         })
@@ -265,8 +265,8 @@ router.put("/user/ChangePhone/:id", auth.verifyUser, (req, res)=> {
     }); 
 });
 
-router.put("/user/bePrivate/:id", auth.verifyUser, (req, res)=> {    
-    user.updateOne({_id: req.params.id}, {private: true})
+router.put("/user/bePrivate", auth.verifyUser, (req, res)=> {    
+    user.updateOne({_id: req.userInfo._id}, {private: true})
     .then(()=>{
         res.json({message: "You have become private."});
     })
@@ -275,8 +275,8 @@ router.put("/user/bePrivate/:id", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.put("/user/bePublic/:id", auth.verifyUser, (req, res)=> {    
-    user.updateOne({_id: req.params.id}, {private: false})
+router.put("/user/bePublic", auth.verifyUser, (req, res)=> {    
+    user.updateOne({_id: req.userInfo._id}, {private: false})
     .then(()=>{
         res.json({message: "You have become public."});
     })

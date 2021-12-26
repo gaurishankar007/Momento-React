@@ -6,9 +6,9 @@ const router = new express.Router();
 const address = require("../models/AddressModel.js");
 const auth = require("../auth/auth.js");
 
-router.post("/address/add/:user_id", auth.verifyUser, (req, res)=> {
+router.post("/address/add", auth.verifyUser, (req, res)=> {
     const newAddress = new address({
-        user_id: req.params.user_id,
+        user_id: req.userInfo._id,
         permanent: {
             country: req.body.permanent.country,
             state: req.body.permanent.state,
@@ -29,8 +29,8 @@ router.post("/address/add/:user_id", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.put("/address/update/:address_id", auth.verifyUser, (req, res)=> {
-    address.updateOne({_id: req.params.address_id}, {
+router.put("/address/update", auth.verifyUser, (req, res)=> {
+    address.updateOne({user_id: req.userInfo._id}, {
         permanent: {
             country: req.body.permanent.country,
             state: req.body.permanent.state,
@@ -53,8 +53,8 @@ router.put("/address/update/:address_id", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.put("/address/hide/:address_id", auth.verifyUser, (req, res)=> {
-    address.updateOne({_id: req.params.address_id}, {hide: true})
+router.put("/address/hide", auth.verifyUser, (req, res)=> {
+    address.updateOne({user_id: req.userInfo._id}, {hide: true})
     .then(function(){
         res.json({message: "Address has been hidden."})
     }) 
@@ -63,8 +63,8 @@ router.put("/address/hide/:address_id", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.put("/address/show/:address_id", auth.verifyUser, (req, res)=> {
-    address.updateOne({_id: req.params.address_id}, {hide: false})
+router.put("/address/show", auth.verifyUser, (req, res)=> {
+    address.updateOne({user_id: req.userInfo._id}, {hide: false})
     .then(function(){
         res.json({message: "Address has been shown."})
     }) 

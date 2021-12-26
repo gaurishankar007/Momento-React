@@ -7,11 +7,11 @@ const bcryptjs = require("bcryptjs");
 const user = require("../models/userModel.js");
 const auth = require("../auth/auth.js");
 
-router.put("/admin/changePassword/:id", auth.verifyAdmin, (req, res)=> {
+router.put("/admin/changePassword", auth.verifyAdmin, (req, res)=> {
     const currPassword = req.body.currPassword;
     const newPassword = req.body.newPassword;
 
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.adminInfo._id}).then((userData)=> {
         bcryptjs.compare(currPassword, userData.password, function(e, result) {
             if(!result) {
                 return res.json({message: "Current Password did not match."});
@@ -29,11 +29,11 @@ router.put("/admin/changePassword/:id", auth.verifyAdmin, (req, res)=> {
     });
 });
 
-router.put("/admin/changeProfile/:id", auth.verifyAdmin, (req, res)=> {   
+router.put("/admin/changeProfile", auth.verifyAdmin, (req, res)=> {   
     const profile_pic = req.body.profile_pic;    
     
-    user.updateOne({_id: req.params.id}, {profile_pic: profile_pic})
-    .then(()=>{
+    user.updateOne({_id: req.adminInfo._id}, {profile_pic: profile_pic})
+    .then(()=> {
         res.json({message: "You have changed your profile picture."});
     })
     .catch((e)=> {
@@ -41,7 +41,7 @@ router.put("/admin/changeProfile/:id", auth.verifyAdmin, (req, res)=> {
     });
 });
 
-router.put("/admin/changeEmail/:id", auth.verifyAdmin, (req, res)=> {  
+router.put("/admin/changeEmail", auth.verifyAdmin, (req, res)=> {  
     const email = req.body.email;
     
     user.findOne({email: email}).then(function(userData){
@@ -49,7 +49,7 @@ router.put("/admin/changeEmail/:id", auth.verifyAdmin, (req, res)=> {
             res.json({message: "This email is already used, try another."});
             return;
         }  
-        user.updateOne({_id: req.params.id}, {email: email})
+        user.updateOne({_id: req.adminInfo._id}, {email: email})
         .then(()=>{
             res.json({message: "Your email address has been changed."});
         })
@@ -59,7 +59,7 @@ router.put("/admin/changeEmail/:id", auth.verifyAdmin, (req, res)=> {
     });  
 });
 
-router.put("/admin/ChangePhone/:id", auth.verifyAdmin, (req, res)=> {  
+router.put("/admin/ChangePhone", auth.verifyAdmin, (req, res)=> {  
     const phone = req.body.phone;    
              
     user.findOne({phone: phone}).then(function(userData){
@@ -67,7 +67,7 @@ router.put("/admin/ChangePhone/:id", auth.verifyAdmin, (req, res)=> {
             res.json({message: "This phone number is already used, try another."});
             return;
         } 
-        user.updateOne({_id: req.params.id}, {phone: phone})
+        user.updateOne({_id: req.adminInfo._id}, {phone: phone})
         .then(()=>{
             res.json({message: "Your phone number has been changed."});
         })

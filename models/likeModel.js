@@ -6,13 +6,7 @@ const likeSchema = new mongoose.Schema({
     },    
     user_id: {
         type: mongoose.Types.ObjectId, ref: "user" 
-    },
-    like: {
-        type: Boolean
-    },
-    dislike: {
-        type: Boolean
-    },
+    }
 }, 
 {
     timestamps: true,

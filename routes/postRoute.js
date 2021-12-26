@@ -7,7 +7,7 @@ const post = require("../models/postModel.js");
 const auth = require("../auth/auth.js");
 const postUpload = require("../uploadSettings/post.js");
 
-router.post("/post/add/:user_id", auth.verifyUser, postUpload.array("image_video"), (req, res)=> { 
+router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), (req, res)=> { 
     // If you want to fix the number of file to upload then use 'postUpload.array("image_video", 10)'
     if(req.files==undefined) {
         return res.json({error: "Invalid image or video format, only supports png or jpeg or mp4 or mkv."});
@@ -21,7 +21,7 @@ router.post("/post/add/:user_id", auth.verifyUser, postUpload.array("image_video
     }
 
     const userPost = new post({
-        user_id: req.params.user_id,
+        user_id: req.userInfo._id,
         caption: req.body.caption,
         description: req.body.description,
         attach_file: filesNameArray,
