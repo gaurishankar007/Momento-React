@@ -285,4 +285,16 @@ router.put("/user/bePublic", auth.verifyUser, (req, res)=> {
     });
 });
 
+router.get("/user/search", auth.verifyUser, async (req, res)=> {
+    const keyword = req.query.username
+    ? {username: { $regex: req.query.username, $options: "i" }}
+    :{}; // Making keyword workable json format data according to user search
+
+    // Using async function show that only after searching all the users, it will send the users 
+    // Otherwise it will produce error 
+    // Because it will start to run the code below it even though all the users have not been completely searched
+    const users = await user.find(keyword).find({_id: {$ne: req.userInfo._id}});
+    res.json(users); 
+});
+
 module.exports = router;
