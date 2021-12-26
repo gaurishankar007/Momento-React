@@ -24,6 +24,9 @@ app.use(adminRoute);
 const superRoute = require("./routes/superRoute");
 app.use(superRoute);
 
+const likeRoute = require("./routes/likeRoute");
+app.use(likeRoute);
+
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 4040;
