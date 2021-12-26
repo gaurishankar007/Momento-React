@@ -13,7 +13,7 @@ router.post("/like/:post_id", auth.verifyUser, (req, res)=> {
     })
     .then(function(likeData) {
         if(likeData!=null) {
-            like.findByIdAndDelete({_id: likeData._id});
+            like.findByIdAndDelete({_id: likeData._id}).then().catch();
             return;
         }
         const newLike = new like({
