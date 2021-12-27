@@ -36,8 +36,8 @@ router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), (req,
     })
 });
 
-router.put("/post/edit/:id", auth.verifyUser, (req, res)=> {
-    post.updateOne({_id: req.params.id}, {
+router.put("/post/edit", auth.verifyUser, (req, res)=> {
+    post.updateOne({_id: req.body.post_id}, {
         caption: req.body.caption,
         description: req.body.description,
         }
@@ -50,8 +50,8 @@ router.put("/post/edit/:id", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.delete("/post/delete/id", auth.verifyUser, (req, res)=> {
-    post.findByIdAndDelete({_id: req.params.id})
+router.delete("/post/delete", auth.verifyUser, (req, res)=> {
+    post.findByIdAndDelete({_id: req.body.post_id})
     .then(function() {
         res.json({message: "Post Deleted."});
     })

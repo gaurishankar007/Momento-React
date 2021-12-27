@@ -77,12 +77,12 @@ router.put("/admin/ChangePhone", auth.verifyAdmin, (req, res)=> {
     }); 
 });
 
-router.put("/user/makeVerified/:id", auth.verifyAdminSuper, (req, res)=>{
+router.put("/user/makeVerified", auth.verifyAdminSuper, (req, res)=>{
     var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.body.user_id}).then((userData)=> {
         username = userData.username;
     });
-    user.updateOne({_id: req.params.id}, {verified: true})
+    user.updateOne({_id: req.body.user_id}, {verified: true})
     .then(()=>{
         res.json({message: `${username} has been verified.`});
     })
@@ -91,12 +91,12 @@ router.put("/user/makeVerified/:id", auth.verifyAdminSuper, (req, res)=>{
     });
 });
 
-router.put("/user/makeUnverified/:id", auth.verifyAdminSuper, (req, res)=>{
+router.put("/user/makeUnverified", auth.verifyAdminSuper, (req, res)=>{
     var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.body.user_id}).then((userData)=> {
         username = userData.username;
     });
-    user.updateOne({_id: req.params.id}, {verified: false})
+    user.updateOne({_id: req.body.user_id}, {verified: false})
     .then(()=>{
         res.json({message: `${username} has been unverified.`});
     })
@@ -105,12 +105,12 @@ router.put("/user/makeUnverified/:id", auth.verifyAdminSuper, (req, res)=>{
     });
 });
 
-router.put("/user/deactivate/:id", auth.verifyAdminSuper, (req, res)=>{
+router.put("/user/deactivate", auth.verifyAdminSuper, (req, res)=>{
     var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.body.user_id}).then((userData)=> {
         username = userData.username;
     });
-    user.updateOne({_id: req.params.id}, {is_active: false})
+    user.updateOne({_id: req.body.user_id}, {is_active: false})
     .then(()=>{
         res.json({message: `${username} has been deactivated.`});
     })
@@ -119,12 +119,12 @@ router.put("/user/deactivate/:id", auth.verifyAdminSuper, (req, res)=>{
     });
 });
 
-router.put("/user/activate/:id", auth.verifyAdminSuper, (req, res)=>{
+router.put("/user/activate", auth.verifyAdminSuper, (req, res)=>{
     var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.body.user_id}).then((userData)=> {
         username = userData.username;
     });
-    user.updateOne({_id: req.params.id}, {is_active: true})
+    user.updateOne({_id: req.body.user_id}, {is_active: true})
     .then(()=>{
         res.json({message: `${username} has been activated.`});
     })

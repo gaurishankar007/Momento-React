@@ -5,10 +5,10 @@ const profileSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId, ref: "user"
     },
     first_name: {
-        type: String
+        type: String, trim: true
     },
     last_name: {
-        type: String
+        type: String, trim: true
     },
     gender: {
         type: String

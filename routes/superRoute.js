@@ -50,12 +50,12 @@ router.post("/admin/register", auth.verifySuper, (req, res) => {
     })
 });
 
-router.put("/admin/deactivate/:id", auth.verifySuper, (req, res)=>{
+router.put("/admin/deactivate", auth.verifySuper, (req, res)=>{
     var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.body.admin_id}).then((userData)=> {
         username = userData.username;
     });
-    user.updateOne({_id: req.params.id}, {is_active: false})
+    user.updateOne({_id: req.body.admin_id}, {is_active: false})
     .then(()=>{
         res.json({message: `${username} has been deactivated.`});
     })
@@ -64,12 +64,12 @@ router.put("/admin/deactivate/:id", auth.verifySuper, (req, res)=>{
     });
 });
 
-router.put("/admin/activate/:id", auth.verifySuper, (req, res)=>{
+router.put("/admin/activate", auth.verifySuper, (req, res)=>{
     var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.body.admin_id}).then((userData)=> {
         username = userData.username;
     });
-    user.updateOne({_id: req.params.id}, {is_active: true})
+    user.updateOne({_id: req.body.admin_id}, {is_active: true})
     .then(()=>{
         res.json({message: `${username} has been activated.`});
     })
@@ -78,12 +78,12 @@ router.put("/admin/activate/:id", auth.verifySuper, (req, res)=>{
     });
 });
 
-router.delete("/admin/delete/:id", auth.verifySuper, (req, res)=>{
+router.delete("/admin/delete", auth.verifySuper, (req, res)=>{
     var username = "";
-    user.findOne({_id: req.params.id}).then((userData)=> {
+    user.findOne({_id: req.body.admin_id}).then((userData)=> {
         username = userData.username;
     });
-    user.findByIdAndDelete({_id: req.params.id})
+    user.findByIdAndDelete({_id: req.body.admin_id})
     .then(()=>{
         res.json({message:  `${username} has been deleted.`});
     })

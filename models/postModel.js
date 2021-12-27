@@ -20,6 +20,12 @@ const postSchema = new mongoose.Schema({
             type: mongoose.Types.ObjectId, ref: "user"
         },
     ],
+    like_num: {
+        type: Number, default: 0
+    },
+    comment_num: {
+        type: Number, default: 0
+    }
 }, 
 {
     timestamps: true,

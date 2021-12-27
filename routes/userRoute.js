@@ -19,6 +19,12 @@ router.post("/user/register", (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const phone = req.body.phone;
+
+    // Checking if the username contains any white spaces
+    if((/\s/).test(username)) {
+        return res.json({message: "Please provide the username with no white spaces."})
+    }
+
     user.findOne({username : username}).then(function(userData) {
         if(userData!=null) {
             res.json({message: "User already exists. try another username."});

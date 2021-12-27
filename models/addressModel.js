@@ -6,30 +6,30 @@ const addressSchema = new mongoose.Schema({
     },
     permanent: {
         country: {
-            type: String, default: null
+            type: String, default: null, trim: true
         },
         state: {
-            type: String, default: null
+            type: String, default: null, trim: true
         },
         city: {
-            type: String, default: null
+            type: String, default: null, trim: true
         },
         street: {
-            type: String, default: null
+            type: String, default: null, trim: true
         },
     },
     temporary: {
         country: {
-            type: String, default: null
+            type: String, default: null, trim: true
         },
         state: {
-            type: String, default: null
+            type: String, default: null, trim: true
         },
         city: {
-            type: String, default: null
+            type: String, default: null, trim: true
         },
         street: {
-            type: String, default: null
+            type: String, default: null, trim: true
         },
     },
     hide: {
