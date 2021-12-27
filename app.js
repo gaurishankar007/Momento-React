@@ -27,6 +27,12 @@ app.use(superRoute);
 const likeRoute = require("./routes/likeRoute");
 app.use(likeRoute);
 
+const saveRoute = require("./routes/saveRoute");
+app.use(saveRoute);
+
+const commentRoute = require("./routes/commentRoute");
+app.use(commentRoute);
+
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 4040;
