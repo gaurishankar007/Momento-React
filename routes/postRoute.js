@@ -4,10 +4,12 @@ const router = new express.Router();
 
 // Importing self made js files....
 const post = require("../models/postModel.js");
+const follow = require("../models/followModel.js");
+const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
 const postUpload = require("../uploadSettings/post.js");
 
-router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), (req, res)=> { 
+router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), async (req, res)=> { 
     // If you want to fix the number of file to upload then use 'postUpload.array("image_video", 10)'
     if(req.files==undefined) {
         return res.json({error: "Invalid image or video format, only supports png or jpeg or mp4 or mkv."});
@@ -28,8 +30,18 @@ router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), (req,
         tag_friend: req.body.tag_friend, 
     });
     userPost.save()
-    .then(()=> {
-        res.json({message: "Post uploaded."});
+    .then(async ()=> {
+        const follower = await follow.find({followed_user: req.userInfo._id});
+        for(i=0; i<follower.length; i++) {  
+            const newNotification = new notification({
+                notified_user: follower[i].follower,
+                notification: `new post from ${req.userInfo.username}`,
+                notification_for: "Post",
+                notification_generator: req.userInfo._id,
+            });
+            newNotification.save();
+        }
+        res.json({message: "Post uploaded"});
     })
     .catch((e)=> {
         res.json({error: e});

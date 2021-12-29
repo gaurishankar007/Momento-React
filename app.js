@@ -33,6 +33,15 @@ app.use(saveRoute);
 const commentRoute = require("./routes/commentRoute");
 app.use(commentRoute);
 
+const followRoute = require("./routes/followRoute");
+app.use(followRoute);
+
+const notificationRoute = require("./routes/notificationRoute");
+app.use(notificationRoute);
+
+const reportRoute = require("./routes/reportRoute");
+app.use(reportRoute);
+
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 4040;

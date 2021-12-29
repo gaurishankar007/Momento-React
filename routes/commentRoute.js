@@ -5,6 +5,7 @@ const router = new express.Router();
 // Importing self made js files....
 const comment = require("../models/commentModel.js");
 const post = require("../models/postModel.js");
+const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
 
 router.post("/comment/post", auth.verifyUser, (req, res)=> {
@@ -15,7 +16,23 @@ router.post("/comment/post", auth.verifyUser, (req, res)=> {
             comment: req.body.comment,
         });
         newComment.save();
-        post.updateOne({_id: postData._id}, {comment_num: (postData.comment_num+1)}).then().catch();
+        post.updateOne({_id: postData._id}, {comment_num: (postData.comment_num+1)}).then(()=> {
+            notification.findOne({
+                notification_generator: req.userInfo._id,
+                commented_post: postData._id,
+            }).then((notificationData)=>{
+                if(notificationData==null) {
+                    const newNotification = new notification({
+                        notified_user: postData.user_id,
+                        notification: `Your post got a comment from ${req.userInfo.username}.`,
+                        notification_for: "Comment",
+                        notification_generator: req.userInfo._id,
+                        commented_post: postData._id,
+                    });
+                    newNotification.save();
+                }
+            }).catch();
+        }).catch();
     });
 });
 
