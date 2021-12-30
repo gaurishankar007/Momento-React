@@ -8,6 +8,12 @@ const followSchema = new mongoose.Schema({
     follower: {
         type: mongoose.Types.ObjectId, ref: "user",
     },
+    restrict_follower: {
+        type: Boolean, default: false
+    },
+    block_follower: {
+        type: Boolean, default: false
+    }
 },
 {
     timestamps: true

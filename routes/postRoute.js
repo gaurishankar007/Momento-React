@@ -31,7 +31,7 @@ router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), async
     });
     userPost.save()
     .then(async ()=> {
-        const follower = await follow.find({followed_user: req.userInfo._id});
+        const follower = await follow.find({followed_user: req.userInfo._id, block_follower: false});
         for(i=0; i<follower.length; i++) {  
             const newNotification = new notification({
                 notified_user: follower[i].follower,
