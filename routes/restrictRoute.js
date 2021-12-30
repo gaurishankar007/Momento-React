@@ -4,6 +4,8 @@ const router = new express.Router();
 
 // Importing self made js files....
 const restrict = require("../models/restrictModel.js");
+const user = require("../models/userModel.js");
+const follow = require("../models/followModel.js");
 const auth = require("../auth/auth.js");
 
 router.post("/restrict", auth.verifyUser, (req, res)=> {
