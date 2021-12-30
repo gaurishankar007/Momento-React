@@ -25,17 +25,25 @@ router.post("/report/post", auth.verifyUser, (req, res)=>{
                 reportFor = reportFor + reportForArray[i] + ", ";
             }
         }
+
         post.findOne({_id: req.body.post_id}).then((postData)=> {
-            const newNotification = new notification({
-                notified_user: postData.user_id,
-                notification: `Your post got reported for ${reportFor} content from ${req.userInfo.username}.`,
-                notification_for: "Report",
-                notification_generator: req.userInfo._id,
-                reported_post: postData._id,
+            restrict.findOne({
+                restricted_user: req.userInfo._id,
+                restricting_user: postData.user_id
+            }).then((restrictData)=> {
+                if(restrictData==null) {
+                    const newNotification = new notification({
+                        notified_user: postData.user_id,
+                        notification: `Your post got reported for ${reportFor} content from ${req.userInfo.username}.`,
+                        notification_for: "Report",
+                        notification_generator: req.userInfo._id,
+                        reported_post: postData._id,
+                    });
+                    newNotification.save();
+                }
             });
-            newNotification.save();
-        }).catch();
-    }).catch();
+        });
+    });
 });
 
 module.exports = router;

@@ -28,24 +28,21 @@ router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), async
         description: req.body.description,
         attach_file: filesNameArray,
         tag_friend: req.body.tag_friend, 
-    });
+    })
     userPost.save()
     .then(async ()=> {
         const follower = await follow.find({followed_user: req.userInfo._id, block_follower: false});
         for(i=0; i<follower.length; i++) {  
             const newNotification = new notification({
                 notified_user: follower[i].follower,
-                notification: `new post from ${req.userInfo.username}`,
+                notification: `New post from ${req.userInfo.username}`,
                 notification_for: "Post",
                 notification_generator: req.userInfo._id,
             });
             newNotification.save();
         }
         res.json({message: "Post uploaded"});
-    })
-    .catch((e)=> {
-        res.json({error: e});
-    })
+    });
 });
 
 router.put("/post/edit", auth.verifyUser, (req, res)=> {

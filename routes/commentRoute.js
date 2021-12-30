@@ -5,6 +5,7 @@ const router = new express.Router();
 // Importing self made js files....
 const comment = require("../models/commentModel.js");
 const post = require("../models/postModel.js");
+const restrict = require("../models/restrictModel.js");
 const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
 
@@ -17,22 +18,29 @@ router.post("/comment/post", auth.verifyUser, (req, res)=> {
         });
         newComment.save();
         post.updateOne({_id: postData._id}, {comment_num: (postData.comment_num+1)}).then(()=> {
-            notification.findOne({
-                notification_generator: req.userInfo._id,
-                commented_post: postData._id,
-            }).then((notificationData)=>{
-                if(notificationData==null) {
-                    const newNotification = new notification({
-                        notified_user: postData.user_id,
-                        notification: `Your post got a comment from ${req.userInfo.username}.`,
-                        notification_for: "Comment",
+            restrict.findOne({
+                restricted_user: req.userInfo._id,
+                restricting_user: postData.user_id
+            }).then((restrictData)=> {
+                if(restrictData==null) {
+                    notification.findOne({
                         notification_generator: req.userInfo._id,
                         commented_post: postData._id,
+                    }).then((notificationData)=>{
+                        if(notificationData==null) {
+                            const newNotification = new notification({
+                                notified_user: postData.user_id,
+                                notification: `Your post got a comment from ${req.userInfo.username}.`,
+                                notification_for: "Comment",
+                                notification_generator: req.userInfo._id,
+                                commented_post: postData._id,
+                            });
+                            newNotification.save();
+                        }
                     });
-                    newNotification.save();
-                }
-            }).catch();
-        }).catch();
+                }   
+            });      
+        });
     });
 });
 

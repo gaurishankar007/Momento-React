@@ -42,6 +42,12 @@ app.use(notificationRoute);
 const reportRoute = require("./routes/reportRoute");
 app.use(reportRoute);
 
+const restrictRoute = require("./routes/restrictRoute");
+app.use(restrictRoute);
+
+const blockRoute = require("./routes/blockRoute");
+app.use(blockRoute);
+
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 4040;
