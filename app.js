@@ -48,6 +48,9 @@ app.use(restrictRoute);
 const blockRoute = require("./routes/blockRoute");
 app.use(blockRoute);
 
+const chatRoute = require("./routes/chatRoute");
+app.use(chatRoute);
+
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 4040;
