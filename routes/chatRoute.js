@@ -22,12 +22,12 @@ router.post("/chat/access", auth.verifyUser, async (req, res)=> {
             {users: {$elemMatch: {$eq: user_id}}}
         ]
     })
-    .populate("users", "+ username profile_pic email") // joining chat collection with user collection as the user collection is referenced in chat collection
+    .populate("users", "username profile_pic") // joining chat collection with user collection as the user collection is referenced in chat collection
     .populate("latest_message");
 
     findChat = await user.populate(findChat, { // populating again but for the sender of latestMessage which is already populated above
         path: "latest_message.sender",
-        select: "username profile_pic email",
+        select: "username profile_pic",
     });
 
     if(findChat.length > 0) {
@@ -55,14 +55,14 @@ router.post("/chat/access", auth.verifyUser, async (req, res)=> {
 router.get("/chats/fetch", auth.verifyUser, async (req, res)=> {
     try {
         chat.find({users: {$elemMatch: {$eq: req.userInfo._id}}})
-        .populate("users", "+ username profile_pic email")
-        .populate("admin", "+ username profile_pic email")
+        .populate("users", "username profile_pic")
+        .populate("admin", "username profile_pic")
         .populate("latest_message")
         .sort({updatedAt: -1})
         .then(async (chatData)=> {
             chatData = await user.populate(chatData, { 
                 path: "latest_message.sender",
-                select: "username profile_pic email",
+                select: "username profile_pic",
             });
             res.status(200).send(chatData);
         });
@@ -93,8 +93,8 @@ router.post("/groupChat/create", auth.verifyUser, async (req, res)=> {
         });
 
         const fullGroupChat = await chat.findOne({_id: groupChat._id})
-                                        .populate("users", "+ username profile_pic email")
-                                        .populate("admin", "+ username profile_pic email");
+                                        .populate("users", "username profile_pic")
+                                        .populate("admin", "username profile_pic");
         res.status(200).send(fullGroupChat);
     }
     catch(error) {
@@ -112,8 +112,8 @@ router.put("/groupChat/rename", auth.verifyUser, async (req, res)=> {
         {name: chat_name},
         {new: true}
     )
-    .populate("users", "+ username profile_pic email")
-    .populate("admin", "+ username profile_pic email");
+    .populate("users", "username profile_pic")
+    .populate("admin", "username profile_pic");
 
     if(!updateChat) {
         res.status(400);
@@ -134,8 +134,8 @@ router.put("/groupChat/addUser", auth.verifyUser, async (req, res)=> {
         },
         {new: true}
     )
-    .populate("users", "+ username profile_pic email")
-    .populate("admin", "+ username profile_pic email");
+    .populate("users", "username profile_pic")
+    .populate("admin", "username profile_pic");
 
     if(!addToChat) {
         res.status(400);
@@ -156,8 +156,8 @@ router.put("/groupChat/removeUser", auth.verifyUser, async (req, res)=> {
         },
         {new: true}
     )
-    .populate("users", "+ username profile_pic email")
-    .populate("admin", "+ username profile_pic email");
+    .populate("users", "username profile_pic")
+    .populate("admin", "username profile_pic");
 
     if(!removeFromChat) {
         res.status(400);

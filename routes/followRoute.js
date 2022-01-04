@@ -9,18 +9,19 @@ const auth = require("../auth/auth.js");
 
 router.post("/follow", auth.verifyUser, async (req, res)=> {
     const newFollow = new follow({
-        followed_user: req.body.followed_user,
+        followed_user: req.body.user_id,
         follower: req.userInfo._id,
     });
     newFollow.save().then(()=> {
         notification.findOne({
-            notified_user: req.body.followed_user,
+            notified_user: req.body.user_id,
             notification_generator: req.userInfo._id,
+            notification_for: "Follow",
         }).then((notificationData)=> {
             if(notificationData==null) {
                 const newNotification = new notification({
-                    notified_user: req.body.followed_user,
-                    notification: `You have been followed by ${req.userInfo.username}. Follow back.`,
+                    notified_user: req.body.user_id,
+                    notification: `You have been followed by ${req.userInfo.username}.`,
                     notification_for: "Follow",
                     notification_generator: req.userInfo._id,
                 });

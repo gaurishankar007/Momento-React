@@ -4,6 +4,7 @@ const router = new express.Router();
 
 // Importing self made js files....
 const post = require("../models/postModel.js");
+const block = require("../models/blockModel.js");
 const follow = require("../models/followModel.js");
 const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
@@ -22,27 +23,27 @@ router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), async
         filesNameArray.push(filesArray[i].filename);
     }
 
-    const userPost = new post({
+    const userPost = await post.create({
         user_id: req.userInfo._id,
         caption: req.body.caption,
         description: req.body.description,
         attach_file: filesNameArray,
         tag_friend: req.body.tag_friend, 
-    })
-    userPost.save()
-    .then(async ()=> {
-        const follower = await follow.find({followed_user: req.userInfo._id, block_follower: false});
+    });
+
+    const follower = await follow.find({followed_user: req.userInfo._id});
+    if(follower.length>0) {
         for(i=0; i<follower.length; i++) {  
-            const newNotification = new notification({
+            notification.create({
                 notified_user: follower[i].follower,
                 notification: `New post from ${req.userInfo.username}`,
                 notification_for: "Post",
                 notification_generator: req.userInfo._id,
+                new_post: userPost._id,
             });
-            newNotification.save();
         }
-        res.json({message: "Post uploaded"});
-    });
+    }
+    res.json({message: "Post uploaded"});
 });
 
 router.put("/post/edit", auth.verifyUser, (req, res)=> {
@@ -67,6 +68,25 @@ router.delete("/post/delete", auth.verifyUser, (req, res)=> {
     .catch((e)=> {
         res.json({error: e});
     });
+});
+
+router.get("/post/get", auth.verifyUser, async (req, res) => { 
+    const users = [];
+
+    const followed_user = await follow.find({
+        follower: req.userInfo._id
+    });
+
+    for(i=0; i<followed_user.length; i++) {
+        users.push(followed_user[i].followed_user);
+    }
+    
+    const posts = await post.find({user_id: users})
+    .populate("user_id", "username profile_pic")
+    .populate("tag_friend", "username profile_pic")
+    .sort({createdAt: -1});
+
+    res.send(posts);
 });
 
 module.exports = router;

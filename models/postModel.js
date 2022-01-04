@@ -17,7 +17,7 @@ const postSchema = new mongoose.Schema({
     ],
     tag_friend: [
         {
-            type: mongoose.Types.ObjectId, ref: "user"
+            type: mongoose.Types.ObjectId, ref: "user", default: null
         },
     ],
     like_num: {

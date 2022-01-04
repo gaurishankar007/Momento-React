@@ -19,10 +19,9 @@ router.post("/block", auth.verifyUser, (req, res)=> {
         blocker: req.userInfo._id
     });
     newBlock.save().then(()=> {
-        follow.updateOne({
+        follow.deleteOne({
             followed_user: req.userInfo._id,
-            follower: req.body.user_id},
-            {block_follower: true}
+            follower: req.body.user_id}
         ).then().catch();   
         res.json({message: `You have blocked ${username}.`});
     });
@@ -38,11 +37,6 @@ router.put("/unblock", auth.verifyUser, (req, res)=> {
         blocked_user: req.body.user_id,
         blocker: req.userInfo._id
     }).then(()=> {
-        follow.updateOne({
-            followed_user: req.userInfo._id,
-            follower: req.body.user_id},
-            {block_follower: false}
-        ).then().catch();
         res.json({message: `You have unblocked ${username}.`});
     });
 });
