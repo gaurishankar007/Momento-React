@@ -12,7 +12,7 @@ const notificationSchema = new mongoose.Schema({
         type: String
     },
     notification_generator: {
-        type: mongoose.Types.ObjectId,  ref: "post", default: null,
+        type: mongoose.Types.ObjectId,  ref: "user",
     },    
     new_post: {
         type: mongoose.Types.ObjectId, ref: "post", default: null,

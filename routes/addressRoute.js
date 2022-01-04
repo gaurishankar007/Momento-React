@@ -73,4 +73,9 @@ router.put("/address/show", auth.verifyUser, (req, res)=> {
     });
 });
 
+router.get("/address/get", auth.verifyUser, async (req, res)=> {
+    const userAddress = await address.findOne({user_id: req.userInfo._id});
+    res.send(userAddress);
+});
+
 module.exports = router;

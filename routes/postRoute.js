@@ -70,7 +70,21 @@ router.delete("/post/delete", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.get("/post/get", auth.verifyUser, async (req, res) => { 
+router.get("/post/get/my", auth.verifyUser, async (req, res) => { 
+    const posts = await post.find({user_id: req.userInfo._id})
+    .sort({createdAt: -1});
+
+    res.send(posts);
+});
+
+router.get("/post/get/tagged", auth.verifyUser, async (req, res) => { 
+    const posts = await post.find({tag_friend: req.userInfo._id})
+    .sort({createdAt: -1});
+
+    res.send(posts);
+});
+
+router.get("/post/get/followedUser", auth.verifyUser, async (req, res) => { 
     const users = [];
 
     const followed_user = await follow.find({

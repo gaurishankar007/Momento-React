@@ -58,4 +58,12 @@ router.delete("/comment/delete", auth.verifyUser, (req, res)=> {
     });
 });
 
+router.get("/comment/get", auth.verifyUser, async (req, res)=> {
+   const postComments = await comment.find({post_id: req.body.post_id})
+   .populate("user_id", "username")
+   .sort({createdAt: -1});
+
+   res.send(postComments);
+});
+
 module.exports = router;

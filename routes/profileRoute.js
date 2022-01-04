@@ -45,4 +45,9 @@ router.put("/profile/update", auth.verifyUser, (req, res)=> {
     });
 });
 
+router.get("/profile/get", auth.verifyUser, async (req, res)=> {
+    const userProfile = await profile.findOne({user_id: req.userInfo._id});
+    res.send(userProfile);
+});
+
 module.exports = router;
