@@ -58,12 +58,31 @@ router.delete("/comment/delete", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.get("/comment/get", auth.verifyUser, async (req, res)=> {
-   const postComments = await comment.find({post_id: req.body.post_id})
-   .populate("user_id", "username")
-   .sort({createdAt: -1});
+router.get("/comments/get", auth.verifyUser, (req, res)=> {
+    post.findOne({_id: req.body.post_id}).then(async (postData)=> {  
+        var restrictedUsersString = [];
+        var restrictedUsersObject = [];
+        const restricts = await restrict.find({restricting_user: postData.user_id});
+        for(i=0; i<restricts.length; i++) {
+            restrictedUsersString.push(JSON.stringify(restricts[i].restricted_user)); 
+            restrictedUsersObject.push(restricts[i].restricted_user); // Converting from objectId to string
+        }
 
-   res.send(postComments);
+        if(restrictedUsersString.includes(JSON.stringify(req.userInfo._id))) {
+            const postComments = await comment.find({post_id: req.body.post_id})
+            .populate("user_id", "username")
+            .sort({createdAt: -1});
+
+            res.send(postComments);
+        }
+        else {
+            const postComments = await comment.find({post_id: req.body.post_id, user_id: {$ne: restrictedUsersObject}})
+            .populate("user_id", "username")
+            .sort({createdAt: -1});
+
+            res.send(postComments);
+        }
+    });
 });
 
 module.exports = router;

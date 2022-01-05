@@ -47,4 +47,14 @@ router.put("/unrestricted", auth.verifyUser, (req, res)=> {
     });
 });
 
+router.get("/restricts/get", auth.verifyAdminSuper, async (req, res)=> {
+    const restricts = await restrict.find({})
+    .populate("restricted_user", "username profile_pic")
+    .populate("restricting_user", "username profile_pic")
+    .sort({createdAt: -1});
+
+    res.send(restricts);
+});
+
+
 module.exports = router;

@@ -41,4 +41,13 @@ router.put("/unblock", auth.verifyUser, (req, res)=> {
     });
 });
 
+router.get("/blocks/get", auth.verifyAdminSuper, async (req, res)=> {
+    const blocks = await block.find({})
+    .populate("blocked_user", "username profile_pic")
+    .populate("blocker", "username profile_pic")
+    .sort({createdAt: -1});
+
+    res.send(blocks);
+});
+
 module.exports = router;

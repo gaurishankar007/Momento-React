@@ -6,7 +6,7 @@ const router = new express.Router();
 const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
 
-router.get("/notification/get", auth.verifyUser, async (req, res)=> {
+router.get("/notifications/get", auth.verifyUser, async (req, res)=> {
     const userNotifications = []
 
     const userLikeNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Like", seen: false})
@@ -52,7 +52,7 @@ router.get("/notification/get", auth.verifyUser, async (req, res)=> {
     res.send(userNotifications);
 });
 
-router.get("/notification/get/unseen", auth.verifyUser, async (req, res)=> {
+router.get("/notifications/get/unseen", auth.verifyUser, async (req, res)=> {
     const userNotifications = []
 
     const userLikeNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Like", seen: false})
@@ -82,11 +82,11 @@ router.get("/notification/get/unseen", auth.verifyUser, async (req, res)=> {
     res.send(userNotifications);
 });
 
-router.put("/notification/seen/all", auth.verifyUser, (req, res)=> {
+router.put("/notifications/seen/all", auth.verifyUser, (req, res)=> {
     notification.updateOne({notified_user: req.userInfo._id, seen: false}, {seen: true}).then().catch();
 });
 
-router.get("/notification/get/all", auth.verifyUser, async (req, res)=> {
+router.get("/notifications/get/all", auth.verifyUser, async (req, res)=> {
     const userNotifications = await notification.find({notified_user: req.userInfo._id})
     .populate("notification_generator", "username")
     .sort({createdAt: -1});

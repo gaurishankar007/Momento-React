@@ -49,4 +49,13 @@ router.post("/report/post", auth.verifyUser, (req, res)=>{
     });
 });
 
+router.get("/reports/get", auth.verifyAdminSuper, async (req, res)=> {
+    const reports = await report.find({})
+    .populate("reported_post", "-createdAt -updatedAt")
+    .populate("reporter", "username profile_pic")
+    .sort({createdAt: -1});
+
+    res.send(reports);
+});
+
 module.exports = router;

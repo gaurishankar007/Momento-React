@@ -24,7 +24,7 @@ router.post("/save/post", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.get("/save/get", auth.verifyUser, async (req, res)=> {
+router.get("/saves/get", auth.verifyUser, async (req, res)=> {
     const saves = await save.find({
         user_id: req.userInfo._id
     })
