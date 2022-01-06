@@ -134,7 +134,7 @@ router.post("/user/passResetLink", function(req, res) {
         if(userData==null) {
             return res.json({message: "User with that email address does not exist."});
         }
-        const token = jwt.sign({userId: userData._id}, "passResetKey", {expiresIn: "1m"});
+        const token = jwt.sign({userId: userData._id}, "passResetKey", {expiresIn: "3m"});
         const link = `${process.env.PRB_URL}/user/passReset/${token}/${newPass}`;
         sendEmail(email, "Password Reset Link", link);
         res.json({message: link});
