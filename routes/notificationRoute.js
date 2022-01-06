@@ -30,7 +30,11 @@ router.get("/notifications/get", auth.verifyUser, async (req, res)=> {
     .sort({createdAt: -1});
 
     var index = 0;
-    while(userNotifications.length<5) {
+    while(userNotifications.length<5) {        
+        if(index>=userLikeNotifications.length && index>=userCommentNotifications.length
+            && index>=userPostNotifications.length && index>=userFollowNotifications.length && index>=userReportNotifications.length) {
+                return res.send(userNotifications); // Returning from while loop if the 
+        }
         if(userLikeNotifications.length>index && userNotifications.length<5) {
             userNotifications.push(userLikeNotifications[index]);            
         }
@@ -87,7 +91,7 @@ router.put("/notifications/seen/all", auth.verifyUser, (req, res)=> {
 });
 
 router.get("/notifications/get/all", auth.verifyUser, async (req, res)=> {
-    const userNotifications = await notification.find({notified_user: req.userInfo._id})
+    const userNotifications = await notification.find({notified_user: req.userInfo._id, seen: true})
     .populate("notification_generator", "username")
     .sort({createdAt: -1});
 
