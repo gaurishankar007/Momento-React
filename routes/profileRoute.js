@@ -14,7 +14,6 @@ router.post("/profile/add", auth.verifyUser, (req, res)=> {
         last_name: req.body.last_name,
         gender: req.body.gender,
         birthday: req.body.birthday,
-        hobbies: req.body.hobbies,
         biography: req.body.biography,
     });
     newProfile.save().
@@ -33,7 +32,6 @@ router.put("/profile/update", auth.verifyUser, (req, res)=> {
         last_name: req.body.last_name,
         gender: req.body.gender,
         birthday: req.body.birthday,
-        hobbies: req.body.hobbies,
         biography: req.body.biography,
         }
     )
