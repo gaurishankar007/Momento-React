@@ -16,9 +16,6 @@ const profileSchema = new mongoose.Schema({
     birthday: {
         type: Date
     },
-    hobbies:[ 
-        {type: String}
-    ],
     biography: {
         type: String
     }
