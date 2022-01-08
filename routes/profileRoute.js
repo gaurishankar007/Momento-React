@@ -18,12 +18,11 @@ router.post("/profile/add", auth.verifyUser, (req, res)=> {
     });
     newProfile.save().
     then(function(){
-        res.json({message: "Profile successfully added."})
+        res.json({message: "Profile added."})
     })
     .catch(function(e) {
         res.json(e);
-    });
-   
+    });   
 });
 
 router.put("/profile/update", auth.verifyUser, (req, res)=> {
@@ -36,7 +35,7 @@ router.put("/profile/update", auth.verifyUser, (req, res)=> {
         }
     )
     .then(function(){
-        res.json({message: "Profile successfully updated."})
+        res.json({message: "Profile updated."})
     }) 
     .catch(function(e) {
         res.json(e);
@@ -47,7 +46,6 @@ router.get("/profile/get/my", auth.verifyUser, async (req, res)=> {
     const userProfile = await profile.findOne({user_id: req.userInfo._id});
     res.send(userProfile);
 });
-
 
 router.get("/profile/get", auth.verifyUser, async (req, res)=> {
     const userProfile = await profile.findOne({user_id: req.body.user_id});
