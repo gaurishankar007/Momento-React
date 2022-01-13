@@ -127,8 +127,13 @@ router.post("/user/login", (req, res)=> {
 router.post("/user/passResetLink", function(req, res) {
     const email = req.body.email;
     const newPass = req.body.newPass;
+    const confirmPass = req.body.confirmPass;
+
     if(!validator.isEmail(email)) {
         return res.json({message: "Provide a valid email address."});
+    }
+    else if(newPass!=confirmPass) {
+        return res.json({message: "Confirm Password did not matched."});
     }
     user.findOne({email: email}).then(function(userData) {
         if(userData==null) {
@@ -137,7 +142,6 @@ router.post("/user/passResetLink", function(req, res) {
         const token = jwt.sign({userId: userData._id}, "passResetKey", {expiresIn: "3m"});
         const link = `${process.env.PRB_URL}/user/passReset/${token}/${newPass}`;
         sendEmail(email, "Password Reset Link", link);
-        res.json({message: link});
     });
 
 });
@@ -145,10 +149,8 @@ router.post("/user/passResetLink", function(req, res) {
 router.put("/user/passReset/:resetToken/:newPass", function(req, res) {
     try{
         const token = req.params.resetToken;
-        const userData = jwt.verify(token, "passResetKey");          
-        console.log("entered"); 
-        bcryptjs.hash(req.params.newPass, 10, (e, hashed_pass)=> {           
-            console.log("entered bcryptjs"); 
+        const userData = jwt.verify(token, "passResetKey");  
+        bcryptjs.hash(req.params.newPass, 10, (e, hashed_pass)=> { 
             user.updateOne({_id: userData.userId}, {password: hashed_pass})
             .then(function() {
                 res.json({message: "Your password has been reset."})
