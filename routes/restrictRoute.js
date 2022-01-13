@@ -19,11 +19,6 @@ router.post("/restrict", auth.verifyUser, (req, res)=> {
         restricting_user: req.userInfo._id
     });
     newRestrict.save().then(()=> {
-        follow.updateOne({
-            followed_user: req.userInfo._id,
-            follower: req.body.user_id},
-            {restrict_follower: true}
-        ).then().catch();   
         res.json({message: `You have restricted ${username}.`});
     });
 });
@@ -38,11 +33,6 @@ router.put("/unrestricted", auth.verifyUser, (req, res)=> {
         restricted_user: req.body.user_id,
         restricting_user: req.userInfo._id
     }).then(()=> {
-        follow.updateOne({
-            followed_user: req.userInfo._id,
-            follower: req.body.user_id},
-            {restrict_follower: false}
-        ).then().catch();
         res.json({message: `You have unrestricted ${username}.`});
     });
 });

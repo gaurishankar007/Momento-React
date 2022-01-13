@@ -127,13 +127,9 @@ router.post("/user/login", (req, res)=> {
 router.post("/user/passResetLink", function(req, res) {
     const email = req.body.email;
     const newPass = req.body.newPass;
-    const confirmPass = req.body.confirmPass;
 
     if(!validator.isEmail(email)) {
         return res.json({message: "Provide a valid email address."});
-    }
-    else if(newPass!=confirmPass) {
-        return res.json({message: "Confirm Password did not matched."});
     }
     user.findOne({email: email}).then(function(userData) {
         if(userData==null) {
