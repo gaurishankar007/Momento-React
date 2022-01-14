@@ -10,40 +10,45 @@ const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
 const postUpload = require("../uploadSettings/post.js");
 
-router.post("/post/add", auth.verifyUser, postUpload.array("image_video"), async (req, res)=> { 
-    // If you want to fix the number of file to upload then use 'postUpload.array("image_video", 10)'
-    if(req.files==undefined) {
-        return res.json({error: "Invalid image or video format, only supports png or jpeg or mp4 or mkv."});
-    }
-
-    // Making array of filenames
-    const filesArray = req.files;
-    const filesNameArray = [];
-    for(i=0; i<filesArray.length; i++) {
-        filesNameArray.push(filesArray[i].filename);
-    }
-
-    const userPost = await post.create({
-        user_id: req.userInfo._id,
-        caption: req.body.caption,
-        description: req.body.description,
-        attach_file: filesNameArray,
-        tag_friend: req.body.tag_friend, 
-    });
-
-    const follower = await follow.find({followed_user: req.userInfo._id});
-    if(follower.length>0) {
-        for(i=0; i<follower.length; i++) {  
-            notification.create({
-                notified_user: follower[i].follower,
-                notification: `New post from ${req.userInfo.username}`,
-                notification_for: "Post",
-                notification_generator: req.userInfo._id,
-                new_post: userPost._id,
-            });
+router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async (req, res)=> { 
+    try {
+        // If you want to fix the number of file to upload then use 'postUpload.array("image_video", 10)'
+        if(req.files==undefined) {
+            return res.json({error: "Invalid image format, only supports png or jpeg."});
         }
+
+        // Making array of filenames
+        const filesArray = req.files;
+        const filesNameArray = [];
+        for(i=0; i<filesArray.length; i++) {
+            filesNameArray.push(filesArray[i].filename);
+        }
+
+        const userPost = await post.create({
+            user_id: req.userInfo._id,
+            caption: req.body.caption,
+            description: req.body.description,
+            attach_file: filesNameArray,
+            tag_friend: req.body.tag_friend, 
+        });
+
+        const follower = await follow.find({followed_user: req.userInfo._id});
+        if(follower.length>0) {
+            for(i=0; i<follower.length; i++) {  
+                notification.create({
+                    notified_user: follower[i].follower,
+                    notification: `New post from ${req.userInfo.username}`,
+                    notification_for: "Post",
+                    notification_generator: req.userInfo._id,
+                    new_post: userPost._id,
+                });
+            }
+        }
+        res.json({message: "Post uploaded"});
     }
-    res.json({message: "Post uploaded"});
+    catch (err) {
+        res.send(err.message);
+    }
 });
 
 router.put("/post/edit", auth.verifyUser, (req, res)=> {
