@@ -11,7 +11,7 @@ const storageNavigation = multer.diskStorage({
 
 // Filter - only accepting valid file - png, jpeg, mp4, mkv
 const filter = function(req, file, cb) {
-    if(file.mimetype == "image/png" || file.mimetype=="image/jpeg" || file.mimetype == "video/mp4" || file.mimetype=="video/x-matroska") {
+    if(file.mimetype == "image/png" || file.mimetype=="image/jpeg") {
         cb(null, true);
     }
     else {
