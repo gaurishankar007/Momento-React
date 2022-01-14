@@ -13,9 +13,10 @@ const postUpload = require("../uploadSettings/post.js");
 router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async (req, res)=> { 
     try {
         // If you want to fix the number of file to upload then use 'postUpload.array("image_video", 10)'
-        if(req.files==undefined) {
+        if(req.files.length==0) {
             return res.json({error: "Invalid image format, only supports png or jpeg."});
         }
+        
 
         // Making array of filenames
         const filesArray = req.files;
@@ -24,13 +25,14 @@ router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async 
             filesNameArray.push(filesArray[i].filename);
         }
 
-        const userPost = await post.create({
+        const userPost = new post({
             user_id: req.userInfo._id,
             caption: req.body.caption,
             description: req.body.description,
             attach_file: filesNameArray,
-            tag_friend: req.body.tag_friend, 
+            // tag_friend: req.body.tag_friend, 
         });
+        userPost.save();
 
         const follower = await follow.find({followed_user: req.userInfo._id});
         if(follower.length>0) {
