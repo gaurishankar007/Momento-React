@@ -33,7 +33,7 @@ router.post("/comment/post", auth.verifyUser, (req, res)=> {
                                 notification: `Your post got a comment from ${req.userInfo.username}.`,
                                 notification_for: "Comment",
                                 notification_generator: req.userInfo._id,
-                                commented_post: postData._id,
+                                target_post: postData._id,
                             });
                             newNotification.save();
                         }

@@ -43,7 +43,7 @@ router.post("/like/post", auth.verifyUser, (req, res)=> {
                                     notification: `Your post got a like from ${req.userInfo.username}.`,
                                     notification_for: "Like",
                                     notification_generator: req.userInfo._id,
-                                    liked_post: postData._id,
+                                    target_post: postData._id,
                                 });
                                 newNotification.save();
                             }

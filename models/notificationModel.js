@@ -14,18 +14,9 @@ const notificationSchema = new mongoose.Schema({
     notification_generator: {
         type: mongoose.Types.ObjectId,  ref: "user",
     },    
-    new_post: {
+    target_post: {
         type: mongoose.Types.ObjectId, ref: "post", default: null,
-    },    
-    liked_post: {
-        type: mongoose.Types.ObjectId, ref: "post", default: null,
-    },    
-    commented_post: {
-        type: mongoose.Types.ObjectId, ref: "post", default: null,
-    },
-    reported_post: {
-        type: mongoose.Types.ObjectId, ref: "post", default: null,
-    },
+    }, 
     seen: {
         type: Boolean, default: false,
     }

@@ -1,6 +1,7 @@
 // Importing installed packages.....
 const express = require("express");
 const router = new express.Router();
+const mongoose = require("mongoose");
 
 // Importing self made js files....
 const post = require("../models/postModel.js");
@@ -17,7 +18,6 @@ router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async 
             return res.json({error: "Invalid image format, only supports png or jpeg."});
         }
         
-
         // Making array of filenames
         const filesArray = req.files;
         const filesNameArray = [];
@@ -25,24 +25,46 @@ router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async 
             filesNameArray.push(filesArray[i].filename);
         }
 
-        const userPost = new post({
+        // Making array of tagged friends 
+        const taggedFriend = [];
+        if(typeof(req.body.tag_friend)=="string") {
+            taggedFriend.push(mongoose.Types.ObjectId(req.body.tag_friend));
+        }
+        else if(typeof(req.body.tag_friend)=="object") {
+            for(i=0; i<req.body.tag_friend.length; i++) {
+                taggedFriend.push(mongoose.Types.ObjectId(req.body.tag_friend[i]));
+            }
+        }      
+
+        const userPost = await post.create({
             user_id: req.userInfo._id,
             caption: req.body.caption,
             description: req.body.description,
             attach_file: filesNameArray,
-            // tag_friend: req.body.tag_friend, 
+            tag_friend: taggedFriend, 
         });
-        userPost.save();
+
+        if(taggedFriend.length>0) {
+            for(i=0; i<taggedFriend.length; i++) {                
+                notification.create({
+                    notified_user: taggedFriend[i],
+                    notification: `You have been tagged in  ${req.userInfo.username}'s post.`,
+                    notification_for: "Tag",
+                    notification_generator: req.userInfo._id,
+                    target_post: userPost._id,
+                });
+            }
+        }
 
         const follower = await follow.find({followed_user: req.userInfo._id});
         if(follower.length>0) {
             for(i=0; i<follower.length; i++) {  
                 notification.create({
                     notified_user: follower[i].follower,
-                    notification: `New post from ${req.userInfo.username}`,
+                    notification: `New post from ${req.userInfo.username}.`,
                     notification_for: "Post",
                     notification_generator: req.userInfo._id,
-                    new_post: userPost._id,
+                    target_post: userPost._id,
                 });
             }
         }

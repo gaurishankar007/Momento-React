@@ -39,7 +39,7 @@ router.post("/report/post", auth.verifyUser, (req, res)=>{
                             notification: `Your post got reported for ${reportFor} content from ${req.userInfo.username}.`,
                             notification_for: "Report",
                             notification_generator: req.userInfo._id,
-                            reported_post: postData._id,
+                            target_post: postData._id,
                         });
                         newNotification.save();
                     }
