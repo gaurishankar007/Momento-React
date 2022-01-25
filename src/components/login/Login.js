@@ -23,7 +23,8 @@ const Login = ()=> {
         }
 
         const userData = {username_email, password};
-        axios.post("http://localhost:4040/user/login", userData).then((result)=> {
+        const { REACT_APP_BASE_URL } = process.env;
+        axios.post(`${REACT_APP_BASE_URL}user/login`, userData).then((result)=> {
             if(result.data.token) {
                 localStorage.setItem('token', result.data.token);
             }
@@ -39,12 +40,12 @@ const Login = ()=> {
             <div className="register-user">
                 <img src={Logo} alt="Memento"/>  
                 <form className="register-user-form px-4 py-3">
-                    <div className="suggestions-message text-center mb-3">{response}</div>
+                    <div className="suggestion-message text-center mb-3">{response}</div>
                     <div className="form-group mb-3">
                         <input type="text" className="form-control" id="username"  placeholder="Enter your username or email....." onChange={(e)=>setUsernameEmail(e.target.value)}/>
                     </div>  
                     <div className="form-group mb-3">
-                        <input type="text" className="form-control mb-1" id="password"  placeholder="Enter your password....." onChange={(e)=>setPassword(e.target.value)}/>
+                        <input type="password" className="form-control mb-1" id="password"  placeholder="Enter your password....." onChange={(e)=>setPassword(e.target.value)}/>
                         <small id="passwordHelp" className="form-text ms-1"><Link to="/forgot-password">Forgot Password?</Link></small>
                     </div>  
                     <div className="d-flex justify-content-center mb-3">

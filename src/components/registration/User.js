@@ -17,10 +17,19 @@ const User = ()=> {
 
         const usernameRegex = new RegExp('^[a-zA-Z0-9]+$');
         const passwordRegex = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{5,15}$');
-        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const emailRegex = new RegExp("^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
         const phoneRegex = new RegExp('^(?:[+0]9)?[0-9]{10}$');
 
-        if (username.trim()=="" || password.trim()=="" || email.trim()=="" || phone=="") {
+        /* 
+        <----- Difference between '==' and '===' ----->
+        Well in short: == inherently converts type and === does not convert type. Double Equals (==) checks for value equality only.
+        It inherently does type coercion. This means that before checking the values, it converts the types of the variables to match each other.
+
+        On the other hand, Triple Equals (===) does not perform type coercion. 
+        It will verify whether the variables being compared have both the same value AND the same type.
+        */
+
+        if (username.trim()==="" || password.trim()==="" || email.trim()==="" || phone==="") {
             setResponse("Empty field found. Fill up the form completely.");          
             return;             
         } else if (username.length<=2 || username.length>=16) {
@@ -41,7 +50,8 @@ const User = ()=> {
         }
 
         const userData = {username, password, email, phone};
-        axios.post("http://localhost:4040/user/register", userData).then((result)=> {
+        const { REACT_APP_BASE_URL } = process.env;
+        axios.post(`${REACT_APP_BASE_URL}user/register`, userData).then((result)=> {
             setResponse(result.data.message);
         });
     }
@@ -54,12 +64,12 @@ const User = ()=> {
                 <div className="register-user-form px-4 py-3">
                     <h3 className="text-center">Welcome to Momento</h3>
                     <form>
-                        <div className="suggestions-message text-center mb-2">{response}</div>
+                        <div className="suggestion-message text-center mb-2">{response}</div>
                         <div className="form-group mb-3">
                             <input type="text" className="form-control" id="username"  placeholder="Enter a username....." onChange={(e)=>setUsername(e.target.value)}/>
                         </div>  
                         <div className="form-group mb-3">
-                            <input type="text" className="form-control" id="password"  placeholder="Enter a password....." onChange={(e)=>setPassword(e.target.value)}/>
+                            <input type="password" className="form-control" id="password"  placeholder="Enter a password....." onChange={(e)=>setPassword(e.target.value)}/>
                             <small id="helper" className="form-text ms-1">Excludes whitespace around the password.</small>
                         </div>         
                         <div className="form-group mb-3">
