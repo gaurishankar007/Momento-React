@@ -51,7 +51,7 @@ router.post("/user/register", (req, res) => {
                     });
                     newUser.save()
                     .then(function() {
-                        res.json({message: "New user has been registered."})
+                        res.json({message: "Your account has been created."})
                     })
                     .catch(function(e) {
                         res.json({error: e});
