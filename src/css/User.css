@@ -13,15 +13,18 @@
     box-shadow: 3px 3px 10px #808080; /* #6200EA */
 }
 
-.register-user-form h2 {
+.register-user-form h3 {
     font-family: 'Laila', sans-serif;
     font-weight: bold;
 }
 
+.register-user-form .suggestions-message {
+    color: rgb(218, 70, 70);
+}
 .register-user-form .form-control::placeholder {
     color: black;
 }
-.register-user-form #emailHelp {
+.register-user-form #helper {
     color: black;
     font-weight: 500;
 }

@@ -12,9 +12,24 @@ const Login = ()=> {
 
     const userLogin = (e)=> {
         e.preventDefault();
+        setResponse("");
+
+        if(username_email.trim()=="") {
+            setResponse("Username or email is required.");
+            return;            
+        } else if (password.trim()=="") {
+            setResponse("Password is required.");
+            return;                        
+        }
+
         const userData = {username_email, password};
         axios.post("http://localhost:4040/user/login", userData).then((result)=> {
-            setResponse(result.data.message);
+            if(result.data.token) {
+                localStorage.setItem('token', result.data.token);
+            }
+            else {
+                setResponse(result.data.message);
+            }
         });
     }
 
@@ -23,17 +38,20 @@ const Login = ()=> {
             <LoggedOutHeader></LoggedOutHeader>          
             <div className="register-user">
                 <img src={Logo} alt="Memento"/>  
-                <form className="register-user-form p-4">
-                    <div className="text-center mb-3">{response}</div>
+                <form className="register-user-form px-4 py-3">
+                    <div className="suggestions-message text-center mb-3">{response}</div>
                     <div className="form-group mb-3">
-                        <input type="text" className="form-control" id="username"  placeholder="Enter your username....." onChange={(e)=>setUsernameEmail(e.target.value)}/>
+                        <input type="text" className="form-control" id="username"  placeholder="Enter your username or email....." onChange={(e)=>setUsernameEmail(e.target.value)}/>
                     </div>  
                     <div className="form-group mb-3">
-                        <input type="text" className="form-control" id="password"  placeholder="Enter your password....." onChange={(e)=>setPassword(e.target.value)}/>
+                        <input type="text" className="form-control mb-1" id="password"  placeholder="Enter your password....." onChange={(e)=>setPassword(e.target.value)}/>
                         <small id="passwordHelp" className="form-text ms-1"><Link to="/forgot-password">Forgot Password?</Link></small>
                     </div>  
-                    <div className="d-flex justify-content-center">
+                    <div className="d-flex justify-content-center mb-3">
                         <button type="btn" className="btn lR-button" onClick={userLogin}>Login</button>
+                    </div>                    
+                    <div className="d-flex justify-content-center">
+                        <Link type="btn" className="btn lR-button" to="/user-registration">Create an account</Link>
                     </div>
                 </form>
             </div>
