@@ -1,0 +1,80 @@
+.register-user {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Laila', sans-serif;
+}
+
+.register-user-form {
+    border: 1px solid #808080;
+    border-radius: 2%;
+    box-shadow: 3px 3px 10px #808080; /* #6200EA */
+}
+
+.register-user-form h2 {
+    font-family: 'Laila', sans-serif;
+    font-weight: bold;
+}
+
+.register-user-form .form-control::placeholder {
+    color: black;
+}
+.register-user-form #emailHelp {
+    color: black;
+    font-weight: 500;
+}
+.register-user-form .form-control:focus {
+    box-shadow: 0px 0px 3px #6200EA;
+}
+.register-user-form .form-control {
+    border-color: black;
+}
+
+.lR-button {
+    color: white;
+    font-weight: 500;
+    background-color: #6200EA;
+    border-radius: 8px;
+    box-shadow: 5px 5px 10px #808080;
+}
+
+.lR-button:hover {
+    color: white;
+}
+
+@media screen and (min-width: 960px) {
+    .register-user img {
+        height: 500px;
+        margin-right: 16px;
+    }
+    .register-user-form {
+        width: 400px;
+    }
+}
+
+@media screen and (max-width: 960px) { 
+    .register-user img {
+        height: 300px;
+        margin-right: 16px;
+    }
+    .register-user-form {
+        width: 300px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .register-user {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }    
+    .register-user img {
+        height: 200px;
+        margin-bottom: 16px;
+    }
+    .register-user-form {
+        width: 400px;
+    }
+}

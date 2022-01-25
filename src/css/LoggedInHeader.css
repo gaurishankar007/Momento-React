@@ -1,0 +1,14 @@
+.logged-in-nav {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    box-shadow: 0px 1px 1px #808080;
+    align-items: center;
+}
+
+.logged-in-logo-image {
+    height: 50px;
+}
+
+.logged-in-logo-text {
+    font-family: 'Berkshire Swash', cursive;
+}

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import LoggedOutHeader from "../LoggedOutHeader";
+import "../../css/User.css";
+import Logo from "../../images/logo.png";
 
 const User = ()=> {
     const [username, setUsername] = useState("");
@@ -18,28 +21,32 @@ const User = ()=> {
 
     return(
         <div>
-            <h1 className="text-center">You are welcomed to Momento</h1>
-            <form>
-                <div className="text-center">{response}</div>
-                <div className="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" className="form-control" id="username"  placeholder="Enter a username....." onChange={(e)=>setUsername(e.target.value)}/>
-                </div>  
-                <div className="form-group">
-                    <label for="password">Password</label>
-                    <input type="text" className="form-control" id="password"  placeholder="Enter a password....." onChange={(e)=>setPassword(e.target.value)}/>
-                </div>         
-                <div className="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" className="form-control" id="email" placeholder="Enter your email address....." onChange={(e)=>setEmail(e.target.value)}/>
-                    <small id="emailHelp" class="form-text text-muted">Useful for resetting password.</small>
-                </div>                              
-                <div className="form-group">
-                    <label for="address">Phone</label>
-                    <input type="number" className="form-control" id="address"  placeholder="Enter your phone number....." onChange={(e)=>setPhone(e.target.value)}/>
+            <LoggedOutHeader></LoggedOutHeader>          
+            <div className="register-user">
+                <img src={Logo} alt="Memento"/>                
+                <div className="register-user-form p-4">
+                    <h2 className="text-center">Welcome to Momento</h2>
+                    <form>
+                        <div className="text-center mb-2">{response}</div>
+                        <div className="form-group mb-3">
+                            <input type="text" className="form-control" id="username"  placeholder="Enter a username....." onChange={(e)=>setUsername(e.target.value)}/>
+                        </div>  
+                        <div className="form-group mb-3">
+                            <input type="text" className="form-control" id="password"  placeholder="Enter a password....." onChange={(e)=>setPassword(e.target.value)}/>
+                        </div>         
+                        <div className="form-group mb-3">
+                            <input type="email" className="form-control" id="email" placeholder="Enter your email address....." onChange={(e)=>setEmail(e.target.value)}/>
+                            <small id="emailHelp" className="form-text ms-1">Useful for resetting password.</small>
+                        </div>                              
+                        <div className="form-group mb-3">
+                            <input type="number" className="form-control" id="address"  placeholder="Enter your phone number....." onChange={(e)=>setPhone(e.target.value)}/>
+                        </div>
+                        <div className="d-flex justify-content-center">                             
+                            <button type="button" className="btn lR-button" onClick={userRegister}>Sign Up</button>
+                        </div>
+                    </form>
                 </div>
-                <button type="btn" className="btn btn-primary mt-2 text-center" onClick={userRegister}>Sign Up</button>
-            </form>
+            </div>
         </div>
     )
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 const ForgotPassword = ()=> {
     return(
         <div>
-            ;
+            
         </div>
     )
 }
