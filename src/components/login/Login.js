@@ -14,10 +14,10 @@ const Login = ()=> {
         e.preventDefault();
         setResponse("");
 
-        if(username_email.trim()=="") {
+        if(username_email.trim()==="") {
             setResponse("Username or email is required.");
             return;            
-        } else if (password.trim()=="") {
+        } else if (password.trim()==="") {
             setResponse("Password is required.");
             return;                        
         }
@@ -38,7 +38,7 @@ const Login = ()=> {
         <div>              
             <LoggedOutHeader></LoggedOutHeader>          
             <div className="register-user">
-                <img src={Logo} alt="Memento"/>  
+                <img className="logo" src={Logo} alt="Memento"/>  
                 <form className="register-user-form px-4 py-3">
                     <div className="suggestion-message text-center mb-3">{response}</div>
                     <div className="form-group mb-3">
@@ -49,10 +49,10 @@ const Login = ()=> {
                         <small id="passwordHelp" className="form-text ms-1"><Link to="/forgot-password">Forgot Password?</Link></small>
                     </div>  
                     <div className="d-flex justify-content-center mb-3">
-                        <button type="btn" className="btn lR-button" onClick={userLogin}>Login</button>
+                        <button type="button" className="btn lR-button" onClick={userLogin}>Login</button>
                     </div>                    
                     <div className="d-flex justify-content-center">
-                        <Link type="btn" className="btn lR-button" to="/user-registration">Create an account</Link>
+                        <Link className="btn lR-button" to="/user-registration">Create an account</Link>
                     </div>
                 </form>
             </div>

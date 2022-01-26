@@ -33,7 +33,7 @@ const ResetPassword = ()=> {
         <div>          
             <LoggedOutHeader></LoggedOutHeader>          
             <div className="register-user">
-                <img src={Logo} alt="Memento"/>                
+                <img className="logo" src={Logo} alt="Memento"/>                
                 <div className="register-user-form px-4 py-3">
                     <h3 className="text-center">Reset Password</h3>
                     <form>

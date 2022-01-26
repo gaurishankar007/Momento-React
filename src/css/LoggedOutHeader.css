@@ -1,7 +1,7 @@
 .logged-out-nav {
     padding-top: 5px;
     margin-bottom: 5px;
-    box-shadow: 0px 1px 1px #808080;
+    box-shadow: 0px 0px 1px 1px #808080;
     align-items: center;
 }
 

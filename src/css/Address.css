@@ -1,0 +1,31 @@
+.address-type {
+    text-decoration: underline;
+}
+
+/*React-Select Styling with the Class Name*/
+/*Using important so that the browser will pick this css only for this selected class not other css.*/
+.css-1s2u09g-control /*Selector Container*/ {
+    border-color: black !important; 
+}
+
+.css-1pahdxg-control /*Selector Container After Focus*/ {
+    border-color: #6200EA !important;
+    box-shadow: 0 0 0 1px #6200EA !important;
+}
+
+.css-14el2xx-placeholder, 
+.css-tlfecz-indicatorContainer /*ArrowDown Indicator*/, 
+.css-1gtu0rj-indicatorContainer /*ArrowDown Indicator After Focus*/, 
+.css-1n7v3ny-option /*Selected Option*/, 
+.css-yt9ioa-option /*Not Selected Option*/ {
+    color: black !important;
+}
+
+.css-1okebmr-indicatorSeparator /*Line Indicator*/ {
+    background-color: black !important;
+}
+
+.css-1n7v3ny-option {
+    color: white !important;
+    background-color: #6200EA !important;
+}

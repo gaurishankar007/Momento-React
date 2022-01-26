@@ -1,0 +1,12 @@
+.register-user-form .cover-picture {
+    height: 180px;
+    width: 350px;
+    object-fit: contain;
+}
+
+@media screen and (max-width: 960px) { 
+    .register-user-form .cover-picture {
+        height: 144px;
+        width: 280px;
+    }
+}
