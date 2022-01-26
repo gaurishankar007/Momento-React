@@ -47,9 +47,9 @@ const Personal = ()=> {
             return;                
         }
 
-        const userData = {first_name, last_name, gender, birthday, biography};
+        const personalInformationData = {first_name, last_name, gender, birthday, biography};
         const { REACT_APP_BASE_URL } = process.env;
-        axios.post(`${REACT_APP_BASE_URL}profile/add`, userData).then((result)=> {
+        axios.post(`${REACT_APP_BASE_URL}profile/add`, personalInformationData).then((result)=> {
             setResponse(result.data.message);
         });
     }

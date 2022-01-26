@@ -32,14 +32,22 @@ const Address = ()=> {
             return;             
         }
 
-        const userData = {
+        const AddressData = {
             permanent: {
                 country: pCountry,
-                
+                state: pState,
+                city: pCity,
+                street: pStreet
+            },
+            temporary: {
+                country: pCountry,
+                state: pState,
+                city: pCity,
+                street: pStreet
             }
         };
         const { REACT_APP_BASE_URL } = process.env;
-        axios.post(`${REACT_APP_BASE_URL}profile/add`, userData).then((result)=> {
+        axios.post(`${REACT_APP_BASE_URL}address/add`, AddressData).then((result)=> {
             setResponse(result.data.message);
         });
     }
