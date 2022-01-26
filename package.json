@@ -11,5 +11,8 @@
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.15",
     "validator": "^13.7.0"
+  }  ,
+  "scripts": {
+    "start": "nodemon app.js"
   }
 }

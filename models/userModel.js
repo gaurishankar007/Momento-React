@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         type: String, default: "defaultProfile.png"
     },
     cover_pic: {
-        type: String
+        type: String, default: "defaultCover.png"
     },
     email: {
         type: String, unique: true, trim: true,
