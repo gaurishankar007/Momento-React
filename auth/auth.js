@@ -19,7 +19,7 @@ module.exports.verifyUser = function(req, res, next) {
         });
     }
     catch(e) {
-        res.json({error: e});
+        res.json({message: "Invalid Token!"});
     }
 } 
 
@@ -41,7 +41,7 @@ module.exports.verifyAdmin = function(req, res, next) {
         });
     }
     catch(e) {
-        res.json({error: e});
+        res.json({message: "Invalid Token!"});
     }
 } 
 
@@ -63,7 +63,7 @@ module.exports.verifySuper = function(req, res, next) {
         });
     }
     catch(e) {
-        res.json({error: e});
+        res.json({message: "Invalid Token!"});
     }
 } 
 
@@ -85,6 +85,6 @@ module.exports.verifyAdminSuper = function(req, res, next) {
         });
     }
     catch(e) {
-        res.json({error: e});
+        res.json({message: "Invalid Token!"});
     }
 } 
