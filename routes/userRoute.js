@@ -38,19 +38,16 @@ router.post("/user/register", (req, res) => {
                 // Now this place is for the user which is available in db
                 const password = req.body.password;
                 bcryptjs.hash(password, 10, function(e, hashed_value) {
-                    const newUser = new user({
+                    const newUser = user.create({
                         username: username,
                         password: hashed_value,
                         email: email,
                         phone: phone,
                     });
-                    newUser.save()
-                    .then(function() {
-                        res.json({message: "Your account has been created."})
-                    })
-                    .catch(function(e) {
-                        res.json({error: e});
-                    })
+
+                    // Now lets generate token
+                    const token = jwt.sign({userId: newUser._id}, "loginKey");
+                    res.json({token: token, message: "Your account has been created."});
                 });
             });
         });
