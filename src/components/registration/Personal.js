@@ -54,7 +54,7 @@ const Personal = ()=> {
             }
         }
         axios.post(`${REACT_APP_BASE_URL}profile/add`, personalInformationData, config).then((result)=> {
-            setResponse(result.data.message);
+            
         });
     }
 

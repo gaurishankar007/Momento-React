@@ -1,14 +1,128 @@
 .logged-in-nav {
-    padding-top: 5px;
-    padding-bottom: 5px;
     box-shadow: 0px 1px 1px #808080;
-    align-items: center;
+    font-family: 'Laila', sans-serif;
 }
 
-.logged-in-logo-image {
-    height: 50px;
+.logged-in-nav-container {
+    width: 940px;
 }
 
 .logged-in-logo-text {
     font-family: 'Berkshire Swash', cursive;
+    margin-bottom: 0px;
+}
+
+.logged-in-nav-searchUser {
+    width: 225px;
+}
+
+.logged-in-nav-navigators  {
+    width: 225px;
+}
+
+.logged-in-nav-searchUser .form-control {
+    border-radius: 5px 0px 0px 5px;
+    border-color: #e9ecef;
+    background-color: #e9ecef;
+}
+.logged-in-nav-searchUser .form-control:focus {
+    color: white;
+    border-color: #6200EA;
+    background-color: #6200EA;
+    box-shadow: none;
+}
+.logged-in-nav-searchUser .form-control::placeholder {
+    color: black;
+}
+.logged-in-nav-searchUser .form-control:focus::placeholder {
+    color: white;
+}
+.logged-in-nav-searchUser {
+    box-shadow: 5px 5px 20px #e9ecef;
+}
+.logged-in-nav-searchUser #inputGroup-sizing-default {
+    border-radius: 0px 5px 5px 0px;
+    border-color: #e9ecef;
+    color: black;
+}
+.logged-in-nav-searchUser:hover #inputGroup-sizing-default {
+    border-color: #6200EA;
+    background-color: #6200EA;
+}
+
+.logged-in-nav-navigators > a  {
+    text-decoration: none;
+}
+
+.logged-in-nav-navigators a i::before {
+    text-shadow: 5px 5px 15px #808080;
+}
+
+.logged-in-nav-navigators .home-icon  {
+    font-size: 28px;
+}
+.logged-in-nav-navigators .chat-icon  {
+    font-size: 25px;
+}
+.logged-in-nav-navigators .plus-icon  {
+    font-size: 22px;
+}
+.logged-in-nav-navigators .bell-icon  {
+    font-size: 25px;
+}
+.logged-in-nav-navigators .nav-profile-picture {
+    height: 28px;
+    width: 28px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.logged-in-nav-navigators .dropdown-menu {
+    min-width: 75px;
+}
+.logged-in-nav-navigators .dropdown-menu a {
+    font-size: 16px;
+    padding: .25rem .5rem;
+}
+.logged-in-nav-navigators .dropdown-menu a:hover {
+    color: white !important;
+    background-color: #6200EA !important;
+}
+.logged-in-nav-navigators .dropdown-menu .dropdown-divider {
+    margin: 0 0 .25rem 0;
+}
+
+@media screen and (max-width: 660px) {    
+    .logged-in-nav-searchUser {
+        width: 125px;
+    }
+    .logged-in-nav-searchUser .form-control {
+        height: 25px;
+    }
+    .logged-in-nav-searchUser #inputGroup-sizing-default {
+        height: 25px;
+        font-size: 12px;
+    }
+    
+    .logged-in-nav-navigators  {
+        width: 165px;
+    }
+
+    .logged-in-nav-navigators .home-icon  {
+        font-size: 24px;
+    }
+    .logged-in-nav-navigators .chat-icon  {
+        font-size: 21px;
+    }
+    .logged-in-nav-navigators .plus-icon  {
+        font-size: 18px;
+    }
+    .logged-in-nav-navigators .bell-icon  {
+        font-size: 21px;
+    }
+    .logged-in-nav-navigators .nav-profile-picture {
+        height: 24px;
+        width: 24px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
 }

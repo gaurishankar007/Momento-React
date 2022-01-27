@@ -9,6 +9,12 @@ import Cover from "./registration/Cover";
 import Personal from "./registration/Personal";
 import Address from "./registration/Address";
 import Home from "./Home";
+import Notification from "./Notification";
+import Settings from "./profile/Settings";
+import HomeProfile from "./profile/HomeProfile";
+import PersonalDetails from "./profile/PersonalDetails";
+import ChatList from "./chat/ChatList";
+import Upload from "./Upload";
 
 class Middle extends Component {
     render() {
@@ -23,7 +29,13 @@ class Middle extends Component {
                     <Route path="/cover-registration" element={<Cover/>}/>
                     <Route path="/personal-information-registration" element={<Personal/>}/>
                     <Route path="/address-registration" element={<Address/>}/>
-                    <Route path="/home" element={<Home/>}/>
+                    <Route path="/home" element={<Home/>}/>                   
+                    <Route path="/chat-lists" element={<ChatList/>}/>                   
+                    <Route path="/upload" element={<Upload/>}/>
+                    <Route path="/notification" element={<Notification/>}/>
+                    <Route path="/home-profile" element={<HomeProfile/>}/>
+                    <Route path="/settings" element={<Settings/>}/>
+                    <Route path="/personal-details" element={<PersonalDetails/>}/> 
                 </Routes>
             </div>
         )

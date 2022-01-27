@@ -1,10 +1,8 @@
 .logged-out-nav {
-    padding-top: 5px;
-    margin-bottom: 5px;
     box-shadow: 0px 0px 1px 1px #808080;
-    align-items: center;
 }
 
 .logged-out-logo-text {
     font-family: 'Berkshire Swash', cursive;
+    margin-bottom: 0px;
 }

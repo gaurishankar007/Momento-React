@@ -57,7 +57,8 @@ const User = ()=> {
         const userData = {username, password, email, phone};
         axios.post(`${REACT_APP_BASE_URL}user/register`, userData).then((result)=> {
             if(result.data.token) {
-                localStorage.setItem('userToken', result.data.token);
+                localStorage.setItem('userToken', result.data.token); 
+                localStorage.setItem("userRegistrationMassage", result.data.message + " Now add other information.");
             }
             else {
                 setResponse(result.data.message);

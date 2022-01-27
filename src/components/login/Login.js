@@ -29,7 +29,7 @@ const Login = ()=> {
         const userData = {username_email, password};
         axios.post(`${REACT_APP_BASE_URL}user/login`, userData).then((result)=> {
             if(result.data.token) {
-                localStorage.setItem('userToken', result.data.token);
+                localStorage.setItem('userToken', result.data.token);    
             }
             else {
                 setResponse(result.data.message);
@@ -57,7 +57,7 @@ const Login = ()=> {
                             <small id="passwordHelp" className="form-text ms-1"><Link to="/forgot-password">Forgot Password?</Link></small>
                         </div>  
                         <div className="d-flex justify-content-center mb-3">
-                            <button type="button" className="btn lR-button" onClick={userLogin}>Login</button>
+                            <button type="button" className="btn lR-button" onClick={userLogin}>Log In</button>
                         </div>                    
                         <div className="d-flex justify-content-center">
                             <Link className="btn lR-button" to="/user-registration">Create an account</Link>

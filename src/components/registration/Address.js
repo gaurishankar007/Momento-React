@@ -26,9 +26,11 @@ const Address = ()=> {
             pCountry==="Select your Country" || pState.trim()==="" || pCity.trim()==="" || pStreet.trim()==="") {
             setResponse("Empty field found. Fill up the form completely.");          
             return;             
+        } else  if ( tState.length<2 || tCity.length<2 || tStreet.length<2 || pState.length<2 || pCity.length<2 || pStreet.length<2) {
+            setResponse("Provide at least two characters in state, city and street.");          
+            return;             
         }
 
-        
         const { REACT_APP_BASE_URL } = process.env;
         const AddressData = {
             permanent: {

@@ -10,6 +10,10 @@ const Cover = ()=> {
     const [coverFileName, setCoverFileName] = useState("defaultCover.png");
     const [response, setResponse] = useState("");
 
+    if(localStorage.hasOwnProperty("userRegistrationMassage")) {
+        localStorage.removeItem("userRegistrationMassage");
+    }
+
     const addCover = (e)=> {
         e.preventDefault();
         setResponse("");

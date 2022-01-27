@@ -28,7 +28,7 @@ const ResetPassword = ()=> {
                 setResponse(result.data.message);          
                 return;   
             }            
-            localStorage.setItem("passwordResetMassage", result.data.message);
+            localStorage.setItem("passwordResetMassage", result.data.message + " Now try to login again." );
         });
         
         // Checking error if the specified link is nor correct
