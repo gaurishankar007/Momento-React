@@ -6,7 +6,6 @@ import "../../css/Personal.css";
 import Logo from "../../images/logo.png";
 
 const Personal = ()=> {
-    const [username, setUsername] = useState("");
     const [first_name, setFirstName] = useState("");
     const [last_name, setLastName] = useState("");
     const [gender, setGender] = useState("");
@@ -47,9 +46,14 @@ const Personal = ()=> {
             return;                
         }
 
-        const personalInformationData = {first_name, last_name, gender, birthday, biography};
         const { REACT_APP_BASE_URL } = process.env;
-        axios.post(`${REACT_APP_BASE_URL}profile/add`, personalInformationData).then((result)=> {
+        const personalInformationData = {first_name, last_name, gender, birthday, biography};
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+            }
+        }
+        axios.post(`${REACT_APP_BASE_URL}profile/add`, personalInformationData, config).then((result)=> {
             setResponse(result.data.message);
         });
     }
@@ -73,15 +77,15 @@ const Personal = ()=> {
                         </div>  
                         <div className="mb-3">                                   
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Male" value="Male" onClick={(e)=>setGender(e.target.value.trim())}/>
+                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Male" value="Male" onClick={(e)=>setGender(e.target.value)}/>
                                 <label className="form-check-label">Male</label>
                             </div>
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Female" value="Female" onClick={(e)=>setGender(e.target.value.trim())}/>
+                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Female" value="Female" onClick={(e)=>setGender(e.target.value)}/>
                                 <label className="form-check-label">Female</label>
                             </div>
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Other" value="Other" onClick={(e)=>setGender(e.target.value.trim())}/>
+                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Other" value="Other" onClick={(e)=>setGender(e.target.value)}/>
                                 <label className="form-check-label">Other</label>
                             </div>
                         </div>
@@ -89,7 +93,7 @@ const Personal = ()=> {
                             <input type="date" className="form-control" id="date" min="1900-01-01" max={today} placeholder="Pick your birthday date....." onChange={(e)=>setBirthday(e.target.value)}/>
                         </div>                              
                         <div className="form-group mb-3">
-                            <textarea type="text" className="form-control" id="biography"  placeholder="Enter your biography....." rows="3" onChange={(e)=>setBiography(e.target.value)}/>
+                            <textarea type="text" className="form-control" id="biography"  placeholder="Enter your biography....." rows="3" onChange={(e)=>setBiography(e.target.value.trim())}/>
                             <small id="helper" className="form-text ms-1">Optional.</small>
                         </div>
                         <div className="d-flex justify-content-around align-items-center">                                       

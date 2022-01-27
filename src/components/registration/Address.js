@@ -8,7 +8,6 @@ import "../../css/Address.css";
 import Logo from "../../images/logo.png";
 
 const Address = ()=> {
-    const [username, setUsername] = useState("");
     const [tCountry, setTCountry] = useState("Select your Country");
     const [tState, setTState] = useState("");
     const [tCity, setTCity] = useState("");
@@ -16,15 +15,12 @@ const Address = ()=> {
     const [pCountry, setPCountry] = useState("Select your Country");
     const [pState, setPState] = useState("");
     const [pCity, setPCity] = useState("");
-    const [pStreet, setPStreet] = useState("");
+    const [pStreet, setPStreet] = useState(""); 
     const [response, setResponse] = useState("");
 
     const addAddress = (e)=> {
         e.preventDefault();
         setResponse("");
-
-        const numberRegex = new RegExp('[0-9]');
-        const specialCharacterRegex = new RegExp('[!@#$%^&*(),.?":{}|<>]');
 
         if (tCountry==="Select your Country" || tState.trim()==="" || tCity.trim()==="" || tStreet.trim()==="" || 
             pCountry==="Select your Country" || pState.trim()==="" || pCity.trim()==="" || pStreet.trim()==="") {
@@ -32,6 +28,8 @@ const Address = ()=> {
             return;             
         }
 
+        
+        const { REACT_APP_BASE_URL } = process.env;
         const AddressData = {
             permanent: {
                 country: pCountry,
@@ -40,14 +38,18 @@ const Address = ()=> {
                 street: pStreet
             },
             temporary: {
-                country: pCountry,
-                state: pState,
-                city: pCity,
-                street: pStreet
+                country: tCountry,
+                state: tState,
+                city: tCity,
+                street: tStreet
             }
         };
-        const { REACT_APP_BASE_URL } = process.env;
-        axios.post(`${REACT_APP_BASE_URL}address/add`, AddressData).then((result)=> {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+            }
+        }
+        axios.post(`${REACT_APP_BASE_URL}address/add`, AddressData, config).then((result)=> {
             setResponse(result.data.message);
         });
     }
@@ -73,7 +75,7 @@ const Address = ()=> {
                             <input type="text" className="form-control" id="pCity"  placeholder="Enter your city....." onChange={(e)=>setPCity(e.target.value.trim())}/>
                         </div>  
                         <div className="form-group mb-3">
-                            <input type="text" className="form-control" id="pStreet" placeholder="Pick your street....." onChange={(e)=>setPStreet(e.target.value)}/>
+                            <input type="text" className="form-control" id="pStreet" placeholder="Pick your street....." onChange={(e)=>setPStreet(e.target.value.trim())}/>
                         </div>  
                         <h4 className="text-center address-type mb-2">Temporary</h4>
                         <Select className="mb-3" placeholder={tCountry} options={countryOptions} value={tCountry} onChange={value=>setTCountry(value.label)} />
@@ -84,7 +86,7 @@ const Address = ()=> {
                             <input type="text" className="form-control" id="tCity"  placeholder="Enter your city....." onChange={(e)=>setTCity(e.target.value.trim())}/>
                         </div>  
                         <div className="form-group mb-3">
-                            <input type="text" className="form-control" id="tStreet" placeholder="Pick your street....." onChange={(e)=>setTStreet(e.target.value)}/>
+                            <input type="text" className="form-control" id="tStreet" placeholder="Pick your street....." onChange={(e)=>setTStreet(e.target.value.trim())}/>
                         </div>  
                         <div className="d-flex justify-content-around align-items-center">                                       
                             <Link className="s-button"  to="/address-registration">Skip</Link>                                        

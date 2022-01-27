@@ -7,7 +7,6 @@ import "../../css/Cover.css";
 import { Link } from "react-router-dom";
 
 const Cover = ()=> { 
-    const [username, setUsername] = useState("");
     const [coverFileName, setCoverFileName] = useState("defaultCover.png");
     const [response, setResponse] = useState("");
 
@@ -16,7 +15,12 @@ const Cover = ()=> {
         setResponse("");
 
         const { REACT_APP_BASE_URL } = process.env;
-        axios.post(`${REACT_APP_BASE_URL}user/changeCover`).then((result)=> {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "") 
+            }
+        }
+        axios.post(`${REACT_APP_BASE_URL}user/changeCover`, config).then((result)=> {
             
         });
     }

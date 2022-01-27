@@ -10,6 +10,10 @@ const User = ()=> {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [response, setResponse] = useState("");
+    
+    if(localStorage.hasOwnProperty("passwordResetMassage") /*Checking if the localStorage contains the item or not*/) {
+        localStorage.removeItem("passwordResetMassage");
+    }
 
     const userRegister = (e)=> {
         e.preventDefault();
@@ -49,10 +53,15 @@ const User = ()=> {
             return;              
         }
 
-        const userData = {username, password, email, phone};
         const { REACT_APP_BASE_URL } = process.env;
+        const userData = {username, password, email, phone};
         axios.post(`${REACT_APP_BASE_URL}user/register`, userData).then((result)=> {
-            setResponse(result.data.message);
+            if(result.data.token) {
+                localStorage.setItem('userToken', result.data.token);
+            }
+            else {
+                setResponse(result.data.message);
+            }
         });
     }
 

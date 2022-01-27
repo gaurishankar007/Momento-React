@@ -25,6 +25,9 @@
 .register-user-form .suggestion-message {
     color: rgb(218, 70, 70);
 }
+.register-user-form .success-message { /*This class is not defined in the User.js but it will work in other js files*/
+    color: rgb(70, 218, 70);
+}
 .register-user-form .form-control::placeholder {
     color: black;
 }

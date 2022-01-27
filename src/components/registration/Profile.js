@@ -7,7 +7,6 @@ import "../../css/Profile.css";
 import { Link } from "react-router-dom";
 
 const Profile = ()=> {   
-    const [username, setUsername] = useState("");  
     const [profileFileName, setProfileFileName] = useState("defaultProfile.png");
     const [response, setResponse] = useState("");
 
@@ -16,7 +15,12 @@ const Profile = ()=> {
         setResponse("");
 
         const { REACT_APP_BASE_URL } = process.env;
-        axios.post(`${REACT_APP_BASE_URL}user/changeProfile`).then((result)=> {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+            }
+        }
+        axios.post(`${REACT_APP_BASE_URL}user/changeProfile`, config).then((result)=> {
             
         });
     }

@@ -8,9 +8,13 @@ const ForgotPassword = ()=> {
     const [newPass, setNewPass] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [response, setResponse] = useState("");
+    
+    if(localStorage.hasOwnProperty("passwordResetMassage") /*Checking if the localStorage contains the item or not*/) {
+        localStorage.removeItem("passwordResetMassage");
+    }
 
-    const generateLink = (e)=> {
-        e.preventDefault();
+    const generateLink = (event)=> {
+        event.preventDefault();
         setResponse("");
 
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -32,7 +36,7 @@ const ForgotPassword = ()=> {
 
         const userData = {email, newPass};
         const { REACT_APP_BASE_URL } = process.env;
-        axios.post(`${REACT_APP_BASE_URL}user/passResetLink`, userData).then((result)=> {
+        axios.post(`${REACT_APP_BASE_URL}user/generatePassResetToken`, userData).then((result)=> {
             setResponse(result.data.message);
         });
     }
@@ -43,7 +47,7 @@ const ForgotPassword = ()=> {
             <div className="register-user">
                 <img className="logo" src={Logo} alt="Memento"/>                
                 <div className="register-user-form px-4 py-3">
-                    <h3 className="text-center">Generate Reset Link</h3>
+                    <h3 className="text-center">Generate Reset Token</h3>
                     <form>
                         <div className="suggestion-message text-center mb-2">{response}</div>       
                         <div className="form-group mb-3">
