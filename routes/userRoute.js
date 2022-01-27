@@ -116,7 +116,7 @@ router.post("/user/login", (req, res)=> {
     });
 });
 
-router.post("/user/passResetLink", function(req, res) {
+router.post("/user/generatePassResetToken", function(req, res) {
     const email = req.body.email;
     const newPass = req.body.newPass;
 
@@ -127,18 +127,17 @@ router.post("/user/passResetLink", function(req, res) {
         if(userData==null) {
             return res.json({message: "User with that email address does not exist."});
         }
-        const token = jwt.sign({userId: userData._id}, "passResetKey", {expiresIn: "3m"});
-        const half_link = `${token}/${newPass}`;
-        sendEmail(email, "Password Reset Link", half_link);
+        const token = jwt.sign({userId: userData._id, newPass: newPass}, "passResetKey", {expiresIn: "3m"});
+        sendEmail(email, "Password Reset Token", token);
     });
 
 });
 
-router.put("/user/passReset/:resetToken/:newPass", function(req, res) {
+router.put("/user/passReset/:resetToken", function(req, res) {
     try{
         const token = req.params.resetToken;
         const userData = jwt.verify(token, "passResetKey");  
-        bcryptjs.hash(req.params.newPass, 10, (e, hashed_pass)=> { 
+        bcryptjs.hash(userData.newPass, 10, (e, hashed_pass)=> { 
             user.updateOne({_id: userData.userId}, {password: hashed_pass})
             .then(function() {
                 res.json({message: "Your password has been reset."})
