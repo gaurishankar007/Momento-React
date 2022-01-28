@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
 import LoggedOutHeader from "../LoggedOutHeader";
@@ -17,6 +17,7 @@ const Address = ()=> {
     const [pCity, setPCity] = useState("");
     const [pStreet, setPStreet] = useState(""); 
     const [response, setResponse] = useState("");
+    const navigate = useNavigate();
 
     const addAddress = (e)=> {
         e.preventDefault();
@@ -52,7 +53,12 @@ const Address = ()=> {
             }
         }
         axios.post(`${REACT_APP_BASE_URL}address/add`, AddressData, config).then((result)=> {
-            setResponse(result.data.message);
+            if(result.data.message==="Address added.") {
+                navigate("/home");
+            }
+            else {
+                setResponse(result.data.message);          
+            }
         });
     }
 
@@ -91,7 +97,7 @@ const Address = ()=> {
                             <input type="text" className="form-control" id="tStreet" placeholder="Pick your street....." onChange={(e)=>setTStreet(e.target.value.trim())}/>
                         </div>  
                         <div className="d-flex justify-content-around align-items-center">                                       
-                            <Link className="s-button"  to="/address-registration">Skip</Link>                                        
+                            <Link className="s-button"  to="/home">Skip</Link>                                        
                             <button type="button" className="btn lR-button" onClick={addAddress}>Next</button>
                         </div>
                     </form>

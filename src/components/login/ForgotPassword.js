@@ -2,17 +2,16 @@ import { useState } from "react"
 import axios from "axios";
 import LoggedOutHeader from "../LoggedOutHeader";
 import Logo from "../../images/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = ()=> {  
     const [email, setEmail] = useState("");
     const [newPass, setNewPass] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [response, setResponse] = useState("");
-    
-    if(localStorage.hasOwnProperty("passwordResetMassage") /*Checking if the localStorage contains the item or not*/) {
-        localStorage.removeItem("passwordResetMassage");
-    }
 
+    const navigate = useNavigate();
+    
     const generateLink = (event)=> {
         event.preventDefault();
         setResponse("");
@@ -38,6 +37,9 @@ const ForgotPassword = ()=> {
         const { REACT_APP_BASE_URL } = process.env;
         axios.post(`${REACT_APP_BASE_URL}user/generatePassResetToken`, userData).then((result)=> {
             setResponse(result.data.message);
+            if(result.data.message==="Token was send.") {
+                navigate("/reset-password");
+            }
         });
     }
 

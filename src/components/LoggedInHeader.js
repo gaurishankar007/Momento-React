@@ -5,6 +5,12 @@ import ProfilePicture from "../images/defaultProfile.png";
 
 class LoggedInHeader extends Component {
     render() {
+        const logOut = ()=> {
+            if(localStorage.hasOwnProperty("userToken")) {
+                localStorage.removeItem("userToken");
+            }        
+        }
+
         return (
             <div className="logged-in-nav d-flex justify-content-center py-2 px-3 mb-2">                
                 <div className="logged-in-nav-container d-flex justify-content-between align-items-center">
@@ -32,7 +38,7 @@ class LoggedInHeader extends Component {
                                 <img className="nav-profile-picture dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" src={ProfilePicture} alt="Profile"/>
                                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li>
-                                        <NavLink className="gear-icon dropdown-item" to="/home-profile" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
+                                        <NavLink className="person-icon dropdown-item" to="/home-profile" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
                                             <i className="bi bi-person-fill"></i> Profile
                                         </NavLink>
                                     </li>
@@ -42,7 +48,7 @@ class LoggedInHeader extends Component {
                                         </NavLink>
                                     </li>
                                     <li className="dropdown-divider"></li>
-                                    <li><Link className="gear-icon dropdown-item py-0" to="/home"><i className="bi bi-door-open-fill"></i> Log Out</Link></li>
+                                    <li><Link className="door-icon dropdown-item py-0" to="/" onClick={logOut}><i className="bi bi-door-open-fill"></i> Log Out</Link></li>
                                 </ul>
                             </div>
                     </div>

@@ -4,19 +4,22 @@ import LoggedOutHeader from "../LoggedOutHeader";
 import Logo from "../../images/logo.png";
 import ProfilePicture from "../../images/defaultCover.png";
 import "../../css/Cover.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cover = ()=> { 
     const [coverFileName, setCoverFileName] = useState("defaultCover.png");
     const [response, setResponse] = useState("");
-
-    if(localStorage.hasOwnProperty("userRegistrationMassage")) {
-        localStorage.removeItem("userRegistrationMassage");
-    }
+    
+    const navigate = useNavigate();
 
     const addCover = (e)=> {
         e.preventDefault();
         setResponse("");
+
+        if(coverFileName==="defaultCover.png") {
+            setResponse("You have not selected a cover picture.");
+            return;
+        }
 
         const { REACT_APP_BASE_URL } = process.env;
         const config = {
@@ -25,7 +28,7 @@ const Cover = ()=> {
             }
         }
         axios.post(`${REACT_APP_BASE_URL}user/changeCover`, config).then((result)=> {
-            
+            navigate("personal-information-registration");
         });
     }
 

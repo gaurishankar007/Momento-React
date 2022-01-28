@@ -1,21 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import LoggedOutHeader from "../LoggedOutHeader";
 import Logo from "../../images/logo.png";
 import ProfilePicture from "../../images/defaultProfile.png";
 import "../../css/Profile.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = ()=> {   
     const [profileFileName, setProfileFileName] = useState("defaultProfile.png");
     const [response, setResponse] = useState("");
+    const [sResponse, setSResponse] = useState("");
+
+    const navigate = useNavigate();
+    useEffect(()=> {        
+        localStorage.hasOwnProperty("uRSM") ? setSResponse(localStorage.getItem("uRSM")): console.log();
+        localStorage.hasOwnProperty("uRSM") ? localStorage.removeItem("uRSM") : console.log();
+    }, [])
 
     const addProfile = (e)=> {
         e.preventDefault();
         setResponse("");
+        setSResponse("");
 
-        if(localStorage.hasOwnProperty("userRegistrationMassage")) {
-            localStorage.removeItem("userRegistrationMassage");
+        if(profileFileName==="defaultProfile.png") {
+            setResponse("You have not selected a profile picture.");
+            return;
         }
 
         const { REACT_APP_BASE_URL } = process.env;
@@ -25,7 +34,7 @@ const Profile = ()=> {
             }
         }
         axios.post(`${REACT_APP_BASE_URL}user/changeProfile`, config).then((result)=> {
-            
+            navigate("/cover-registration");
         });
     }
 
@@ -36,9 +45,7 @@ const Profile = ()=> {
                 <img className="logo" src={Logo} alt="Memento"/>                
                 <div className="register-user-form px-4 py-3">
                     <h3 className="text-center mb-2">Add a Profile Picture</h3>          
-                    <div className="success-message text-center mb-3">
-                        {localStorage.hasOwnProperty("userRegistrationMassage") ? localStorage.getItem("userRegistrationMassage") : ""}
-                    </div>          
+                    <div className="success-message text-center mb-3">{sResponse}</div>          
                     <div className="d-flex justify-content-center mb-3">                        
                         <img className="profile-picture" src={ProfilePicture} alt="Memento"/>  
                     </div>

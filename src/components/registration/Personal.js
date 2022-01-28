@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoggedOutHeader from "../LoggedOutHeader";
 import "../../css/Personal.css";
 import Logo from "../../images/logo.png";
@@ -12,6 +12,8 @@ const Personal = ()=> {
     const [birthday, setBirthday] = useState("");
     const [biography, setBiography] = useState("");
     const [response, setResponse] = useState("");
+    
+    const navigate = useNavigate();
 
     function getDateNow() {    
         const date = new Date();
@@ -54,7 +56,12 @@ const Personal = ()=> {
             }
         }
         axios.post(`${REACT_APP_BASE_URL}profile/add`, personalInformationData, config).then((result)=> {
-            
+            if(result.data.message==="Profile added.") {
+                navigate("/address-registration");
+            }
+            else {
+                setResponse(result.data.message);          
+            }
         });
     }
 

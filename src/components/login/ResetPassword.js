@@ -1,5 +1,6 @@
 import { useState } from "react"
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import LoggedOutHeader from "../LoggedOutHeader";
 import Logo from "../../images/logo.png";
 import "../../css/ResetPassword.css";
@@ -8,10 +9,12 @@ const ResetPassword = ()=> {
     const [resetLink, setResetLink] = useState("");
     const [response, setResponse] = useState("");
 
+    const navigate = useNavigate();
+
     const resetPass = (e)=> {
         e.preventDefault();
         setResponse("");
-
+        
         const whitespace = /\s/;
         if (resetLink.trim()==="") {
             setResponse("Empty field found. Provide the link here.");          
@@ -27,8 +30,11 @@ const ResetPassword = ()=> {
             if (result.data.message==="Invalid Token!") {
                 setResponse(result.data.message);          
                 return;   
-            }            
-            localStorage.setItem("passwordResetMassage", result.data.message + " Now try to login again." );
+            }    
+            if (result.data.message==="Your password has been reset.") { 
+                localStorage.setItem("pRSM", "unseen");
+                navigate("/", {state: {pRSM: result.data.message + " Now try to login again."}})
+            }
         });
         
         // Checking error if the specified link is nor correct

@@ -3,6 +3,7 @@ import axios from "axios";
 import LoggedOutHeader from "../LoggedOutHeader";
 import "../../css/User.css";
 import Logo from "../../images/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const User = ()=> {
     const [username, setUsername] = useState("");
@@ -11,9 +12,7 @@ const User = ()=> {
     const [phone, setPhone] = useState("");
     const [response, setResponse] = useState("");
     
-    if(localStorage.hasOwnProperty("passwordResetMassage") /*Checking if the localStorage contains the item or not*/) {
-        localStorage.removeItem("passwordResetMassage");
-    }
+    const navigate = useNavigate();
 
     const userRegister = (e)=> {
         e.preventDefault();
@@ -57,8 +56,9 @@ const User = ()=> {
         const userData = {username, password, email, phone};
         axios.post(`${REACT_APP_BASE_URL}user/register`, userData).then((result)=> {
             if(result.data.token) {
-                localStorage.setItem('userToken', result.data.token); 
-                localStorage.setItem("userRegistrationMassage", result.data.message + " Now add other information.");
+                localStorage.setItem('userToken', result.data.token);   
+                localStorage.setItem('uRSM', result.data.message + " Now add other extra information or you can skip them.");                 
+                navigate("/profile-registration");
             }
             else {
                 setResponse(result.data.message);
