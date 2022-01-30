@@ -21,7 +21,7 @@ router.post("/profile/add", auth.verifyUser, (req, res)=> {
         res.json({message: "Profile added."})
     })
     .catch(function(e) {
-        res.json(e);
+        res.json({message: e});
     });   
 });
 

@@ -6,42 +6,42 @@ const router = new express.Router();
 const address = require("../models/AddressModel.js");
 const auth = require("../auth/auth.js");
 
-router.post("/address/add", auth.verifyUser, (req, res)=> {
+router.post("/address/add", auth.verifyUser, (req, res)=> { 
     const newAddress = new address({
         user_id: req.userInfo._id,
         permanent: {
-            country: req.body.permanent.country,
-            state: req.body.permanent.state,
-            city: req.body.permanent.city,
-            street: req.body.permanent.street,
+            country: req.body.pCountry,
+            state: req.body.pState,
+            city: req.body.pCity,
+            street: req.body.pStreet,
         },
         temporary: {
-            country: req.body.temporary.country,
-            state: req.body.temporary.state,
-            city: req.body.temporary.city,
-            street: req.body.temporary.street,
+            country: req.body.tCountry,
+            state: req.body.tState,
+            city: req.body.tCity,
+            street: req.body.tStreet,
         },
     });
     newAddress.save().then(function(){
-        res.json({message: "Address has been added."})
+        res.json({message: "Address added."})
     }).catch(function(e){
-        res.json(e);
+        res.json({message: e});
     });
 });
 
 router.put("/address/update", auth.verifyUser, (req, res)=> {
     address.updateOne({user_id: req.userInfo._id}, {
         permanent: {
-            country: req.body.permanent.country,
-            state: req.body.permanent.state,
-            city: req.body.permanent.city,
-            street: req.body.permanent.street,
+            country: req.body.pCountry,
+            state: req.body.pState,
+            city: req.body.pCity,
+            street: req.body.pStreet,
         },
         temporary: {
-            country: req.body.temporary.country,
-            state: req.body.temporary.state,
-            city: req.body.temporary.city,
-            street: req.body.temporary.street,
+            country: req.body.tCountry,
+            state: req.body.tState,
+            city: req.body.tCity,
+            street: req.body.tStreet,
         },
     }
     )
@@ -49,7 +49,7 @@ router.put("/address/update", auth.verifyUser, (req, res)=> {
         res.json({message: "Address has been updated."})
     }) 
     .catch(function(e) {
-        res.json(e);
+        res.json({message: e});
     });
 });
 
@@ -59,7 +59,7 @@ router.put("/address/hide", auth.verifyUser, (req, res)=> {
         res.json({message: "Address has been hidden."})
     }) 
     .catch(function(e) {
-        res.json(e);
+        res.json({message: e});
     });
 });
 
@@ -69,7 +69,7 @@ router.put("/address/show", auth.verifyUser, (req, res)=> {
         res.json({message: "Address has been shown."})
     }) 
     .catch(function(e) {
-        res.json(e);
+        res.json({message: e});
     });
 });
 

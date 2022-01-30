@@ -37,8 +37,8 @@ router.post("/user/register", (req, res) => {
                 }                
                 // Now this place is for the user which is available in db
                 const password = req.body.password;
-                bcryptjs.hash(password, 10, function(e, hashed_value) {
-                    const newUser = user.create({
+                bcryptjs.hash(password, 10, async function(e, hashed_value) {
+                    const newUser = await user.create({
                         username: username,
                         password: hashed_value,
                         email: email,
@@ -129,6 +129,7 @@ router.post("/user/generatePassResetToken", function(req, res) {
         }
         const token = jwt.sign({userId: userData._id, newPass: newPass}, "passResetKey", {expiresIn: "3m"});
         sendEmail(email, "Password Reset Token", token);
+        res.json({message: "Token was send."});
     });
 
 });
@@ -143,12 +144,12 @@ router.put("/user/passReset/:resetToken", function(req, res) {
                 res.json({message: "Your password has been reset."})
             })
             .catch(function(e) {
-                res.json({error: e});
+                res.json({message: e});
             });
         });        
     }
     catch(e) {
-        res.json({error: e});
+        res.json({message: "Invalid Token!"});
     }
 });
 
@@ -174,9 +175,9 @@ router.put("/user/changePassword", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.put("/user/changeProfile", auth.verifyUser, profileUpload.single("profile"), (req, res)=> {  
+router.put("/user/changeProfile", auth.verifyUser, profileUpload.single("profile"), (req, res)=> { 
     if(req.file==undefined) {
-        return res.json({error: "Invalid image format, only supports png or jpeg image format."});
+        return res.json({message: "Invalid image format, only supports png or jpeg image format."});
     }
 
     user.findOne({_id: req.userInfo._id})
@@ -191,11 +192,11 @@ router.put("/user/changeProfile", auth.verifyUser, profileUpload.single("profile
             res.json({message: "New profile picture added."});
         })
         .catch((e)=> {
-            res.json({error: e});
+            res.json({message: e});
         });
     })
     .catch((e)=> {
-        res.json({error: e});
+        res.json({message: e});
     });
 });
 
@@ -206,7 +207,7 @@ router.put("/user/changeCover", auth.verifyUser, coverUpload.single("cover"), (r
 
     user.findOne({_id: req.userInfo._id})
     .then((userData)=> {
-        if(userData.cover_pic!=undefined) {
+        if(userData.cover_pic!="defaultCover.png") {
             const cover_pic_path = `./uploadedFiles/covers/${userData.cover_pic}`;
             fs.unlinkSync(cover_pic_path);
         }    
@@ -216,12 +217,30 @@ router.put("/user/changeCover", auth.verifyUser, coverUpload.single("cover"), (r
             res.json({message: "New cover picture added."});
         })
         .catch((e)=> {
-            res.json({error: e});
+            res.json({message: e});
         });
     })
     .catch((e)=> {
-        res.json({error: e});
+        res.json({message: e});
     });
+});
+
+router.put("/user/changeUsername", auth.verifyUser, (req, res)=> {  
+    const username = req.body.username;
+    
+    user.findOne({username: username}).then(function(userData) {
+        if(userData!=null) {
+            res.json({message: "This username is already used, try another."});
+            return;
+        }  
+        user.updateOne({_id: req.userInfo._id}, {username: username})
+        .then(()=>{
+            res.json({message: "Your username has been changed."});
+        })
+        .catch((e)=> {
+            res.json({message: e})
+        });
+    });  
 });
 
 router.put("/user/changeEmail", auth.verifyUser, (req, res)=> {  
