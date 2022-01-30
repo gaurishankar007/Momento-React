@@ -34,18 +34,14 @@ const Address = ()=> {
 
         const { REACT_APP_BASE_URL } = process.env;
         const AddressData = {
-            permanent: {
-                country: pCountry,
-                state: pState,
-                city: pCity,
-                street: pStreet
-            },
-            temporary: {
-                country: tCountry,
-                state: tState,
-                city: tCity,
-                street: tStreet
-            }
+                pCountry: pCountry,
+                pState: pState,
+                pCity: pCity,
+                pStreet: pStreet,
+                tCountry: tCountry,
+                tState: tState,
+                tCity: tCity,
+                tStreet: tStreet
         };
         const config = {
             headers: {

@@ -17,10 +17,10 @@ const ResetPassword = ()=> {
         
         const whitespace = /\s/;
         if (resetLink.trim()==="") {
-            setResponse("Empty field found. Provide the link here.");          
+            setResponse("Empty field found. Provide the token here.");          
             return;   
         } else if(whitespace.test(resetLink)) {
-            setResponse("Whitespace are not allowed around the link.");          
+            setResponse("Whitespace are not allowed around the token.");          
             return;               
         }
         

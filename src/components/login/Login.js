@@ -13,14 +13,36 @@ const Login = ()=> {
 
     const navigate = useNavigate();
     const location = useLocation();
+
     useEffect(()=> {
+        if(localStorage.hasOwnProperty("userToken")) {
+            const { REACT_APP_BASE_URL } = process.env;
+            const config = {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('userToken')
+                }
+            }
+
+            axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
+                if(result.data.userData) {
+                    if (result.data.userData.admin===false && result.data.userData.superuser===false) {
+                        navigate("/home");
+                    }
+                    else if (result.data.userData.admin===true){
+                    }
+                    else if (result.data.userData.superuser===true){
+                    }
+                }
+            });
+        }    
+
         try {  
             localStorage.hasOwnProperty("pRSM") ? setSResponse(location.state.pRSM): console.log();
             localStorage.hasOwnProperty("pRSM") ? localStorage.removeItem("pRSM") : console.log();
         }
         catch (error) {
             console.log("pRSM message has not been sent.", error);
-        }
+        }    
     }, [])
 
     const userLogin = (e)=> {
