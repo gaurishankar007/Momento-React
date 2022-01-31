@@ -7,24 +7,6 @@ const profile = require("../models/profileModel.js");
 const user = require("../models/userModel.js");
 const auth = require("../auth/auth.js");
 
-router.post("/profile/add", auth.verifyUser, (req, res)=> {
-    const newProfile = new profile({
-        user_id: req.userInfo._id,
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        gender: req.body.gender,
-        birthday: req.body.birthday,
-        biography: req.body.biography,
-    });
-    newProfile.save().
-    then(function(){
-        res.json({message: "Profile added."})
-    })
-    .catch(function(e) {
-        res.json({message: e});
-    });   
-});
-
 router.put("/profile/update", auth.verifyUser, (req, res)=> {
     profile.updateOne({user_id: req.userInfo._id}, {
         first_name: req.body.first_name,
@@ -44,12 +26,16 @@ router.put("/profile/update", auth.verifyUser, (req, res)=> {
 
 router.get("/profile/get/my", auth.verifyUser, async (req, res)=> {
     const userProfile = await profile.findOne({user_id: req.userInfo._id});
-    res.send(userProfile);
+    if(userProfile!=null) {
+        res.json({userProfile: userProfile});
+    }
 });
 
 router.get("/profile/get", auth.verifyUser, async (req, res)=> {
     const userProfile = await profile.findOne({user_id: req.body.user_id});
-    res.send(userProfile);
+    if(userProfile!=null) {
+        res.json({userProfile: userProfile});
+    }
 });
 
 module.exports = router;

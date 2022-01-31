@@ -6,29 +6,6 @@ const router = new express.Router();
 const address = require("../models/AddressModel.js");
 const auth = require("../auth/auth.js");
 
-router.post("/address/add", auth.verifyUser, (req, res)=> { 
-    const newAddress = new address({
-        user_id: req.userInfo._id,
-        permanent: {
-            country: req.body.pCountry,
-            state: req.body.pState,
-            city: req.body.pCity,
-            street: req.body.pStreet,
-        },
-        temporary: {
-            country: req.body.tCountry,
-            state: req.body.tState,
-            city: req.body.tCity,
-            street: req.body.tStreet,
-        },
-    });
-    newAddress.save().then(function(){
-        res.json({message: "Address added."})
-    }).catch(function(e){
-        res.json({message: e});
-    });
-});
-
 router.put("/address/update", auth.verifyUser, (req, res)=> {
     address.updateOne({user_id: req.userInfo._id}, {
         permanent: {
@@ -73,9 +50,18 @@ router.put("/address/show", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.get("/address/get", auth.verifyUser, async (req, res)=> {
+router.get("/address/get/my", auth.verifyUser, async (req, res)=> {
     const userAddress = await address.findOne({user_id: req.userInfo._id});
-    res.send(userAddress);
+    if(userAddress!=null) {
+        res.json({userAddress: userAddress});
+    }
+});
+
+router.get("/address/get", auth.verifyUser, async (req, res)=> {
+    const userAddress = await address.findOne({user_id: req.body.user_id});
+    if(userAddress!=null) {
+        res.json({userAddress: userAddress});
+    }
 });
 
 module.exports = router;

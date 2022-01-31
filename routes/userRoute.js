@@ -8,6 +8,8 @@ const fs = require("fs");
 
 // Importing self made js files....
 const user = require("../models/userModel")
+const profile = require("../models/profileModel.js");
+const address = require("../models/AddressModel.js");
 const auth = require("../auth/auth.js");
 const sendEmail = require("../utils/sendEmail.js");
 const profileUpload = require("../uploadSettings/profile.js");
@@ -44,6 +46,33 @@ router.post("/user/register", (req, res) => {
                         email: email,
                         phone: phone,
                     });
+                    
+                    const newProfile = new profile({
+                        user_id: newUser._id,
+                        first_name: "",
+                        last_name: "",
+                        gender: "",
+                        birthday: "",
+                        biography: "",
+                    });
+                    newProfile.save();
+                    
+                    const newAddress = new address({
+                        user_id: newUser._id,
+                        permanent: {
+                            country: "",
+                            state: "",
+                            city: "",
+                            street: "",
+                        },
+                        temporary: {
+                            country: "",
+                            state: "",
+                            city: "",
+                            street: "",
+                        },
+                    });
+                    newAddress.save()
 
                     // Now lets generate token
                     const token = jwt.sign({userId: newUser._id}, "loginKey");
@@ -114,6 +143,22 @@ router.post("/user/login", (req, res)=> {
             });
         }
     });
+});
+
+router.get("/user/checkType", (req, res)=> {    
+    try{
+        const token = req.headers.authorization.split(" ")[1]
+        
+        const userData = jwt.verify(token, "loginKey");
+        user.findOne({_id: userData.userId}).then((user)=>{
+            res.send({userData: user});
+        }).catch(function(e){
+            res.json({message: e});
+        });
+    }
+    catch(e) {
+        res.json({message: "Invalid Token!", error: e});
+    }
 });
 
 router.post("/user/generatePassResetToken", function(req, res) {
@@ -256,7 +301,7 @@ router.put("/user/changeEmail", auth.verifyUser, (req, res)=> {
             res.json({message: "Your email address has been changed."});
         })
         .catch((e)=> {
-            res.json({error: e})
+            res.json({message: e})
         });
     });  
 });
@@ -277,26 +322,6 @@ router.put("/user/ChangePhone", auth.verifyUser, (req, res)=> {
             res.json({error: e})
         });
     }); 
-});
-
-router.put("/user/bePrivate", auth.verifyUser, (req, res)=> {    
-    user.updateOne({_id: req.userInfo._id}, {private: true})
-    .then(()=>{
-        res.json({message: "You have become private."});
-    })
-    .catch((e)=> {
-        res.json({error: e})
-    });
-});
-
-router.put("/user/bePublic", auth.verifyUser, (req, res)=> {    
-    user.updateOne({_id: req.userInfo._id}, {private: false})
-    .then(()=>{
-        res.json({message: "You have become public."});
-    })
-    .catch((e)=> {
-        res.json({error: e})
-    });
 });
 
 router.get("/user/search", auth.verifyUser, async (req, res)=> {
