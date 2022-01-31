@@ -1,5 +1,9 @@
 .setting-nav  {
     height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: flex-start;
 }
 
 .setting-nav > a  {
@@ -16,37 +20,23 @@
 }
 
 @media screen and (max-width: 660px) {    
-    .logged-in-nav-searchUser {
-        width: 125px;
-    }
-    .logged-in-nav-searchUser .form-control {
-        height: 25px;
-    }
-    .logged-in-nav-searchUser #inputGroup-sizing-default {
-        height: 25px;
-        font-size: 12px;
+    .setting-nav  {
+        height: 125px;
+        margin-bottom: 16px;
+        padding-left: 4px;
+        padding-right: 4px;
+        display: flex;
+        flex-direction: row ;
+        flex-wrap: wrap;
+        justify-content: space-around; 
+        align-items: center;
     }
     
-    .logged-in-nav-navigators  {
-        width: 165px;
-    }
-
-    .logged-in-nav-navigators .home-icon  {
-        font-size: 24px;
-    }
-    .logged-in-nav-navigators .chat-icon  {
-        font-size: 21px;
-    }
-    .logged-in-nav-navigators .plus-icon  {
-        font-size: 18px;
-    }
-    .logged-in-nav-navigators .bell-icon  {
-        font-size: 21px;
-    }
-    .logged-in-nav-navigators .nav-profile-picture {
-        height: 24px;
-        width: 24px;
-        object-fit: cover;
-        border-radius: 50%;
+    .setting-nav > a  {
+        width: max-content;
+        padding-left: 12px;
+        padding-right: 12px;
+        border-radius: 5px;
+        box-shadow: 5px 5px 10px #808080;
     }
 }

@@ -43,7 +43,7 @@ class LoggedInHeader extends Component {
                                         </NavLink>
                                     </li>
                                     <li>
-                                        <NavLink className="gear-icon dropdown-item" to="/user-setting" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
+                                        <NavLink className="gear-icon dropdown-item" to="/profile-setting" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
                                             <i className="bi bi-gear-fill"></i> Setting
                                         </NavLink>
                                     </li>

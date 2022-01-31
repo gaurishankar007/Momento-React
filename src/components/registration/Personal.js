@@ -55,8 +55,8 @@ const Personal = ()=> {
                 Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
             }
         }
-        axios.post(`${REACT_APP_BASE_URL}profile/add`, personalInformationData, config).then((result)=> {
-            if(result.data.message==="Profile added.") {
+        axios.put(`${REACT_APP_BASE_URL}profile/update`, personalInformationData, config).then((result)=> {
+            if(result.data.message==="Profile updated.") {
                 navigate("/address-registration");
             }
             else {
@@ -105,7 +105,7 @@ const Personal = ()=> {
                         </div>
                         <div className="d-flex justify-content-around align-items-center">                                       
                             <Link className="s-button"  to="/address-registration">Skip</Link>                            
-                            <button type="button" className="btn lR-button" onClick={addPersonal}>Sign Up</button>
+                            <button type="button" className="btn lR-button" onClick={addPersonal}>Next</button>
                         </div>
                     </form>
                 </div>

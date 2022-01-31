@@ -1,0 +1,6 @@
+.setting-form .profile-picture {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}

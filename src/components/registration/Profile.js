@@ -22,11 +22,6 @@ const Profile = ()=> {
         setResponse("");
         setSResponse("");
 
-        if(profileFileName==="defaultProfile.png") {
-            setResponse("You have not selected a profile picture.");
-            return;
-        }
-
         const { REACT_APP_BASE_URL } = process.env;
         const config = {
             headers: {

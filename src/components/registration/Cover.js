@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import LoggedOutHeader from "../LoggedOutHeader";
 import Logo from "../../images/logo.png";
-import ProfilePicture from "../../images/defaultCover.png";
+import CoverPicture from "../../images/defaultCover.png";
 import "../../css/Cover.css";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -15,11 +15,6 @@ const Cover = ()=> {
     const addCover = (e)=> {
         e.preventDefault();
         setResponse("");
-
-        if(coverFileName==="defaultCover.png") {
-            setResponse("You have not selected a cover picture.");
-            return;
-        }
 
         const { REACT_APP_BASE_URL } = process.env;
         const config = {
@@ -40,7 +35,7 @@ const Cover = ()=> {
                 <div className="register-user-form px-4 py-3">
                     <h3 className="text-center mb-2">Add a Cover Picture</h3>
                     <div className="d-flex justify-content-center mb-3">                        
-                        <img className="cover-picture" src={ProfilePicture} alt="Memento"/>  
+                        <img className="cover-picture" src={CoverPicture} alt="Memento"/>  
                     </div>
                     <form>
                         <div className="suggestion-message text-center mb-2">{response}</div>       

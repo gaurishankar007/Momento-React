@@ -15,6 +15,11 @@ import PersonalDetails from "./profile/PersonalDetails";
 import ChatList from "./chat/ChatList";
 import Upload from "./Upload";
 import UserSetting from "./setting/UserSetting";
+import PersonalSetting from "./setting/PersonalSetting";
+import AddressSetting from "./setting/AddressSetting";
+import PasswordSetting from "./setting/PasswordSetting";
+import ProfileSetting from "./setting/ProfilePicSetting";
+import CoverSetting from "./setting/CoverPicSetting";
 
 class Middle extends Component {
     render() {
@@ -34,7 +39,12 @@ class Middle extends Component {
                     <Route path="/upload" element={<Upload/>}/>
                     <Route path="/notification" element={<Notification/>}/>
                     <Route path="/home-profile" element={<HomeProfile/>}/>
+                    <Route path="/profile-setting" element={<ProfileSetting/>}/>
+                    <Route path="/cover-setting" element={<CoverSetting/>}/>
+                    <Route path="/password-setting" element={<PasswordSetting/>}/>
                     <Route path="/user-setting" element={<UserSetting/>}/>
+                    <Route path="/personal-setting" element={<PersonalSetting/>}/>
+                    <Route path="/address-setting" element={<AddressSetting/>}/>
                     <Route path="/personal-details" element={<PersonalDetails/>}/> 
                 </Routes>
             </div>

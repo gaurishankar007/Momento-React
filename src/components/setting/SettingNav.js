@@ -3,23 +3,23 @@ import "../../css/SettingNav.css";
 
 const SettingNav = ()=> {
     return (
-        <div className="setting-nav d-flex flex-column justify-content-between align-items-start">  
-                <NavLink to="/home" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
+        <div className="setting-nav">  
+                <NavLink to="/profile-setting" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
                     Profile Picture
                 </NavLink>
-                <NavLink to="/home" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
+                <NavLink to="/cover-setting" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
                     Cover Picture
                 </NavLink>
-                <NavLink  to="/home" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
+                <NavLink  to="/password-setting" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
                     Password
                 </NavLink>
                 <NavLink to="/user-setting" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
                     User Information
                 </NavLink>
-                <NavLink to="/chat-lists" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
+                <NavLink to="/personal-setting" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
                     Personal Information
                 </NavLink>
-                <NavLink to="/upload" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
+                <NavLink to="/address-setting" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
                     Address Information
                 </NavLink>
         </div>

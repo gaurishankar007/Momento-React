@@ -8,14 +8,14 @@ import "../../css/Address.css";
 import Logo from "../../images/logo.png";
 
 const Address = ()=> {
-    const [tCountry, setTCountry] = useState("Select your Country");
-    const [tState, setTState] = useState("");
-    const [tCity, setTCity] = useState("");
-    const [tStreet, setTStreet] = useState("");
     const [pCountry, setPCountry] = useState("Select your Country");
     const [pState, setPState] = useState("");
     const [pCity, setPCity] = useState("");
     const [pStreet, setPStreet] = useState(""); 
+    const [tCountry, setTCountry] = useState("Select your Country");
+    const [tState, setTState] = useState("");
+    const [tCity, setTCity] = useState("");
+    const [tStreet, setTStreet] = useState("");
     const [response, setResponse] = useState("");
     const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const Address = ()=> {
             pCountry==="Select your Country" || pState.trim()==="" || pCity.trim()==="" || pStreet.trim()==="") {
             setResponse("Empty field found. Fill up the form completely.");          
             return;             
-        } else  if ( tState.length<2 || tCity.length<2 || tStreet.length<2 || pState.length<2 || pCity.length<2 || pStreet.length<2) {
+        } else if ( tState.length<2 || tCity.length<2 || tStreet.length<2 || pState.length<2 || pCity.length<2 || pStreet.length<2) {
             setResponse("Provide at least two characters in state, city and street.");          
             return;             
         }
@@ -48,8 +48,8 @@ const Address = ()=> {
                 Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
             }
         }
-        axios.post(`${REACT_APP_BASE_URL}address/add`, AddressData, config).then((result)=> {
-            if(result.data.message==="Address added.") {
+        axios.put(`${REACT_APP_BASE_URL}address/update`, AddressData, config).then((result)=> {
+            if(result.data.message==="Address has been updated.") {
                 navigate("/home");
             }
             else {
@@ -79,7 +79,7 @@ const Address = ()=> {
                             <input type="text" className="form-control" id="pCity"  placeholder="Enter your city....." onChange={(e)=>setPCity(e.target.value.trim())}/>
                         </div>  
                         <div className="form-group mb-3">
-                            <input type="text" className="form-control" id="pStreet" placeholder="Pick your street....." onChange={(e)=>setPStreet(e.target.value.trim())}/>
+                            <input type="text" className="form-control" id="pStreet" placeholder="Enter your street....." onChange={(e)=>setPStreet(e.target.value.trim())}/>
                         </div>  
                         <h4 className="text-center address-type mb-2">Temporary</h4>
                         <Select className="mb-3" placeholder={tCountry} options={countryOptions} value={tCountry} onChange={value=>setTCountry(value.label)} />
@@ -90,7 +90,7 @@ const Address = ()=> {
                             <input type="text" className="form-control" id="tCity"  placeholder="Enter your city....." onChange={(e)=>setTCity(e.target.value.trim())}/>
                         </div>  
                         <div className="form-group mb-3">
-                            <input type="text" className="form-control" id="tStreet" placeholder="Pick your street....." onChange={(e)=>setTStreet(e.target.value.trim())}/>
+                            <input type="text" className="form-control" id="tStreet" placeholder="Enter your street....." onChange={(e)=>setTStreet(e.target.value.trim())}/>
                         </div>  
                         <div className="d-flex justify-content-around align-items-center">                                       
                             <Link className="s-button"  to="/home">Skip</Link>                                        
