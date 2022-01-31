@@ -1,0 +1,42 @@
+.setting {    
+    border: 1px solid #808080;
+    border-radius: 1%;
+    box-shadow: 3px 3px 10px #808080;
+    font-family: 'Laila', sans-serif;
+    width: 625px;
+}
+
+.setting-form {
+    border-left: 1px solid #808080;
+    padding-left: 32px;
+    padding-right: 32px;
+    width: 400px;
+}
+
+.setting-form label {
+    font-weight: 500;
+    font-size: 16px;
+}
+.setting-form label {
+    border-color: black;
+}
+.setting-form .form-control:focus {
+    border-color: #6200EA;
+    box-shadow: 0px 0px 0px 1px #6200EA;
+}
+
+
+.e-button {
+    color: white;
+    background-color: #6200EA;
+    border-radius: 8px;
+    box-shadow: 5px 5px 10px #808080;
+}
+
+.e-button:hover {
+    color: white;
+}
+
+.e-button:focus, .lR-button:active {
+    box-shadow: 5px 5px 10px #6200EA;
+}

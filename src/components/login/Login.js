@@ -79,8 +79,10 @@ const Login = ()=> {
                 <div className="register-user-form px-4 py-3">
                     <h3 className="text-center">Welcome to Momento</h3> 
                     <form>
-                        <div className="suggestion-message text-center mb-3">{response}</div>           
-                        <div className="success-message text-center mb-3">{sResponse}</div>     
+                        <div className="mb-2">
+                            <div className="suggestion-message text-center">{response}</div>           
+                            <div className="success-message text-center">{sResponse}</div>  
+                        </div>   
                         <div className="form-group mb-3">
                             <input type="text" className="form-control" id="username"  placeholder="Enter your username or email....." onChange={(e)=>setUsernameEmail(e.target.value)}/>
                         </div>  

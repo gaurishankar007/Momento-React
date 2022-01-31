@@ -44,13 +44,15 @@ const Profile = ()=> {
             <div className="register-user">
                 <img className="logo" src={Logo} alt="Memento"/>                
                 <div className="register-user-form px-4 py-3">
-                    <h3 className="text-center mb-2">Add a Profile Picture</h3>          
-                    <div className="success-message text-center mb-3">{sResponse}</div>          
+                    <h3 className="text-center mb-2">Add a Profile Picture</h3>   
+                    <div className="mb-2">
+                        <div className="suggestion-message text-center">{response}</div>           
+                        <div className="success-message text-center">{sResponse}</div>  
+                    </div>            
                     <div className="d-flex justify-content-center mb-3">                        
                         <img className="profile-picture" src={ProfilePicture} alt="Memento"/>  
                     </div>
-                    <form>
-                        <div className="suggestion-message text-center mb-2">{response}</div>   
+                    <form> 
                         <div className="form-group d-flex flex-column justify-content-center mb-3">
                             <input type="file" className="form-control" id="file" placeholder="Choose a profile picture....." accept=".jpeg, .png"/>
                         </div> 

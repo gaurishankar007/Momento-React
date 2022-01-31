@@ -14,7 +14,7 @@
 .register-user-form {
     border: 1px solid #808080;
     border-radius: 2%;
-    box-shadow: 3px 3px 10px #808080; /* #6200EA */
+    box-shadow: 3px 3px 10px #808080; 
 }
 
 .register-user-form h3 {
@@ -22,10 +22,10 @@
     font-weight: bold;
 }
 
-.register-user-form .suggestion-message {
+.suggestion-message {
     color: rgb(218, 70, 70);
 }
-.register-user-form .success-message { /*This class is not defined in the User.js but it will work in other js files*/
+.success-message { /*This class is not defined in the User.js but it will work in other js files*/
     color: rgb(70, 218, 70);
 }
 .register-user-form .form-control::placeholder {
