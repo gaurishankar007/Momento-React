@@ -151,7 +151,9 @@ router.get("/user/checkType", (req, res)=> {
         
         const userData = jwt.verify(token, "loginKey");
         user.findOne({_id: userData.userId}).then((user)=>{
-            res.send({userData: user});
+            if(userData!=null) {                
+                res.send({userData: user});
+            }
         }).catch(function(e){
             res.json({message: e});
         });
