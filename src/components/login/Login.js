@@ -26,7 +26,7 @@ const Login = ()=> {
             axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
                 if(result.data.userData) {
                     if (result.data.userData.admin===false && result.data.userData.superuser===false) {
-                        navigate("/home");
+                        window.location.replace("/home");
                     }
                     else if (result.data.userData.admin===true){
                     }

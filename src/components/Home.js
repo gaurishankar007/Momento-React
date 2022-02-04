@@ -1,17 +1,22 @@
 import { Component } from "react/cjs/react.production.min";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios"; 
 import LoggedInHeader from "./LoggedInHeader";
 
-class Home extends Component {
-    render() {
-        return (
-            <div>
-                <LoggedInHeader></LoggedInHeader>
+const Home = ()=> {
+    useEffect(()=> {
+        if(!localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/");
+        }   
+    }, [])
 
-            </div>
-        )
-    }
+    return (
+        <div>
+            <LoggedInHeader></LoggedInHeader>
+
+        </div>
+    )
 }
+
 
 export default Home;

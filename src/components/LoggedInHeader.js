@@ -6,9 +6,8 @@ import ProfilePicture from "../images/defaultProfile.png";
 class LoggedInHeader extends Component {
     render() {
         const logOut = ()=> {
-            if(localStorage.hasOwnProperty("userToken")) {
-                localStorage.removeItem("userToken");
-            }        
+            localStorage.clear();
+            window.location.replace("/");
         }
 
         return (
@@ -48,7 +47,7 @@ class LoggedInHeader extends Component {
                                         </NavLink>
                                     </li>
                                     <li className="dropdown-divider"></li>
-                                    <li><Link className="door-icon dropdown-item py-0" to="/" onClick={logOut}><i className="bi bi-door-open-fill"></i> Log Out</Link></li>
+                                    <li><a className="door-icon btn dropdown-item py-0" onClick={logOut}><i className="bi bi-door-open-fill"></i>Log Out</a></li>
                                 </ul>
                             </div>
                     </div>

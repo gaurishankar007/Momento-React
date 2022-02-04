@@ -126,7 +126,8 @@ const UserSetting =()=> {
                             <div className="d-flex justify-content-center">                                
                                 <input type="email" className="form-control" id="email" value={email} placeholder="Enter a new email....." onChange={(e)=>setEmail(e.target.value)}/>                           
                                 <button type="button" className="btn e-button ms-3" onClick={editEmail}><i className="bi bi-pen-fill"></i></button>
-                            </div>
+                            </div> 
+                            <small id="helper" className="form-text ms-1">Useful while resetting password.</small>
                         </div>    
                         <div className="form-group mb-3">
                             <label htmlFor="phone">Phone:</label>
