@@ -18,7 +18,12 @@ const UserSetting =()=> {
         }
     }
 
-    useEffect(()=> {        
+    useEffect(()=> {  
+        if(!localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/");
+            return;
+        }  
+        
         axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
             setUsername(result.data.userData.username)
             setEmail(result.data.userData.email)

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios";
 import LoggedOutHeader from "../LoggedOutHeader";
 import Logo from "../../images/logo.png";
@@ -11,6 +11,13 @@ const ForgotPassword = ()=> {
     const [response, setResponse] = useState("");
 
     const navigate = useNavigate();
+
+    useEffect(()=> {
+        if(localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/home");
+            return;
+        }   
+    }, [])
     
     const generateLink = (event)=> {
         event.preventDefault();

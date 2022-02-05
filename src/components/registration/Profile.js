@@ -7,20 +7,41 @@ import "../../css/Profile.css";
 import { Link, useNavigate } from "react-router-dom";
 
 const Profile = ()=> {   
-    const [profileFileName, setProfileFileName] = useState("defaultProfile.png");
+    const [profilePic, setProfilePic] = useState("");
+    const [profilePiceUrl, setProfilePicUrl] = useState("");
     const [response, setResponse] = useState("");
     const [sResponse, setSResponse] = useState("");
 
     const navigate = useNavigate();
-    useEffect(()=> {        
+    useEffect(()=> {   
+        if(!localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/");
+            return;
+        }        
         localStorage.hasOwnProperty("uRSM") ? setSResponse(localStorage.getItem("uRSM")): console.log();
         localStorage.hasOwnProperty("uRSM") ? localStorage.removeItem("uRSM") : console.log();
+        setProfilePicUrl(ProfilePicture);
     }, [])
+
+    const onProfilePicSelect = (event) => {
+        if (event.target.files && event.target.files[0]) {
+          setProfilePicUrl(URL.createObjectURL(event.target.files[0]));
+          setProfilePic(event.target.files[0]);
+        }
+    }
 
     const addProfile = (e)=> {
         e.preventDefault();
         setResponse("");
         setSResponse("");
+
+        if(profilePic==="") {
+            setResponse("Select a profile picture first.");
+            return;
+        }
+
+        const profileData = new FormData();
+        profileData.append("profile", profilePic);
 
         const { REACT_APP_BASE_URL } = process.env;
         const config = {
@@ -28,8 +49,13 @@ const Profile = ()=> {
                 Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
             }
         }
-        axios.post(`${REACT_APP_BASE_URL}user/changeProfile`, config).then((result)=> {
-            navigate("/cover-registration");
+        axios.put(`${REACT_APP_BASE_URL}user/changeProfile`, profileData, config).then((result)=> {
+            if(result.data.message=="New profile picture added.") {
+                navigate("/cover-registration");
+            }
+            else {
+                setResponse(result.data.message);
+            }
         });
     }
 
@@ -45,11 +71,11 @@ const Profile = ()=> {
                         <div className="success-message text-center">{sResponse}</div>  
                     </div>            
                     <div className="d-flex justify-content-center mb-3">                        
-                        <img className="profile-picture" src={ProfilePicture} alt="Memento"/>  
+                        <img className="profile-picture" src={profilePiceUrl} alt="Memento"/>  
                     </div>
                     <form> 
                         <div className="form-group d-flex flex-column justify-content-center mb-3">
-                            <input type="file" className="form-control" id="file" placeholder="Choose a profile picture....." accept=".jpeg, .png"/>
+                            <input type="file" className="form-control" id="file" placeholder="Choose a profile picture....." accept=".jpeg, .png, .jpg" onChange={onProfilePicSelect}/>
                         </div> 
                         <div className="d-flex justify-content-around align-items-center">                                       
                             <Link className="s-button"  to="/cover-registration">Skip</Link>                

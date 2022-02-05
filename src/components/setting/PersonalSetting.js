@@ -32,7 +32,12 @@ const PersonalSetting = ()=> {
         }
     }
 
-    useEffect(()=> {    
+    useEffect(()=> {   
+        if(!localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/");
+            return;
+        }   
+        
         axios.get(`${REACT_APP_BASE_URL}profile/get/my`, config).then(result=> { 
             if(result.data.userProfile) {    
                 setFirstName(result.data.userProfile.first_name);

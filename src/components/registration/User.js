@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import LoggedOutHeader from "../LoggedOutHeader";
 import "../../css/User.css";
@@ -13,6 +13,12 @@ const User = ()=> {
     const [response, setResponse] = useState("");
     
     const navigate = useNavigate();
+    
+    useEffect(()=> {
+        if(localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/home");
+        }   
+    }, [])
 
     const userRegister = (e)=> {
         e.preventDefault();

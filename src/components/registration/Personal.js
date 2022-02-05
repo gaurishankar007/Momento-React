@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import LoggedOutHeader from "../LoggedOutHeader";
@@ -14,6 +14,13 @@ const Personal = ()=> {
     const [response, setResponse] = useState("");
     
     const navigate = useNavigate();
+    
+    useEffect(()=> {
+        if(!localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/");
+            return;
+        }   
+    }, [])
 
     function getDateNow() {    
         const date = new Date();

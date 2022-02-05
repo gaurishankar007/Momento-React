@@ -25,7 +25,12 @@ const AddressSetting = ()=> {
         }
     }
 
-    useEffect(()=> {        
+    useEffect(()=> {      
+        if(!localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/");
+            return;
+        }   
+        
         axios.get(`${REACT_APP_BASE_URL}address/get/my`, config).then(result=> {
             if(result.data.userAddress) {
                 result.data.userAddress.permanent.country === "" ? setPCountry("Select your Country") : setPCountry(result.data.userAddress.permanent.country);

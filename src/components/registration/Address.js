@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Select from 'react-select'
@@ -17,7 +17,15 @@ const Address = ()=> {
     const [tCity, setTCity] = useState("");
     const [tStreet, setTStreet] = useState("");
     const [response, setResponse] = useState("");
+
     const navigate = useNavigate();
+
+    useEffect(()=> {
+        if(!localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/");
+            return;
+        }   
+    }, [])
 
     const addAddress = (e)=> {
         e.preventDefault();

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState , useEffect} from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LoggedOutHeader from "../LoggedOutHeader";
@@ -10,6 +10,13 @@ const ResetPassword = ()=> {
     const [response, setResponse] = useState("");
 
     const navigate = useNavigate();
+
+    useEffect(()=> {
+        if(localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/home");
+            return;
+        }   
+    }, [])
 
     const resetPass = (e)=> {
         e.preventDefault();

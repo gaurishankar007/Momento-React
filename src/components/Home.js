@@ -7,6 +7,7 @@ const Home = ()=> {
     useEffect(()=> {
         if(!localStorage.hasOwnProperty("userToken")) {
             window.location.replace("/");
+            return;
         }   
     }, [])
 

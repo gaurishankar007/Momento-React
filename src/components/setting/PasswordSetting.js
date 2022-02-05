@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios"; 
 import LoggedInHeader from ".././LoggedInHeader";
 import SettingNav from "./SettingNav";
@@ -9,6 +9,13 @@ const PasswordSetting =()=> {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [response, setResponse] = useState("");
     const [sResponse, setSResponse] = useState("");
+    
+    useEffect(()=> {
+        if(!localStorage.hasOwnProperty("userToken")) {
+            window.location.replace("/");
+            return;
+        }   
+    }, [])
     
     const changePassword = (event)=> {
         event.preventDefault();
