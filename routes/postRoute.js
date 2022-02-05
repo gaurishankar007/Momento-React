@@ -2,10 +2,10 @@
 const express = require("express");
 const router = new express.Router();
 const mongoose = require("mongoose");
+const fs = require("fs");
 
 // Importing self made js files....
 const post = require("../models/postModel.js");
-const block = require("../models/blockModel.js");
 const follow = require("../models/followModel.js");
 const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
@@ -15,7 +15,7 @@ router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async 
     try {
         // If you want to fix the number of file to upload then use 'postUpload.array("image_video", 10)'
         if(req.files.length==0) {
-            return res.json({error: "Invalid image format, only supports png or jpeg."});
+            return res.json({message: "Invalid image format, only supports png or jpeg."});
         }
         
         // Making array of filenames
@@ -24,7 +24,7 @@ router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async 
         for(i=0; i<filesArray.length; i++) {
             filesNameArray.push(filesArray[i].filename);
         }
-
+        
         // Making array of tagged friends 
         const taggedFriend = [];
         if(typeof(req.body.tag_friend)=="string") {
@@ -71,18 +71,31 @@ router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async 
         res.json({message: "Post uploaded"});
     }
     catch (err) {
-        res.send(err.message);
+        console.log(err);
+        res.send({message: err.message});
     }
 });
 
 router.put("/post/edit", auth.verifyUser, (req, res)=> {
+    // Making array of tagged friends 
+    const taggedFriend = [];
+    if(typeof(req.body.tag_friend)=="string") {
+        taggedFriend.push(mongoose.Types.ObjectId(req.body.tag_friend));
+    }
+    else if(typeof(req.body.tag_friend)=="object") {
+        for(i=0; i<req.body.tag_friend.length; i++) {
+            taggedFriend.push(mongoose.Types.ObjectId(req.body.tag_friend[i]));
+        }
+    }
+
     post.updateOne({_id: req.body.post_id}, {
         caption: req.body.caption,
         description: req.body.description,
+        tag_friend: taggedFriend, 
         }
     )
     .then(function(){
-        res.json({message: "Post has been edited updated."})
+        res.json({message: "Post has been edited."})
     }) 
     .catch(function(e) {
         res.json(e);
@@ -90,12 +103,20 @@ router.put("/post/edit", auth.verifyUser, (req, res)=> {
 });
 
 router.delete("/post/delete", auth.verifyUser, (req, res)=> {
-    post.findByIdAndDelete({_id: req.body.post_id})
-    .then(function() {
-        res.json({message: "Post Deleted."});
-    })
-    .catch((e)=> {
-        res.json({error: e});
+    post.findById(req.body.post_id).then((postData)=> {
+        const attach_files = postData.attach_file.length;
+        for(i=0; i<attach_files; i++) {            
+            const image_path = `./uploads/posts/${postData.attach_file[i]}`;
+            fs.unlinkSync(image_path);
+        }
+
+        post.findByIdAndDelete(postData._id)
+        .then(function() {
+            res.json({message: "Post has been deleted."});
+        })
+        .catch((e)=> {
+            res.json({message: e});
+        });
     });
 });
 
@@ -111,6 +132,29 @@ router.get("/posts/get/tagged", auth.verifyUser, async (req, res) => {
     .sort({createdAt: -1});
 
     res.send(posts);
+});
+
+router.post("/posts/get/other", auth.verifyUser, async (req, res) => { 
+    const posts = await post.find({user_id: req.body.user_id})
+    .sort({createdAt: -1});
+
+    res.send(posts);
+});
+
+router.post("/posts/get/tagged/other", auth.verifyUser, async (req, res) => { 
+    const posts = await post.find({tag_friend: req.body.user_id})
+    .sort({createdAt: -1});
+
+    res.send(posts);
+});
+
+router.post("/post/get/single", auth.verifyUser, async (req, res) => { 
+    post.findOne({_id: req.body.post_id})
+    .populate("user_id", "username profile_pic")
+    .populate("tag_friend", "_id username profile_pic")
+    .then((postData)=> {
+        res.send(postData);
+    });
 });
 
 router.get("/posts/get/followedUser", auth.verifyUser, async (req, res) => { 

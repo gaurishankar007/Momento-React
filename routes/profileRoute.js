@@ -31,7 +31,7 @@ router.get("/profile/get/my", auth.verifyUser, async (req, res)=> {
     }
 });
 
-router.get("/profile/get", auth.verifyUser, async (req, res)=> {
+router.post("/profile/get/other", auth.verifyUser, async (req, res)=> {
     const userProfile = await profile.findOne({user_id: req.body.user_id});
     if(userProfile!=null) {
         res.json({userProfile: userProfile});

@@ -151,7 +151,7 @@ router.get("/user/checkType", (req, res)=> {
         
         const userData = jwt.verify(token, "loginKey");
         user.findOne({_id: userData.userId}).then((user)=>{
-            if(userData!=null) {                
+            if(user!=null) {                
                 res.send({userData: user});
             }
         }).catch(function(e){
@@ -161,6 +161,16 @@ router.get("/user/checkType", (req, res)=> {
     catch(e) {
         res.json({message: "Invalid Token!", error: e});
     }
+});
+
+router.post("/user/other", auth.verifyUser, (req, res)=> {    
+    user.findOne({_id: req.body.user_id}).then((user)=>{
+        if(user!=null) {             
+            res.send({userData: user});
+        }
+    }).catch(function(e){
+        res.json({message: e});
+    });
 });
 
 router.post("/user/generatePassResetToken", function(req, res) {
@@ -230,7 +240,7 @@ router.put("/user/changeProfile", auth.verifyUser, profileUpload.single("profile
     user.findOne({_id: req.userInfo._id})
     .then((userData)=> {
         if(userData.profile_pic!="defaultProfile.png") {
-            const profile_pic_path = `./uploadedFiles/profiles/${userData.profile_pic}`;
+            const profile_pic_path = `./uploads/profiles/${userData.profile_pic}`;
             fs.unlinkSync(profile_pic_path);
         }  
     
@@ -255,7 +265,7 @@ router.put("/user/changeCover", auth.verifyUser, coverUpload.single("cover"), (r
     user.findOne({_id: req.userInfo._id})
     .then((userData)=> {
         if(userData.cover_pic!="defaultCover.png") {
-            const cover_pic_path = `./uploadedFiles/covers/${userData.cover_pic}`;
+            const cover_pic_path = `./uploads/covers/${userData.cover_pic}`;
             fs.unlinkSync(cover_pic_path);
         }    
 

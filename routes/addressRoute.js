@@ -57,7 +57,7 @@ router.get("/address/get/my", auth.verifyUser, async (req, res)=> {
     }
 });
 
-router.get("/address/get", auth.verifyUser, async (req, res)=> {
+router.post("/address/get/other", auth.verifyUser, async (req, res)=> {
     const userAddress = await address.findOne({user_id: req.body.user_id});
     if(userAddress!=null) {
         res.json({userAddress: userAddress});
