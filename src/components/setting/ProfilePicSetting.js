@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios"; 
 import LoggedInHeader from ".././LoggedInHeader";
-import ProfilePicture from "../../images/defaultProfile.png";
 import SettingNav from "./SettingNav";
 import "../../css/ProfileSetting.css";
 
@@ -57,7 +56,7 @@ const ProfileSetting =()=> {
             }
         }
         axios.put(`${REACT_APP_BASE_URL}user/changeProfile`, profileData, config).then((result)=> {
-            if(result.data.message=="New profile picture added.") {
+            if(result.data.message==="New profile picture added.") {
                 setProfilePic("");
                 setSResponse("You have changed your profile picture.");
             }
@@ -66,6 +65,11 @@ const ProfileSetting =()=> {
             }
         });
     }
+
+     const hiddenFileInput = React.useRef(null);    
+     const handleFileInputClick = () => {
+         hiddenFileInput.current.click();
+     };
 
     return(
         <div>            
@@ -81,11 +85,12 @@ const ProfileSetting =()=> {
                         <div className="d-flex justify-content-center mb-3">                        
                             <img className="profile-picture" src={profilePiceUrl} alt="Memento"/>  
                         </div>
-                        <div className="form-group d-flex flex-column justify-content-center mb-3">
-                            <input type="file" className="form-control" id="file" placeholder="Choose a profile picture....." accept=".jpeg, .png, .jpg" onChange={onProfilePicSelect}/>
+                        <div className="form-group d-flex flex-column justify-content-center align-items-center mb-3">
+                            <input type="file" className="form-control mb-3" id="profile-picture-selection" ref={hiddenFileInput} accept=".jpeg, .png, .jpg" onChange={onProfilePicSelect}/>             
+                            <button type="button" className="btn lR-button" onClick={handleFileInputClick} >Select a profile picture</button>
                         </div> 
                         <div className="d-flex justify-content-center align-items-center">                
-                            <button type="button" className="btn lR-button" onClick={changeProfile}>Change Profile Picture</button>
+                            <button type="button" className="btn lR-button" onClick={changeProfile}><i className="bi bi-upload"></i> Change</button>
                         </div>
                     </form>
                 </div>            

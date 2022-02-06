@@ -4,7 +4,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    font-family: 'Laila', sans-serif;
 }
 
 .register-user .logo {
@@ -18,7 +17,6 @@
 }
 
 .register-user-form h3 {
-    font-family: 'Laila', sans-serif;
     font-weight: bold;
 }
 

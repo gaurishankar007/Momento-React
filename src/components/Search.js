@@ -1,9 +1,9 @@
 import { Component } from "react/cjs/react.production.min";
 import { useState } from "react";
 import axios from "axios"; 
-import LoggedInHeader from ".././LoggedInHeader";
+import LoggedInHeader from "./LoggedInHeader";
 
-class ChatList extends Component {
+class Search extends Component {
     render() {
         return (
             <div>
@@ -14,4 +14,4 @@ class ChatList extends Component {
     }
 }
 
-export default ChatList;
+export default Search;

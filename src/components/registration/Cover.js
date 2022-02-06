@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import LoggedOutHeader from "../LoggedOutHeader";
 import Logo from "../../images/logo.png";
@@ -47,7 +47,7 @@ const Cover = ()=> {
             }
         }
         axios.put(`${REACT_APP_BASE_URL}user/changeCover`, coverData, config).then((result)=> {
-            if(result.data.message=="New cover picture added.") {
+            if(result.data.message==="New cover picture added.") {
                 navigate("/personal-information-registration");
             }
             else {
@@ -55,6 +55,11 @@ const Cover = ()=> {
             }
         });
     }
+
+    const hiddenFileInput = React.useRef(null);    
+    const handleFileInputClick = () => {
+        hiddenFileInput.current.click();
+    };
 
     return(
         <div>
@@ -68,8 +73,9 @@ const Cover = ()=> {
                         <img className="cover-picture" src={coverPicUrl} alt="Memento"/>  
                     </div>
                     <form>   
-                        <div className="form-group d-flex flex-column justify-content-center mb-3">
-                            <input type="file" className="form-control" id="file" placeholder="Choose a profile picture....." accept=".jpeg, .png, .jpg" onChange={onCoverPicSelect}/>
+                        <div className="form-group d-flex flex-column justify-content-center align-items-center mb-3">
+                            <input type="file" className="form-control" id="cover-picture-selection" ref={hiddenFileInput} accept=".jpeg, .png, .jpg" onChange={onCoverPicSelect}/>            
+                            <button type="button" className="btn lR-button" onClick={handleFileInputClick} >Select a cover picture</button>
                         </div> 
                         <div className="d-flex justify-content-around align-items-center">                                       
                             <Link className="s-button"  to="/personal-information-registration">Skip</Link>                

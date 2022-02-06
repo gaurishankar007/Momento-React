@@ -142,7 +142,7 @@ const PersonalSetting = ()=> {
                         <div className="form-group mb-3">
                             <label htmlFor="biography">Biography:</label> 
                             <textarea type="text" className="form-control" id="biography" value={biography}  placeholder="Enter your biography....." rows="3" onChange={(e)=>setBiography(e.target.value.trim())}/>  
-                            <small id="helper" className="form-text ms-1">Optional.</small>
+                            <small id="helper" className="form-text ms-1">Optional</small>
                         </div>
                         <div className="d-flex justify-content-center align-items-center">                               
                             <button type="button" className="btn lR-button" onClick={editPersonal}>Update</button>

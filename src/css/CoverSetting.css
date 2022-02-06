@@ -3,3 +3,8 @@
     width: 297.5px;
     object-fit: contain;
 }
+
+#cover-picture-selection {
+    width: 300px;
+    display: none;
+}

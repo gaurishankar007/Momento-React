@@ -1,0 +1,102 @@
+#post-images-selection {
+    width: 300px;
+    display: none;
+}
+
+.upload-div {
+    width: 900px;    
+    border: 1px solid #808080;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 3px 3px 10px #808080; 
+}
+
+.carousel-indicators button{
+    height: 15px !important;
+    width: 15px !important;
+    border-radius: 50%;
+}
+
+.carousel-indicators .active{
+   background-color: #6200EA !important;
+}
+
+.upload-div label {
+    font-weight: 500;
+    font-size: 16px;
+}
+.upload-div label {
+    border-color: black;
+}
+.upload-div .form-control::placeholder {
+    color: black;
+}
+.upload-div #helper {
+    color: black;
+    font-weight: 500;
+}
+.upload-div .form-control {
+    border-color: black;
+}
+.upload-div .form-control:focus {
+    border-color: #6200EA;
+    box-shadow: 0px 0px 0px 1px #6200EA;
+}
+
+.upload-div-form {
+    width: 500px;
+}
+
+#user-follower {
+    height: 180px;
+    border: 1px solid black;
+    border-radius: 5px;
+    overflow-y: scroll;
+}
+
+.follower-profilePic {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.follower-username {
+    font-size: 25px !important;
+    font-weight: 500;
+}
+
+.upload-button-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-button-div .image-select-button {
+    margin-right: 32px;
+}
+
+@media screen and (max-width: 960px) { 
+    .upload-div {
+        width: 500px; 
+    }
+}
+
+@media screen and (max-width: 660px) {    
+    .upload-div {
+        width: 400px; 
+    }
+    .upload-div-form {
+        width: 300px;
+    }
+
+    .upload-button-div {
+        flex-direction: column;
+    }
+    .upload-button-div .image-select-button {
+        margin-right: 0px;
+        margin-bottom: 16px;
+    }
+}
+
+

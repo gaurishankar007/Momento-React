@@ -12,7 +12,7 @@ import Home from "./Home";
 import Notification from "./Notification";
 import HomeProfile from "./profile/HomeProfile";
 import PersonalDetails from "./profile/PersonalDetails";
-import ChatList from "./chat/ChatList";
+import Search from "./Search";
 import Upload from "./Upload";
 import UserSetting from "./setting/UserSetting";
 import PersonalSetting from "./setting/PersonalSetting";
@@ -35,7 +35,7 @@ class Middle extends Component {
                     <Route path="/personal-information-registration" element={<Personal/>}/>
                     <Route path="/address-registration" element={<Address/>}/>
                     <Route path="/home" element={<Home/>}/>                   
-                    <Route path="/chat-lists" element={<ChatList/>}/>                   
+                    <Route path="/search" element={<Search/>}/>                   
                     <Route path="/upload" element={<Upload/>}/>
                     <Route path="/notification" element={<Notification/>}/>
                     <Route path="/home-profile" element={<HomeProfile/>}/>

@@ -4,3 +4,8 @@
     object-fit: cover;
     border-radius: 50%;
 }
+
+#profile-picture-selection {
+    width: 300px;
+    display: none;
+}

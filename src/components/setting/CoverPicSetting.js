@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios"; 
 import LoggedInHeader from ".././LoggedInHeader";
-import CoverPicture from "../../images/defaultCover.png";
 import SettingNav from "./SettingNav";
 import "../../css/CoverSetting.css";
 
@@ -57,7 +56,7 @@ const CoverSetting =()=> {
             }
         }
         axios.put(`${REACT_APP_BASE_URL}user/changeCover`, coverData, config).then((result)=> {
-            if(result.data.message=="New cover picture added.") {
+            if(result.data.message==="New cover picture added.") {
                 setCoverPic("");
                 setSResponse("You have changed your cover picture.");
             }
@@ -66,6 +65,11 @@ const CoverSetting =()=> {
             }
         });
     }
+
+    const hiddenFileInput = React.useRef(null);    
+    const handleFileInputClick = () => {
+        hiddenFileInput.current.click();
+    };
 
     return(
         <div>            
@@ -81,11 +85,12 @@ const CoverSetting =()=> {
                         <div className="d-flex justify-content-center mb-3">                        
                             <img className="cover-picture" src={coverPicUrl} alt="Memento"/>  
                         </div>
-                        <div className="form-group d-flex flex-column justify-content-center mb-3">
-                            <input type="file" className="form-control" id="file" placeholder="Choose a profile picture....." accept=".jpeg, .png, .jpg" onChange={onCoverPicSelect}/>
+                        <div className="form-group d-flex flex-column justify-content-center align-items-center mb-3">
+                            <input type="file" className="form-control" id="cover-picture-selection" ref={hiddenFileInput} accept=".jpeg, .png, .jpg" onChange={onCoverPicSelect}/>            
+                            <button type="button" className="btn lR-button" onClick={handleFileInputClick} >Select a cover picture</button>
                         </div> 
                         <div className="d-flex justify-content-center align-items-center">                
-                            <button type="button" className="btn lR-button" onClick={changeCover}>Change Cover Picture</button>
+                            <button type="button" className="btn lR-button" onClick={changeCover}><i className="bi bi-upload"></i> Change</button>
                         </div>
                     </form>
                 </div>            

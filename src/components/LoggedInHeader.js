@@ -24,9 +24,9 @@ class LoggedInHeader extends Component {
                             <NavLink className="home-icon" to="/home" style={({ isActive }) => isActive ? { color: '#6200EA'} : { color: 'black' }}>
                                 <i className="bi bi-house-fill"></i>
                             </NavLink>
-                            <NavLink className="chat-icon" to="/chat-lists" style={({ isActive }) => isActive ? { color: '#6200EA' } : { color: 'black' }}>
-                                <i className="bi bi-chat-text-fill"></i>
-                                </NavLink>
+                            <NavLink className="chat-icon" to="/search" style={({ isActive }) => isActive ? { color: '#6200EA' } : { color: 'black' }}>
+                                <i className="bi bi-search"></i>
+                            </NavLink>
                             <NavLink className="plus-icon" to="/upload" style={({ isActive }) => isActive ? { color: '#6200EA' } : { color: 'black' }}>
                                 <i className="bi bi-plus-square-fill"></i>
                                 </NavLink>
