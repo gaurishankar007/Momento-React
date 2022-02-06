@@ -53,13 +53,22 @@
     overflow-y: scroll;
 }
 
+#tag-follower {
+    border-color: black;
+}
+#tag-follower:checked {
+    background-color: #6200EA;
+    border-color: #6200EA;
+}
+#tag-follower:checked {
+    box-shadow: none;
+}
 .follower-profilePic {
     height: 60px;
     width: 60px;
     object-fit: cover;
     border-radius: 50%;
 }
-
 .follower-username {
     font-size: 25px !important;
     font-weight: 500;
@@ -71,7 +80,6 @@
     justify-content: center;
     align-items: center;
 }
-
 .upload-button-div .image-select-button {
     margin-right: 32px;
 }
@@ -88,6 +96,16 @@
     }
     .upload-div-form {
         width: 300px;
+    }
+    
+    .follower-profilePic {
+        height: 40px;
+        width: 40px;
+    }
+    
+    .follower-username {
+        font-size: 16px !important;
+        font-weight: 500;
     }
 
     .upload-button-div {

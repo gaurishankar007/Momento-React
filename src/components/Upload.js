@@ -6,9 +6,10 @@ import LoggedInHeader from "./LoggedInHeader";
 import "../css/Upload.css";
 
 const Upload = ()=> {
+    const [followers, setFollowers] = useState([]); 
     const [uploadDiv, setUploadDiv] = useState("");
     const [postImages, setPostImages] = useState([]); 
-    const [tagFriend, setTagFriend] = useState([]); 
+    const [taggedFollowers, setTaggedFollowers] = useState([]); 
     const [caption, setCaption] = useState(""); 
     const [description, setDescription] = useState(""); 
     const [response, setResponse] = useState("");
@@ -21,17 +22,6 @@ const Upload = ()=> {
         }
     }
 
-    useEffect(()=> {
-        document.getElementsByClassName("upload-button-div")[0].style.marginTop = "300px";
-
-        axios.get(`${REACT_APP_BASE_URL}followers/get`, config).then((result)=> {
-            if(result.data.length>0) {
-                setTagFriend(result.data);
-                console.log(result.data)
-            }
-        });
-    }, [])
-
     // Create a reference to the hidden file input element
     const hiddenFileInput = React.useRef(null);
 
@@ -40,6 +30,26 @@ const Upload = ()=> {
     const handleFileInputClick = () => {
         hiddenFileInput.current.click();
     }; 
+
+    useEffect(()=> {
+        document.getElementsByClassName("upload-button-div")[0].style.marginTop = "300px";
+
+        axios.get(`${REACT_APP_BASE_URL}followers/get`, config).then((result)=> {
+            if(result.data.length>0) {
+                setFollowers(result.data);
+            }
+        });
+    }, [])
+
+    function tagFollower(follower_id) {
+        var tempTaggedFollower = taggedFollowers;
+        if(tempTaggedFollower.includes(follower_id)) {            
+            tempTaggedFollower.pop(follower_id);
+        } else {                    
+            tempTaggedFollower.push(follower_id);
+        }
+        setTaggedFollowers(tempTaggedFollower);
+    }
 
     const onImagesSelect = (event) => { 
         event.preventDefault();
@@ -85,11 +95,12 @@ const Upload = ()=> {
                                 <small id="helper" className="form-text ms-1">Optional</small>
                             </div>                          
                             <div className="form-group mb-3">
-                                <label htmlFor="user-follower">Follower:</label> 
+                                <label htmlFor="user-follower">Followers:</label> 
                                 <div className="d-flex flex-column p-3" id="user-follower" >
-                                    {tagFriend.map(singleFollower=> {
+                                    {followers.map(singleFollower=> {
                                         return (
-                                            <div className="d-flex align-items-center mb-2">
+                                            <div className="d-flex align-items-center mb-2" key={singleFollower._id}>
+                                                <input className="form-check-input me-2" type="checkbox" value="" id="tag-follower" onClick={()=>{tagFollower(singleFollower.follower._id)}}/>
                                                 <img className="follower-profilePic me-3" src={REACT_APP_BASE_URL + "profiles/"+ singleFollower.follower.profile_pic} alt="follower-profilePic"/>
                                                 <label className="follower-username">{singleFollower.follower.username}</label>
                                             </div>
@@ -97,7 +108,7 @@ const Upload = ()=> {
                                     })}
                                 </div>
                                 <small id="helper" className="form-text ms-1">Tag followers</small>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
                 </div>
@@ -117,16 +128,24 @@ const Upload = ()=> {
             setResponse("Caption field is empty.");
             return;
         }
-        return;
 
         const postData = new FormData();
         postData.append("caption", caption);
         postData.append("description", description);
         postData.append("images", postImages);
+        for(var i=0; i<postImages.length; i++) {;
+            postData.append(`images`, postImages[i]);            
+        }
+        for(var i=0; i<taggedFollowers.length; i++) {;
+            postData.append(`tag_friend[${i}]`, taggedFollowers[i]);            
+        }
 
         axios.post(`${REACT_APP_BASE_URL}post/add`, postData, config).then((result)=> {
             if(result.data.message==="Post uploaded") {
                 setPostImages([]);
+                setTaggedFollowers([]);
+                setUploadDiv("");
+                document.getElementsByClassName("upload-button-div")[0].style.marginTop = "300px";
                 setSResponse("Your post has been uploaded.");
             }
             else {
