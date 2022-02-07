@@ -246,7 +246,7 @@ router.put("/user/changeProfile", auth.verifyUser, profileUpload.single("profile
     
         user.updateOne({_id: req.userInfo._id}, {profile_pic: req.file.filename})
         .then(()=>{
-            res.json({message: "New profile picture added."});
+            res.json({message: "    "});
         })
         .catch((e)=> {
             res.json({message: e});
@@ -336,16 +336,33 @@ router.put("/user/ChangePhone", auth.verifyUser, (req, res)=> {
     }); 
 });
 
-router.get("/user/search", auth.verifyUser, async (req, res)=> {
-    const keyword = req.query.username
-    ? {username: { $regex: req.query.username, $options: "i" }}
-    :{}; // Making keyword workable json format data according to user search
+router.post("/user/search", auth.verifyUser, async (req, res)=> {
+    const name = req.body.username_email
+    var searchedUsers = [];
 
     // Using async function show that only after searching all the users, it will send the users 
     // Otherwise it will produce error 
     // Because it will start to run the code below it even though all the users have not been completely searched
-    const users = await user.find(keyword).find({_id: {$ne: req.userInfo._id}});
-    res.json(users); 
+    const usernameUsers = await user.find({username: name}).find({_id: {$ne: req.userInfo._id}});
+    const emailUsers = await user.find({email: name}).find({_id: {$ne: req.userInfo._id}});
+
+    searchedUsers.push.apply(searchedUsers, usernameUsers);
+    searchedUsers.push.apply(searchedUsers, emailUsers);
+    
+    const nameUsers = await profile.find({
+        $or: [
+            {first_name: name},
+            {last_name: name}
+        ]
+    })
+    .find({_id: {$ne: req.userInfo._id}})
+    .populate("user_id");
+
+    for(var i=0; i<nameUsers.length; i++) {    
+        searchedUsers.push(nameUsers[i].user_id);
+    }
+
+    res.json(searchedUsers); 
 });
 
-module.exports = router;
+module.exports = router; 

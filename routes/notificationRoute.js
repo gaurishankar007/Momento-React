@@ -6,121 +6,40 @@ const router = new express.Router();
 const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
 
-router.get("/notifications/get", auth.verifyUser, async (req, res)=> {
-    const userNotifications = []
-
-    const userLikeNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Like", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});    
-
-    const userCommentNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Comment", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-
-    const userPostNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Post", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-
-    const userTagNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Tag", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-
-    const userFollowNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Follow", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-
-    const userReportNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Report", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-
-    var index = 0;
-    while(userNotifications.length<5) {        
-        if(index>=userLikeNotifications.length && index>=userCommentNotifications.length && index>=userPostNotifications.length 
-            && index>=userTagNotifications.length && index>=userFollowNotifications.length && index>=userReportNotifications.length) {
-                return res.send(userNotifications); // Returning from while loop if the 
-        }
-        if(userLikeNotifications.length>index && userNotifications.length<5) {
-            userNotifications.push(userLikeNotifications[index]);            
-        }
-        if(userCommentNotifications.length>index && userNotifications.length<5) {
-            userNotifications.push(userCommentNotifications[index]);            
-        }
-        if(userPostNotifications.length>index && userNotifications.length<5) {
-            userNotifications.push(userPostNotifications[index]);            
-        }
-        if(userTagNotifications.length>index && userNotifications.length<5) {
-            userNotifications.push(userTagNotifications[index]);            
-        }
-        if(userFollowNotifications.length>index && userNotifications.length<5) {
-            userNotifications.push(userFollowNotifications[index]);            
-        }
-        if(userReportNotifications.length>index && userNotifications.length<5) {
-            userNotifications.push(userReportNotifications[index]);            
-        }
-        index=index+1;
-    }
-
-    res.send(userNotifications);
+router.get("/notifications/getNum", auth.verifyUser, async (req, res)=> {
+    const unSeenNotifications = await notification.countDocuments({notified_user: req.userInfo._id, seen: false});
+    const seenNotifications = await notification.countDocuments({notified_user: req.userInfo._id, seen: true});
+    res.json({unSeenNum: unSeenNotifications.toString(), seenNum: seenNotifications.toString()});
 });
 
 router.get("/notifications/get/unseen", auth.verifyUser, async (req, res)=> {
-    const userNotifications = []
-
-    const userLikeNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Like", seen: false})
-    .populate("notification_generator", "username")
+    const unSeenNotifications = await notification.find({notified_user: req.userInfo._id, seen: false})
+    .populate("notification_generator", "_id profile_pic")
+    .populate("target_post", "_id")
     .sort({createdAt: -1});
-    if(userLikeNotifications.length>0) {
-        userNotifications.push(userLikeNotifications)
-    };
 
-    const userCommentNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Comment", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-    if(userCommentNotifications.length>0) {
-        userNotifications.push(userCommentNotifications);
-    };
-
-    const userPostNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Post", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-    if(userPostNotifications.length>0) {
-        userNotifications.push(userPostNotifications);
-    };
-
-    const userTagNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Tag", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-    if(userTagNotifications.length>0) {
-        userNotifications.push(userTagNotifications);
-    };
-
-    const userFollowNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Follow", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-    if(userFollowNotifications.length>0) {
-        userNotifications.push(userFollowNotifications);
-    };
-
-    const userReportNotifications = await notification.find({notified_user: req.userInfo._id, notification_for: "Report", seen: false})
-    .populate("notification_generator", "username")
-    .sort({createdAt: -1});
-    if(userReportNotifications.length>0) {
-        userNotifications.push(userReportNotifications);
-    };
-
-    res.send(userNotifications);
+    res.send(unSeenNotifications);
 });
 
-router.put("/notifications/seen/all", auth.verifyUser, (req, res)=> {
-    notification.updateOne({notified_user: req.userInfo._id, seen: false}, {seen: true}).then().catch();
+router.put("/notifications/seen/unseen", auth.verifyUser, (req, res)=> {
+    notification.updateMany({notified_user: req.userInfo._id, seen: false}, {seen: true}).then(()=> {
+        res.json({message: "Notifications seen."})
+    });
 });
 
-router.get("/notifications/get/all", auth.verifyUser, async (req, res)=> {
-    const userNotifications = await notification.find({notified_user: req.userInfo._id, seen: true})
-    .populate("notification_generator", "username")
+router.get("/notifications/get/seen", auth.verifyUser, async (req, res)=> {
+    const seenNotifications = await notification.find({notified_user: req.userInfo._id, seen: true})
+    .populate("notification_generator", "_id  profile_pic")
+    .populate("target_post", "_id")
     .sort({createdAt: -1});
 
-    res.send(userNotifications);
+    res.send(seenNotifications);
+});
+
+router.delete("/notifications/delete/seen", auth.verifyUser, (req, res)=> {
+    notification.deleteMany({notified_user: req.userInfo._id, seen: true}).then(()=> {        
+        res.json({message: "Notifications deleted."})
+    });
 });
 
 module.exports = router;

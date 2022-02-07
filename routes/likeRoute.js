@@ -57,7 +57,7 @@ router.post("/like/post", auth.verifyUser, (req, res)=> {
 
 router.post("/likes/get", auth.verifyUser, async (req, res) => {
     const likers = await like.find({post_id: req.body.post_id})
-    .populate("user_id", "username profile_pic")
+    .populate("user_id", "username profile_pic email")
     .sort({createdAt: -1});
     
     res.send(likers);

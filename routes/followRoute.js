@@ -66,7 +66,7 @@ router.delete("/removeFollower", auth.verifyUser, (req, res)=> {
 
 router.get("/followers/get", auth.verifyUser, async (req, res)=> {
     const follows = await follow.find({followed_user: req.userInfo._id})
-    .populate("follower", "username profile_pic")
+    .populate("follower", "username profile_pic email")
     .sort({createdAt: -1});
 
     res.send(follows);
@@ -74,7 +74,7 @@ router.get("/followers/get", auth.verifyUser, async (req, res)=> {
 
 router.get("/followedUsers/get", auth.verifyUser, async (req, res)=> {
     const follows = await follow.find({follower: req.userInfo._id})
-    .populate("followed_user", "username profile_pic")
+    .populate("followed_user", "username profile_pic email")
     .sort({createdAt: -1});
 
     res.send(follows);
@@ -82,7 +82,7 @@ router.get("/followedUsers/get", auth.verifyUser, async (req, res)=> {
 
 router.post("/followers/get/other", auth.verifyUser, async (req, res)=> {
     const follows = await follow.find({followed_user: req.body.user_id})
-    .populate("follower", "username profile_pic")
+    .populate("follower", "username profile_pic email")
     .sort({createdAt: -1});
 
     res.send(follows);
@@ -90,7 +90,7 @@ router.post("/followers/get/other", auth.verifyUser, async (req, res)=> {
 
 router.post("/followedUsers/get/other", auth.verifyUser, async (req, res)=> {
     const follows = await follow.find({follower: req.body.user_id})
-    .populate("followed_user", "username profile_pic")
+    .populate("followed_user", "username profile_pic email")
     .sort({createdAt: -1});
 
     res.send(follows);
@@ -115,8 +115,8 @@ router.post("/number/other", auth.verifyUser, async (req, res)=> {
 
 router.get("/follows/get", auth.verifyAdminSuper, async (req, res)=> {
     const follows = await follow.find({})
-    .populate("followed_user", "username profile_pic")
-    .populate("follower", "username profile_pic")
+    .populate("followed_user", "username profile_pic email")
+    .populate("follower", "username profile_pic email")
     .sort({createdAt: -1});
 
     res.send(follows);
