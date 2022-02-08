@@ -336,33 +336,25 @@ router.put("/user/ChangePhone", auth.verifyUser, (req, res)=> {
     }); 
 });
 
-router.post("/user/search", auth.verifyUser, async (req, res)=> {
-    const name = req.body.username_email
-    var searchedUsers = [];
+router.post("/user/search/username", auth.verifyUser, async (req, res)=> {
+    const keyUsername = req.body.parameter
+    ? {username: { $regex: req.body.parameter, $options: "i" }}
+    :{}; 
 
     // Using async function show that only after searching all the users, it will send the users 
     // Otherwise it will produce error 
     // Because it will start to run the code below it even though all the users have not been completely searched
-    const usernameUsers = await user.find({username: name}).find({_id: {$ne: req.userInfo._id}});
-    const emailUsers = await user.find({email: name}).find({_id: {$ne: req.userInfo._id}});
+    const usernameUsers = await user.find(keyUsername).find({_id: {$ne: req.userInfo._id}});
+    res.json(usernameUsers); 
+});
 
-    searchedUsers.push.apply(searchedUsers, usernameUsers);
-    searchedUsers.push.apply(searchedUsers, emailUsers);
-    
-    const nameUsers = await profile.find({
-        $or: [
-            {first_name: name},
-            {last_name: name}
-        ]
-    })
-    .find({_id: {$ne: req.userInfo._id}})
-    .populate("user_id");
+router.post("/user/search/email", auth.verifyUser, async (req, res)=> {
+    const keyEmail = req.body.parameter
+    ? {email: { $regex: req.body.parameter, $options: "i" }}
+    :{}; 
 
-    for(var i=0; i<nameUsers.length; i++) {    
-        searchedUsers.push(nameUsers[i].user_id);
-    }
-
-    res.json(searchedUsers); 
+    const emailUsers = await user.find(keyEmail).find({_id: {$ne: req.userInfo._id}});      
+    res.json(emailUsers); 
 });
 
 module.exports = router; 
