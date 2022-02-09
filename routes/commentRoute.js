@@ -30,7 +30,7 @@ router.post("/comment/post", auth.verifyUser, (req, res)=> {
                         if(notificationData==null) {
                             const newNotification = new notification({
                                 notified_user: postData.user_id,
-                                notification: `Your post got a comment from ${req.userInfo.username}.`,
+                                notification: `${req.userInfo.username} commented on your post:- ${req.body.comment}.`,
                                 notification_for: "Comment",
                                 notification_generator: req.userInfo._id,
                                 target_post: postData._id,
@@ -45,17 +45,32 @@ router.post("/comment/post", auth.verifyUser, (req, res)=> {
     });
 });
 
-router.put("/comment/edit ", auth.verifyUser, (req, res)=> {
+router.post("/comment/find", auth.verifyUser, async (req, res) => {
+    await comment.findOne({post_id: req.body.post_id, user_id: req.userInfo._id}).then((commentData)=> {
+        if(commentData!=null) {
+            res.json({message: true, commentData: commentData});
+        } else {
+            res.json({message: false});            
+        }
+    });
+});
+
+router.put("/comment/edit", auth.verifyUser, (req, res)=> {
     comment.updateOne(
         {post_id: req.body.post_id, user_id: req.userInfo._id},
         {comment: req.body.comment})
-        .then().catch();
+        .then(()=> {
+            res.json({message: "Comment edited."});
+        });
 });
 
 router.delete("/comment/delete", auth.verifyUser, (req, res)=> {
     post.findOne({_id: req.body.post_id}).then((postData)=> {  
-        comment.deleteOne({post_id: postData._id, user_id: req.userInfo._id}).then().catch();
-        post.updateOne({_id: postData._id}, {comment_num: (postData.comment_num-1)}).then().catch();
+        comment.deleteOne({post_id: postData._id, user_id: req.userInfo._id}).then(()=> {
+            post.updateOne({_id: postData._id}, {comment_num: (postData.comment_num-1)}).then(()=> {
+                res.json({message: "Comment deleted."});
+            });
+        });
     });
 });
  
@@ -70,26 +85,52 @@ router.post("/comments/get", auth.verifyUser, (req, res)=> {
             restrictedUsersObject.push(restricts[i].restricted_user); // Converting from objectId to string
         }
 
+        var commentedData = [];
+
         if(restrictedUsersString.includes(JSON.stringify(req.userInfo._id))) {
+            const userComment = await comment.findOne({post_id: req.body.post_id, user_id: req.userInfo._id}).populate("user_id", "username profile_pic");
+            if(userComment!=null) {
+                commentedData.push(userComment);
+            }
+
             const postComments = await comment.find({post_id: req.body.post_id})
+            .find({user_id: {$ne: req.userInfo._id}})
             .populate("user_id", "username profile_pic")
             .sort({createdAt: -1});
 
-            res.send(postComments);
+            commentedData.push.apply(commentedData, postComments);
+
+            res.send(commentedData);
         }
         else {
-            if(restrictedUsersObject.length!=0) {
+            if(restrictedUsersObject.length!=0) {                
+                const userComment = await comment.findOne({post_id: req.body.post_id, user_id: req.userInfo._id}).populate("user_id", "username profile_pic");
+                if(userComment!=null) {
+                    commentedData.push(userComment);
+                }
+
                 const postComments = await comment.find({post_id: req.body.post_id, user_id: {$ne: restrictedUsersObject}})
+                .find({user_id: {$ne: req.userInfo._id}})
                 .populate("user_id", "username profile_pic")
                 .sort({createdAt: -1});
+
+                commentedData.push.apply(commentedData, postComments);
     
-                res.send(postComments);
-            } else {
+                res.send(commentedData);
+            } else {                
+                const userComment = await comment.findOne({post_id: req.body.post_id, user_id: req.userInfo._id}).populate("user_id", "username profile_pic");
+                if(userComment!=null) {
+                    commentedData.push(userComment);
+                }
+
                 const postComments = await comment.find({post_id: req.body.post_id})
+                .find({user_id: {$ne: req.userInfo._id}})
                 .populate("user_id", "username profile_pic")
                 .sort({createdAt: -1});
+
+                commentedData.push.apply(commentedData, postComments);
     
-                res.send(postComments);
+                res.send(commentedData);
             }
         }
     });

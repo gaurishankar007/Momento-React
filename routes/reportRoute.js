@@ -43,6 +43,7 @@ router.post("/report/post", auth.verifyUser, (req, res)=>{
                         });
                         newNotification.save();
                     }
+                    res.json({message: "Reported."});
                 });
             });
         });

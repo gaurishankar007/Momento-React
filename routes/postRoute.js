@@ -6,6 +6,8 @@ const fs = require("fs");
 
 // Importing self made js files....
 const post = require("../models/postModel.js");
+const like = require("../models/likeModel.js");
+const comment = require("../models/commentModel.js");
 const follow = require("../models/followModel.js");
 const notification = require("../models/notificationModel.js");
 const auth = require("../auth/auth.js");
@@ -157,8 +159,30 @@ router.post("/post/get/single", auth.verifyUser, async (req, res) => {
     });
 });
 
+router.post("/post/get/single/lc", auth.verifyUser, async (req, res) => { 
+    post.findOne({_id: req.body.post_id})
+    .then(async (postData)=> {
+        const liked = false, commented = false;
+        await like.findOne({post_id: postData._id, user_id: req.userInfo._id}).then((likeData)=> {
+            if(likeData!=null) {
+                liked = true;
+            } 
+        })
+    
+        await comment.findOne({post_id: postData._id, user_id: req.userInfo._id}).then((commentData)=> {
+            if(commentData!=null) {
+                commented = true;
+            } 
+        })
+    
+        res.send({liked: liked, commented: commented});
+    });
+});
+
 router.get("/posts/get/followedUser", auth.verifyUser, async (req, res) => { 
     const users = [];
+    const liked = [];
+    const commented = [];
 
     const followed_user = await follow.find({
         follower: req.userInfo._id
@@ -173,7 +197,25 @@ router.get("/posts/get/followedUser", auth.verifyUser, async (req, res) => {
     .populate("tag_friend", "username profile_pic")
     .sort({createdAt: -1});
 
-    res.send(posts);
+    for(i=0; i<posts.length; i++) {
+        await like.findOne({post_id: posts[i]._id, user_id: req.userInfo._id}).then((likeData)=> {
+           if(likeData!=null) {
+               liked.push(true);
+           } else {
+               liked.push(false);
+           }
+       })
+
+       await comment.findOne({post_id: posts[i]._id, user_id: req.userInfo._id}).then((commentData)=> {
+           if(commentData!=null) {
+               commented.push(true);
+           } else {
+               commented.push(false);
+           }
+       })
+   }
+
+    res.send({followedPosts: posts, liked: liked, commented: commented});
 });
 
 module.exports = router;

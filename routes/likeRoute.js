@@ -18,7 +18,9 @@ router.post("/like/post", auth.verifyUser, (req, res)=> {
         .then(function(likeData) {
             if(likeData!=null) {
                 like.findByIdAndDelete({_id: likeData._id}).then().catch();
-                post.updateOne({_id: postData._id}, {like_num: (postData.like_num-1)}).then().catch();
+                post.updateOne({_id: postData._id}, {like_num: (postData.like_num-1)}).then(()=> {                    
+                    res.json({message: "Post disliked."});
+                });
                 return;
             }
     
@@ -40,7 +42,7 @@ router.post("/like/post", auth.verifyUser, (req, res)=> {
                             if(notificationData==null) {
                                 const newNotification = new notification({
                                     notified_user: postData.user_id,
-                                    notification: `Your post got a like from ${req.userInfo.username}.`,
+                                    notification: `${req.userInfo.username} liked your post.`,
                                     notification_for: "Like",
                                     notification_generator: req.userInfo._id,
                                     target_post: postData._id,
@@ -49,6 +51,7 @@ router.post("/like/post", auth.verifyUser, (req, res)=> {
                             }
                         });     
                     }
+                    res.json({message: "Post Liked."});
                 });
             });
         });
@@ -56,11 +59,31 @@ router.post("/like/post", auth.verifyUser, (req, res)=> {
 });
 
 router.post("/likes/get", auth.verifyUser, async (req, res) => {
+    var likedData = [];
+
+    const userLike = await like.findOne({post_id: req.body.post_id, user_id: req.userInfo._id}).populate("user_id", "username profile_pic email");
+    if(userLike!=null) {
+        likedData.push(userLike);
+    }
+
     const likers = await like.find({post_id: req.body.post_id})
+    .find({user_id: {$ne: req.userInfo._id}})
     .populate("user_id", "username profile_pic email")
     .sort({createdAt: -1});
+
+    likedData.push.apply(likedData, likers);
     
-    res.send(likers);
+    res.send(likedData);
+});
+
+router.post("/like/find", auth.verifyUser, async (req, res) => {
+    await like.findOne({post_id: req.body.post_id, user_id: req.userInfo._id}).then((likeData)=> {
+        if(likeData!=null) {
+            res.json({message: true});
+        } else {
+            res.json({message: false});            
+        }
+    });
 });
 
 module.exports = router;

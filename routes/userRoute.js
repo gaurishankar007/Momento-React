@@ -246,7 +246,7 @@ router.put("/user/changeProfile", auth.verifyUser, profileUpload.single("profile
     
         user.updateOne({_id: req.userInfo._id}, {profile_pic: req.file.filename})
         .then(()=>{
-            res.json({message: "    "});
+            res.json({message: "New profile picture added."});
         })
         .catch((e)=> {
             res.json({message: e});
