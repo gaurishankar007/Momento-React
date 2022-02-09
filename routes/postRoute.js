@@ -162,7 +162,7 @@ router.post("/post/get/single", auth.verifyUser, async (req, res) => {
 router.post("/post/get/single/lc", auth.verifyUser, async (req, res) => { 
     post.findOne({_id: req.body.post_id})
     .then(async (postData)=> {
-        const liked = false, commented = false;
+        var liked = false, commented = false;
         await like.findOne({post_id: postData._id, user_id: req.userInfo._id}).then((likeData)=> {
             if(likeData!=null) {
                 liked = true;
