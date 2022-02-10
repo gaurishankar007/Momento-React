@@ -1,7 +1,7 @@
 import { Component } from "react/cjs/react.production.min";
 import { useState } from "react";
 import axios from "axios"; 
-import LoggedInHeader from ".././LoggedInHeader";
+import LoggedInHeader from "../Header/LoggedInHeader";
 
 class HomeProfile extends Component {
     render() {

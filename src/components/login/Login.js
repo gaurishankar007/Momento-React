@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import LoggedOutHeader from "../LoggedOutHeader";
+import LoggedOutHeader from "../Header/LoggedOutHeader";
 import "../../css/Login.css";
 import Logo from "../../images/logo.png";
 
@@ -15,30 +15,11 @@ const Login = ()=> {
     const location = useLocation();
 
     useEffect(()=> {
-        if(localStorage.hasOwnProperty("userToken")) {
-            const { REACT_APP_BASE_URL } = process.env;
-            const config = {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('userToken')
-                }
-            }
-
-            axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
-                if(result.data.userData) {
-                    if (result.data.userData.admin===false && result.data.userData.superuser===false) {
-                        window.location.replace("/home");
-                    }
-                    else if (result.data.userData.admin===true){
-                    }
-                    else if (result.data.userData.superuser===true){
-                    }
-                }
-            });
-        }    
-
         try {  
-            localStorage.hasOwnProperty("pRSM") ? setSResponse(location.state.pRSM): console.log();
-            localStorage.hasOwnProperty("pRSM") ? localStorage.removeItem("pRSM") : console.log();
+            if(localStorage.getItem("pRSM")) {
+                setSResponse(location.state.pRSM);
+                localStorage.removeItem("pRSM");
+            }
         }
         catch (error) {
             console.log("pRSM message has not been sent.", error);

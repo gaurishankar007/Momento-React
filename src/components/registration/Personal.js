@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import LoggedOutHeader from "../LoggedOutHeader";
+import LoggedOutHeader from "../Header/LoggedOutHeader";
 import "../../css/Personal.css";
 import Logo from "../../images/logo.png";
 
@@ -14,13 +14,6 @@ const Personal = ()=> {
     const [response, setResponse] = useState("");
     
     const navigate = useNavigate();
-    
-    useEffect(()=> {
-        if(!localStorage.hasOwnProperty("userToken")) {
-            window.location.replace("/");
-            return;
-        }   
-    }, [])
 
     function getDateNow() {    
         const date = new Date();
@@ -59,7 +52,7 @@ const Personal = ()=> {
         const personalInformationData = {first_name, last_name, gender, birthday, biography};
         const config = {
             headers: {
-                Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
             }
         }
         axios.put(`${REACT_APP_BASE_URL}profile/update`, personalInformationData, config).then((result)=> {

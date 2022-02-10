@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import LoggedOutHeader from "../LoggedOutHeader";
+import LoggedOutHeader from "../Header/LoggedOutHeader";
 import Logo from "../../images/logo.png";
 import CoverPicture from "../../images/defaultCover.png";
 import "../../css/Cover.css";
@@ -12,12 +12,8 @@ const Cover = ()=> {
     const [response, setResponse] = useState("");
     
     const navigate = useNavigate();
-    
+
     useEffect(()=> {
-        if(!localStorage.hasOwnProperty("userToken")) {
-            window.location.replace("/");
-            return;
-        }   
         setCoverPicUrl(CoverPicture);
     }, [])
 
@@ -43,7 +39,7 @@ const Cover = ()=> {
         const { REACT_APP_BASE_URL } = process.env;
         const config = {
             headers: {
-                Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
             }
         }
         axios.put(`${REACT_APP_BASE_URL}user/changeCover`, coverData, config).then((result)=> {

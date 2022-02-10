@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import "../../css/Personal.css";
-import LoggedInHeader from "../LoggedInHeader";
-import SettingNav from "./SettingNav";
+import LoggedInHeader from "../Header/LoggedInHeader";
+import SettingNav from "../Header/SettingNav";
 import Select from "react-select";
 import countryList from "react-select-country-list";
 
@@ -21,16 +21,11 @@ const AddressSetting = ()=> {
     const { REACT_APP_BASE_URL } = process.env;
     const config = {
         headers: {
-            Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
         }
     }
 
-    useEffect(()=> {      
-        if(!localStorage.hasOwnProperty("userToken")) {
-            window.location.replace("/");
-            return;
-        }   
-        
+    useEffect(()=> {          
         axios.get(`${REACT_APP_BASE_URL}address/get/my`, config).then(result=> {
             if(result.data.userAddress) {
                 result.data.userAddress.permanent.country === "" ? setPCountry("Select your Country") : setPCountry(result.data.userAddress.permanent.country);

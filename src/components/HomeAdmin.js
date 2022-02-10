@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios"; 
 import LoggedInHeader from "./Header/LoggedInHeader";
 
-const Home = ()=> {
+const HomeAdmin = ()=> {
     useEffect(()=> {
     }, [])
 
@@ -16,4 +16,4 @@ const Home = ()=> {
 }
 
 
-export default Home;
+export default HomeAdmin;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "../../css/Personal.css";
-import LoggedInHeader from "../LoggedInHeader";
-import SettingNav from "./SettingNav";
+import LoggedInHeader from "../Header/LoggedInHeader";
+import SettingNav from "../Header/SettingNav";
 
 const PersonalSetting = ()=> {
     const [first_name, setFirstName] = useState("");
@@ -28,16 +28,11 @@ const PersonalSetting = ()=> {
     const { REACT_APP_BASE_URL } = process.env;
     const config = {
         headers: {
-            Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
         }
     }
 
-    useEffect(()=> {   
-        if(!localStorage.hasOwnProperty("userToken")) {
-            window.location.replace("/");
-            return;
-        }   
-        
+    useEffect(()=> {          
         axios.get(`${REACT_APP_BASE_URL}profile/get/my`, config).then(result=> { 
             if(result.data.userProfile) {    
                 setFirstName(result.data.userProfile.first_name);

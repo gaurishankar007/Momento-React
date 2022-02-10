@@ -1,5 +1,9 @@
 import { Routes, Route} from "react-router-dom";
 import { Component } from "react/cjs/react.production.min";
+import VerifyUnauthenticated from "./auth/VerifyUnauthenticated";
+import VerifyUser from "./auth/VerifyUser";
+import VerifyAdmin from "./auth/VerifyAdmin";
+
 import Login from "./login/Login";
 import ForgotPassword from "./login/ForgotPassword";
 import ResetPassword from "./login/ResetPassword";
@@ -20,32 +24,41 @@ import AddressSetting from "./setting/AddressSetting";
 import PasswordSetting from "./setting/PasswordSetting";
 import ProfileSetting from "./setting/ProfilePicSetting";
 import CoverSetting from "./setting/CoverPicSetting";
+import HomeAdmin from "./HomeAdmin";
 
 class Middle extends Component {
     render() {
         return(
             <div>
                 <Routes>
-                    <Route path="/" element={<Login/>}/>
-                    <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                    <Route path="/reset-password" element={<ResetPassword/>}/>
-                    <Route path="/user-registration" element={<User/>}/>
-                    <Route path="/profile-registration" element={<Profile/>}/>
-                    <Route path="/cover-registration" element={<Cover/>}/>
-                    <Route path="/personal-information-registration" element={<Personal/>}/>
-                    <Route path="/address-registration" element={<Address/>}/>
-                    <Route path="/home" element={<Home/>}/>                   
-                    <Route path="/search" element={<Search/>}/>                   
-                    <Route path="/upload" element={<Upload/>}/>
-                    <Route path="/notification" element={<Notification/>}/>
-                    <Route path="/home-profile" element={<HomeProfile/>}/>
-                    <Route path="/profile-setting" element={<ProfileSetting/>}/>
-                    <Route path="/cover-setting" element={<CoverSetting/>}/>
-                    <Route path="/password-setting" element={<PasswordSetting/>}/>
-                    <Route path="/user-setting" element={<UserSetting/>}/>
-                    <Route path="/personal-setting" element={<PersonalSetting/>}/>
-                    <Route path="/address-setting" element={<AddressSetting/>}/>
-                    <Route path="/personal-details" element={<PersonalDetails/>}/> 
+
+                    {/* Unauthenticated routes */}
+                    <Route path="/" element={<VerifyUnauthenticated> <Login/> </VerifyUnauthenticated>}/>
+                    <Route path="/forgot-password" element={<VerifyUnauthenticated> <ForgotPassword/> </VerifyUnauthenticated>}/>
+                    <Route path="/reset-password" element={<VerifyUnauthenticated> <ResetPassword/> </VerifyUnauthenticated>}/>
+                    <Route path="/user-registration" element={<VerifyUnauthenticated> <User/> </VerifyUnauthenticated>}/>
+
+                    {/* User routes */}
+                    <Route path="/profile-registration" element={<VerifyUser> <Profile/> </VerifyUser>}/>
+                    <Route path="/cover-registration" element={<VerifyUser> <Cover/> </VerifyUser>}/>
+                    <Route path="/personal-information-registration" element={<VerifyUser> <Personal/> </VerifyUser>}/>
+                    <Route path="/address-registration" element={<VerifyUser> <Address/> </VerifyUser>}/>
+                    <Route path="/home" element={<VerifyUser> <Home/>  </VerifyUser>}/>                   
+                    <Route path="/search" element={<VerifyUser> <Search/> </VerifyUser>}/>                   
+                    <Route path="/upload" element={<VerifyUser> <Upload/> </VerifyUser>}/>
+                    <Route path="/notification" element={<VerifyUser> <Notification/> </VerifyUser>}/>
+                    <Route path="/home-profile" element={<VerifyUser> <HomeProfile/> </VerifyUser>}/>
+                    <Route path="/profile-setting" element={<VerifyUser> <ProfileSetting/> </VerifyUser>}/>
+                    <Route path="/cover-setting" element={<VerifyUser> <CoverSetting/> </VerifyUser>}/>
+                    <Route path="/password-setting" element={<VerifyUser> <PasswordSetting/> </VerifyUser>}/>
+                    <Route path="/user-setting" element={<VerifyUser> <UserSetting/> </VerifyUser>}/>
+                    <Route path="/personal-setting" element={<VerifyUser> <PersonalSetting/> </VerifyUser>}/>
+                    <Route path="/address-setting" element={<VerifyUser> <AddressSetting/> </VerifyUser>}/>
+                    <Route path="/personal-details" element={<VerifyUser> <PersonalDetails/> </VerifyUser>}/> 
+
+                    {/* Admin routes */}
+                    <Route path="/home-admin" element={<VerifyAdmin> <HomeAdmin/> </VerifyAdmin>} />
+
                 </Routes>
             </div>
         )

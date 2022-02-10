@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
-import LoggedOutHeader from "../LoggedOutHeader";
+import LoggedOutHeader from "../Header/LoggedOutHeader";
 import "../../css/Address.css";
 import Logo from "../../images/logo.png";
 
@@ -19,13 +19,6 @@ const Address = ()=> {
     const [response, setResponse] = useState("");
 
     const navigate = useNavigate();
-
-    useEffect(()=> {
-        if(!localStorage.hasOwnProperty("userToken")) {
-            window.location.replace("/");
-            return;
-        }   
-    }, [])
 
     const addAddress = (e)=> {
         e.preventDefault();
@@ -53,7 +46,7 @@ const Address = ()=> {
         };
         const config = {
             headers: {
-                Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
             }
         }
         axios.put(`${REACT_APP_BASE_URL}address/update`, AddressData, config).then((result)=> {

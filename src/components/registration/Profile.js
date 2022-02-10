@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import LoggedOutHeader from "../LoggedOutHeader";
+import LoggedOutHeader from "../Header/LoggedOutHeader";
 import Logo from "../../images/logo.png";
 import ProfilePicture from "../../images/defaultProfile.png";
 import "../../css/Profile.css";
@@ -13,13 +13,11 @@ const Profile = ()=> {
     const [sResponse, setSResponse] = useState("");
 
     const navigate = useNavigate();
-    useEffect(()=> {   
-        if(!localStorage.hasOwnProperty("userToken")) {
-            window.location.replace("/");
-            return;
-        }        
-        localStorage.hasOwnProperty("uRSM") ? setSResponse(localStorage.getItem("uRSM")): console.log();
-        localStorage.hasOwnProperty("uRSM") ? localStorage.removeItem("uRSM") : console.log();
+    useEffect(()=> {
+        if(localStorage.getItem("uRSM")) {
+            setSResponse(localStorage.getItem("uRSM"))
+            localStorage.removeItem("uRSM")
+        }
         setProfilePicUrl(ProfilePicture);
     }, [])
 

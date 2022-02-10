@@ -1,5 +1,5 @@
 import { Component } from "react/cjs/react.production.min";
-import "../css/LoggedOutHeader.css";
+import "../../css/LoggedOutHeader.css";
 
 class LoggedOutHeader extends Component {
     render() {

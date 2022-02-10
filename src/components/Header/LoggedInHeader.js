@@ -1,7 +1,7 @@
 import { Component } from "react/cjs/react.production.min";
 import { Link, NavLink } from "react-router-dom";
-import "../css/LoggedInHeader.css";
-import ProfilePicture from "../images/defaultProfile.png";
+import "../../css/LoggedInHeader.css";
+import ProfilePicture from "../../images/defaultProfile.png";
 
 class LoggedInHeader extends Component {
     render() {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; 
-import LoggedInHeader from ".././LoggedInHeader";
-import SettingNav from "./SettingNav";
+import LoggedInHeader from "../Header/LoggedInHeader";
+import SettingNav from "../Header/SettingNav";
 import "../../css/ProfileSetting.css";
 
 const ProfileSetting =()=> {
@@ -13,11 +13,6 @@ const ProfileSetting =()=> {
     const { REACT_APP_BASE_URL } = process.env;
     
     useEffect(()=> {
-        if(!localStorage.hasOwnProperty("userToken")) {
-            window.location.replace("/");
-            return;
-        }  
-
         const config = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('userToken')
@@ -52,7 +47,7 @@ const ProfileSetting =()=> {
         const { REACT_APP_BASE_URL } = process.env;
         const config = {
             headers: {
-                Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
             }
         }
         axios.put(`${REACT_APP_BASE_URL}user/changeProfile`, profileData, config).then((result)=> {

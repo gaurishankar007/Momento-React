@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import React from "react";
 import axios from "axios"; 
-import LoggedInHeader from "./LoggedInHeader";
+import LoggedInHeader from "./Header/LoggedInHeader";
 import "../css/Upload.css";
 
 const Upload = ()=> {
@@ -18,7 +18,7 @@ const Upload = ()=> {
     const { REACT_APP_BASE_URL } = process.env;
     const config = {
         headers: {
-            Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
         }
     }
 

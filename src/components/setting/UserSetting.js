@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios"; 
-import LoggedInHeader from ".././LoggedInHeader";
-import SettingNav from "./SettingNav";
+import LoggedInHeader from "../Header/LoggedInHeader";
+import SettingNav from "../Header/SettingNav";
 import "../../css/UserSetting.css";
 
 const UserSetting =()=> {
@@ -14,16 +14,11 @@ const UserSetting =()=> {
     const { REACT_APP_BASE_URL } = process.env;
     const config = {
         headers: {
-            Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
         }
     }
 
-    useEffect(()=> {  
-        if(!localStorage.hasOwnProperty("userToken")) {
-            window.location.replace("/");
-            return;
-        }  
-        
+    useEffect(()=> {         
         axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
             setUsername(result.data.userData.username)
             setEmail(result.data.userData.email)
