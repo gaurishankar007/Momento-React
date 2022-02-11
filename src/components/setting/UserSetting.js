@@ -4,21 +4,22 @@ import LoggedInHeader from "../Header/LoggedInHeader";
 import SettingNav from "../Header/SettingNav";
 import "../../css/UserSetting.css";
 
+    
+const { REACT_APP_BASE_URL } = process.env;
+
 const UserSetting =()=> {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");    
     const [response, setResponse] = useState("");
     const [sResponse, setSResponse] = useState("");
-    
-    const { REACT_APP_BASE_URL } = process.env;
-    const config = {
-        headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('userToken')
-        }
-    }
 
-    useEffect(()=> {         
+    useEffect(()=> {      
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }   
         axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
             setUsername(result.data.userData.username)
             setEmail(result.data.userData.email)
@@ -44,6 +45,11 @@ const UserSetting =()=> {
             return;                
         } 
 
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
         const apiResponse = axios.put(`${REACT_APP_BASE_URL}user/changeUsername`, {username}, config)
         apiResponse.then((result)=> {
             if (result.data.message==="Your username has been changed.") {
@@ -69,6 +75,11 @@ const UserSetting =()=> {
             return;        
         } 
 
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
         const apiResponse = axios.put(`${REACT_APP_BASE_URL}user/changeEmail`, {email}, config)
         apiResponse.then((result)=> {
             if (result.data.message==="Your email address has been changed.") {
@@ -93,6 +104,11 @@ const UserSetting =()=> {
             return;              
         }
 
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
         const apiResponse = axios.put(`${REACT_APP_BASE_URL}user/changePhone`, {phone}, config)
         apiResponse.then((result)=> {
             if (result.data.message==="Your phone number has been changed.") {

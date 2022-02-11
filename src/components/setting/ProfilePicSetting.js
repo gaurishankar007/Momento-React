@@ -3,14 +3,15 @@ import axios from "axios";
 import LoggedInHeader from "../Header/LoggedInHeader";
 import SettingNav from "../Header/SettingNav";
 import "../../css/ProfileSetting.css";
+        
+const { REACT_APP_BASE_URL } = process.env;     
+const { REACT_APP_PROFILE_PIC_URL } = process.env;
 
 const ProfileSetting =()=> {
     const [profilePic, setProfilePic] = useState("");
     const [profilePiceUrl, setProfilePicUrl] = useState("");
     const [response, setResponse] = useState("");
     const [sResponse, setSResponse] = useState("");
-        
-    const { REACT_APP_BASE_URL } = process.env;
     
     useEffect(()=> {
         const config = {
@@ -20,7 +21,7 @@ const ProfileSetting =()=> {
         }
 
         axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
-            setProfilePicUrl(REACT_APP_BASE_URL + "profiles/" + result.data.userData.profile_pic);
+            setProfilePicUrl(REACT_APP_PROFILE_PIC_URL + result.data.userData.profile_pic);
         });
     }, [])
 
@@ -44,7 +45,6 @@ const ProfileSetting =()=> {
         const profileData = new FormData();
         profileData.append("profile", profilePic);
 
-        const { REACT_APP_BASE_URL } = process.env;
         const config = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('userToken')

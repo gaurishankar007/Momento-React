@@ -5,6 +5,8 @@ import LoggedInHeader from "../Header/LoggedInHeader";
 import SettingNav from "../Header/SettingNav";
 import Select from "react-select";
 import countryList from "react-select-country-list";
+    
+const { REACT_APP_BASE_URL } = process.env;
 
 const AddressSetting = ()=> {
     const [pCountry, setPCountry] = useState("Select your Country");
@@ -17,15 +19,13 @@ const AddressSetting = ()=> {
     const [tStreet, setTStreet] = useState("");
     const [response, setResponse] = useState("");
     const [sResponse, setSResponse] = useState("");
-    
-    const { REACT_APP_BASE_URL } = process.env;
-    const config = {
-        headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('userToken')
-        }
-    }
 
-    useEffect(()=> {          
+    useEffect(()=> {       
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }   
         axios.get(`${REACT_APP_BASE_URL}address/get/my`, config).then(result=> {
             if(result.data.userAddress) {
                 result.data.userAddress.permanent.country === "" ? setPCountry("Select your Country") : setPCountry(result.data.userAddress.permanent.country);
@@ -65,6 +65,11 @@ const AddressSetting = ()=> {
             tStreet: tStreet
         };
         
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
         axios.put(`${REACT_APP_BASE_URL}address/update`, AddressData, config).then((result)=> {
             if(result.data.message==="Address has been updated.") {
                 setSResponse("Your address has been updated."); 

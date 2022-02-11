@@ -14,7 +14,7 @@ import Personal from "./registration/Personal";
 import Address from "./registration/Address";
 import Home from "./Home";
 import Notification from "./Notification";
-import HomeProfile from "./profile/HomeProfile";
+import ProfileMain from "./profile/ProfileMain";
 import PersonalDetails from "./profile/PersonalDetails";
 import Search from "./Search";
 import Upload from "./Upload";
@@ -43,18 +43,21 @@ class Middle extends Component {
                     <Route path="/cover-registration" element={<VerifyUser> <Cover/> </VerifyUser>}/>
                     <Route path="/personal-information-registration" element={<VerifyUser> <Personal/> </VerifyUser>}/>
                     <Route path="/address-registration" element={<VerifyUser> <Address/> </VerifyUser>}/>
+
                     <Route path="/home" element={<VerifyUser> <Home/>  </VerifyUser>}/>                   
                     <Route path="/search" element={<VerifyUser> <Search/> </VerifyUser>}/>                   
                     <Route path="/upload" element={<VerifyUser> <Upload/> </VerifyUser>}/>
                     <Route path="/notification" element={<VerifyUser> <Notification/> </VerifyUser>}/>
-                    <Route path="/home-profile" element={<VerifyUser> <HomeProfile/> </VerifyUser>}/>
+
+                    <Route path="/profile-main" element={<VerifyUser> <ProfileMain/> </VerifyUser>}/>
+
                     <Route path="/profile-setting" element={<VerifyUser> <ProfileSetting/> </VerifyUser>}/>
                     <Route path="/cover-setting" element={<VerifyUser> <CoverSetting/> </VerifyUser>}/>
                     <Route path="/password-setting" element={<VerifyUser> <PasswordSetting/> </VerifyUser>}/>
                     <Route path="/user-setting" element={<VerifyUser> <UserSetting/> </VerifyUser>}/>
                     <Route path="/personal-setting" element={<VerifyUser> <PersonalSetting/> </VerifyUser>}/>
-                    <Route path="/address-setting" element={<VerifyUser> <AddressSetting/> </VerifyUser>}/>
                     <Route path="/personal-details" element={<VerifyUser> <PersonalDetails/> </VerifyUser>}/> 
+                    <Route path="/address-setting" element={<VerifyUser> <AddressSetting/> </VerifyUser>}/>
 
                     {/* Admin routes */}
                     <Route path="/home-admin" element={<VerifyAdmin> <HomeAdmin/> </VerifyAdmin>} />

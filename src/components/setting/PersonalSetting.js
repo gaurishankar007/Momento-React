@@ -3,6 +3,8 @@ import axios from "axios";
 import "../../css/Personal.css";
 import LoggedInHeader from "../Header/LoggedInHeader";
 import SettingNav from "../Header/SettingNav";
+    
+const { REACT_APP_BASE_URL } = process.env;
 
 const PersonalSetting = ()=> {
     const [first_name, setFirstName] = useState("");
@@ -23,16 +25,14 @@ const PersonalSetting = ()=> {
 
         return dateNow;
     }
-    const today = getDateNow();   
-    
-    const { REACT_APP_BASE_URL } = process.env;
-    const config = {
-        headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('userToken')
-        }
-    }
+    const today = getDateNow();
 
-    useEffect(()=> {          
+    useEffect(()=> {         
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }    
         axios.get(`${REACT_APP_BASE_URL}profile/get/my`, config).then(result=> { 
             if(result.data.userProfile) {    
                 setFirstName(result.data.userProfile.first_name);
@@ -65,7 +65,12 @@ const PersonalSetting = ()=> {
             setResponse("Any numbers or special characters are not allowed in the name.");          
             return;                
         }
-
+   
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
         const personalInformationData = {first_name, last_name, gender, birthday, biography};
         axios.put(`${REACT_APP_BASE_URL}profile/update`, personalInformationData, config).then((result)=> {
             if(result.data.message==="Profile updated.") {

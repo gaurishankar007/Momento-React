@@ -1,0 +1,65 @@
+.user-profile-div {
+    width: 1250px;    
+    border: 1px solid #808080;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 3px 3px 10px #808080; 
+}
+
+.coverPFF {    
+    position: relative;
+    margin-bottom: 190px;
+}
+
+.follower, .profilePic-border, .profile-pic, .following {
+    position: absolute;    
+}
+
+.user-profile-div .cover-pic {
+    width: 1250px;  
+    height: 650px;  
+    object-fit: cover;
+}
+
+.user-profile-div .profilePic-border {
+    width: 380px;  
+    height: 380px;  
+    border-radius: 50%;
+    background-color: #6200EA;
+    left: 435px;
+    bottom: -190px;
+    z-index: -1;
+}
+
+.user-profile-div .profile-pic {
+    width: 350px;  
+    height: 350px;  
+    object-fit: cover;
+    border-radius: 50%;
+    left: 450px;
+    bottom: -175px;
+}
+
+.user-profile-div .follower, .user-profile-div .following {
+    bottom: -125px;
+}
+.user-profile-div .following {
+    right: 0;
+}
+
+.pa-div {
+    position: relative;  
+}
+
+.follower h2, .following h2, .user-profile-div h1, .pa-div h2 {
+    font-size: 24px;
+}
+
+.fNum, .user-profile-div h1, .pa-div .keyPA {
+    font-weight: bold;
+}
+
+.post-nav-divider {
+    height: 5px;
+    background-color: black;
+}
+

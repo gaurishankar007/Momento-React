@@ -4,13 +4,14 @@ import LoggedInHeader from "../Header/LoggedInHeader";
 import SettingNav from "../Header/SettingNav";
 import "../../css/CoverSetting.css";
 
+const { REACT_APP_BASE_URL } = process.env;  
+const { REACT_APP_COVER_PIC_URL } = process.env; 
+
 const CoverSetting =()=> {
     const [coverPic, setCoverPic] = useState("");
     const [coverPicUrl, setCoverPicUrl] = useState("");
     const [response, setResponse] = useState("");
     const [sResponse, setSResponse] = useState("");
-
-    const { REACT_APP_BASE_URL } = process.env;
     
     useEffect(()=> {
         const config = {
@@ -20,7 +21,7 @@ const CoverSetting =()=> {
         }
 
         axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
-            setCoverPicUrl(REACT_APP_BASE_URL + "covers/" + result.data.userData.cover_pic);
+            setCoverPicUrl(REACT_APP_COVER_PIC_URL + result.data.userData.cover_pic);
         });
     }, [])
     
@@ -44,7 +45,6 @@ const CoverSetting =()=> {
         const coverData = new FormData();
         coverData.append("cover", coverPic);
 
-        const { REACT_APP_BASE_URL } = process.env;
         const config = {
             headers: {
                 Authorization: 'Bearer ' + (localStorage.hasOwnProperty('userToken') ? localStorage.getItem('userToken') : "")

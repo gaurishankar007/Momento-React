@@ -5,6 +5,8 @@ import axios from "axios";
 import LoggedInHeader from "./Header/LoggedInHeader";
 import "../css/Upload.css";
 
+const { REACT_APP_BASE_URL } = process.env;
+
 const Upload = ()=> {
     const [followers, setFollowers] = useState([]); 
     const [uploadDiv, setUploadDiv] = useState("");
@@ -14,13 +16,6 @@ const Upload = ()=> {
     const [description, setDescription] = useState(""); 
     const [response, setResponse] = useState("");
     const [sResponse, setSResponse] = useState("");
-
-    const { REACT_APP_BASE_URL } = process.env;
-    const config = {
-        headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('userToken')
-        }
-    }
 
     // Create a reference to the hidden file input element
     const hiddenFileInput = React.useRef(null);
@@ -34,6 +29,11 @@ const Upload = ()=> {
     useEffect(()=> {
         document.getElementsByClassName("upload-button-div")[0].style.marginTop = "300px";
 
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
         axios.get(`${REACT_APP_BASE_URL}followers/get`, config).then((result)=> {
             if(result.data.length>0) {
                 setFollowers(result.data);
@@ -140,6 +140,12 @@ const Upload = ()=> {
             postData.append(`tag_friend[${i}]`, taggedFollowers[i]);            
         }
 
+        
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
         axios.post(`${REACT_APP_BASE_URL}post/add`, postData, config).then((result)=> {
             if(result.data.message==="Post uploaded") {
                 setPostImages([]);
