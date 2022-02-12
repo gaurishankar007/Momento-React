@@ -8,22 +8,31 @@ import Login from "./login/Login";
 import ForgotPassword from "./login/ForgotPassword";
 import ResetPassword from "./login/ResetPassword";
 import User from "./registration/User";
+
 import Profile from "./registration/Profile";
 import Cover from "./registration/Cover";
 import Personal from "./registration/Personal";
 import Address from "./registration/Address";
+
 import Home from "./Home";
-import Notification from "./Notification";
-import ProfileMain from "./profile/ProfileMain";
-import PersonalDetails from "./profile/PersonalDetails";
 import Search from "./Search";
 import Upload from "./Upload";
+import Notification from "./Notification";
+
+import ProfileMain from "./profile/ProfileMain";
+import Followers from "./profile/Followers";
+import Following from "./profile/Following";
+import ProfileOther from "./profile/ProfileOther";
+import FollowersOther from "./profile/FollowersOther";
+import FollowingOther from "./profile/FollowingOther";
+
 import UserSetting from "./setting/UserSetting";
 import PersonalSetting from "./setting/PersonalSetting";
 import AddressSetting from "./setting/AddressSetting";
 import PasswordSetting from "./setting/PasswordSetting";
 import ProfileSetting from "./setting/ProfilePicSetting";
 import CoverSetting from "./setting/CoverPicSetting";
+
 import HomeAdmin from "./HomeAdmin";
 
 class Middle extends Component {
@@ -50,13 +59,17 @@ class Middle extends Component {
                     <Route path="/notification" element={<VerifyUser> <Notification/> </VerifyUser>}/>
 
                     <Route path="/profile-main" element={<VerifyUser> <ProfileMain/> </VerifyUser>}/>
+                    <Route path="/followers" element={<VerifyUser> <Followers/> </VerifyUser>}/>
+                    <Route path="/following" element={<VerifyUser> <Following/> </VerifyUser>}/>
+                    <Route path="/profile-main/:user_id" element={<VerifyUser> <ProfileOther/> </VerifyUser>}/>
+                    <Route path="/followers/:user_id" element={<VerifyUser> <FollowersOther/> </VerifyUser>}/>
+                    <Route path="/following/:user_id" element={<VerifyUser> <FollowingOther/> </VerifyUser>}/>
 
                     <Route path="/profile-setting" element={<VerifyUser> <ProfileSetting/> </VerifyUser>}/>
                     <Route path="/cover-setting" element={<VerifyUser> <CoverSetting/> </VerifyUser>}/>
                     <Route path="/password-setting" element={<VerifyUser> <PasswordSetting/> </VerifyUser>}/>
                     <Route path="/user-setting" element={<VerifyUser> <UserSetting/> </VerifyUser>}/>
                     <Route path="/personal-setting" element={<VerifyUser> <PersonalSetting/> </VerifyUser>}/>
-                    <Route path="/personal-details" element={<VerifyUser> <PersonalDetails/> </VerifyUser>}/> 
                     <Route path="/address-setting" element={<VerifyUser> <AddressSetting/> </VerifyUser>}/>
 
                     {/* Admin routes */}
@@ -89,5 +102,4 @@ So in this case, we should add exact to our Users route so that it will only mat
   <Route exact path="/users" component={Users} />
   <Route path="/users/create" component={CreateUser} />
 </Switch>
-
 */

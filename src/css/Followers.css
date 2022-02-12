@@ -1,0 +1,56 @@
+.follow-div {
+    width: 1250px;  
+    border: 1px solid #808080;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px #808080; 
+}
+
+.follow-div .profile-pic {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.follow-div h2 {
+    font-weight: bold;
+}
+.follow-div a {
+    text-decoration: none;
+    color: black;
+}
+
+@media screen and (max-width: 1260px) { 
+    .follow-div {
+        width: 950px; 
+    }
+}
+
+@media screen and (max-width: 960px) { 
+    .follow-div {
+        width: 650px; 
+    }    
+    .follow-div .profile-pic {
+        height: 75px;
+        width: 75px;
+    }
+    .follow-div h2, .follow-div h4 {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 660px) {  
+    .follow-div {
+        width: 450px; 
+    }   
+    .follow-div .profile-pic {
+        height: 50px;
+        width: 50px;
+    }
+    .follow-div h2, .follow-div h4 {
+        font-size: 16px;
+    }
+    .follow-div button {
+        font-size: 12px;
+    }
+
+}

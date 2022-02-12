@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios"; 
 import LoggedInHeader from "../Header/LoggedInHeader";
-import "../../css/ProfileMain.css";
 
 const { REACT_APP_BASE_URL } = process.env;
 const { REACT_APP_PROFILE_PIC_URL } = process.env;
 const { REACT_APP_COVER_PIC_URL } = process.env;
 const { REACT_APP_POST_URL } = process.env;
 
-const ProfileMain =()=> {
+const ProfileOther =()=> {
+    const {user_id} = useParams();
     const [userData, setUserData] = useState("")
     const [profileData, setProfileData] = useState("")
     const [addressData, setAddressData] = useState("")
@@ -19,6 +19,7 @@ const ProfileMain =()=> {
     const [postData, setPostData] = useState([])
     const [noPost, setNoPost] = useState("")
     const [userNum, setUserNum] = useState("")
+    const [followed, setFollowed] = useState(false)
 
     useEffect(()=> {
         const config = {
@@ -26,13 +27,13 @@ const ProfileMain =()=> {
                 Authorization: 'Bearer ' + localStorage.getItem('userToken')
             }
         }
-
         axios.all([          
-            axios.get(`${REACT_APP_BASE_URL}user/checkType`, config),
-            axios.get(`${REACT_APP_BASE_URL}number/user`, config),
-            axios.get(`${REACT_APP_BASE_URL}profile/get/my`, config),
-            axios.get(`${REACT_APP_BASE_URL}address/get/my`, config),
-            axios.get(`${REACT_APP_BASE_URL}posts/get/my`, config),
+            axios.post(`${REACT_APP_BASE_URL}user/other`, {user_id}, config),
+            axios.post(`${REACT_APP_BASE_URL}number/other`, {user_id}, config),
+            axios.post(`${REACT_APP_BASE_URL}profile/get/other`, {user_id}, config),
+            axios.post(`${REACT_APP_BASE_URL}address/get/other`, {user_id}, config),
+            axios.post(`${REACT_APP_BASE_URL}posts/get/other`, {user_id}, config),
+            axios.post(`${REACT_APP_BASE_URL}follow/check`, {user_id}, config),
         ])
         .then(axios.spread((...responses)=> {
             setUserData(responses[0].data.userData)
@@ -46,6 +47,9 @@ const ProfileMain =()=> {
                     <h1 className="text-center mb-3">No posts uploaded yet.</h1>
                 )
             } 
+            if(responses[5].data.message==="Followed.") {
+                setFollowed(true)
+            }
         }))
     }, [])
 
@@ -143,7 +147,7 @@ const ProfileMain =()=> {
         if(postDivType==="myPost") {
             setMyPost(true)
 
-            axios.get(`${REACT_APP_BASE_URL}posts/get/my`, config)
+            axios.post(`${REACT_APP_BASE_URL}posts/get/other`, {user_id}, config)
             .then((response)=> {
                 setPostData(response.data)
                 if(response.data.length===0) {
@@ -158,7 +162,7 @@ const ProfileMain =()=> {
         } else if(postDivType==="taggedPost") {
             setMyPost(false)
 
-            axios.get(`${REACT_APP_BASE_URL}posts/get/tagged`, config)
+            axios.post(`${REACT_APP_BASE_URL}posts/get/tagged/other`, {user_id}, config)
             .then((response)=> {
                 setPostData(response.data)
                 if(response.data.length===0) {
@@ -172,6 +176,28 @@ const ProfileMain =()=> {
         }
     }
 
+    const follow = ()=> {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
+        axios.post(`${REACT_APP_BASE_URL}follow`, {user_id}, config).then(()=> {
+            setFollowed(true)
+        })       
+    }
+
+    const unFollow = ()=> {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
+        axios.delete(`${REACT_APP_BASE_URL}unFollow/${user_id}`, config).then(()=> {
+            setFollowed(false)
+        }) 
+    }
+
     return (
         <div>
             <LoggedInHeader></LoggedInHeader>
@@ -181,11 +207,11 @@ const ProfileMain =()=> {
                         <img className="cover-pic" src={REACT_APP_COVER_PIC_URL + userData.cover_pic} alt="CoverPicture"/>
                         <div className="profilePic-border"></div>
                         <img className="profile-pic" src={REACT_APP_PROFILE_PIC_URL + userData.profile_pic} alt="ProfilePicture"/>
-                        <NavLink className="follower btn d-flex flex-column align-items-center" to="/followers">
+                        <NavLink className="follower btn d-flex flex-column align-items-center" to={"/followers/" + user_id}>
                             <h2 className="fNum">{userNum.followers}</h2>
                             <h2>Followers</h2>
                         </NavLink>
-                        <NavLink className="following btn d-flex flex-column align-items-center" to="/following">
+                        <NavLink className="following btn d-flex flex-column align-items-center" to={"/following/" + user_id}>
                             <h2 className="fNum">{userNum.followed_users}</h2>
                             <h2>Following</h2>                                
                         </NavLink>
@@ -194,7 +220,14 @@ const ProfileMain =()=> {
                         <h1>{userData.username}</h1>          
                     </div>
                     <div className=" d-flex justify-content-around">                     
-                        <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("profile")}><i className="bi bi-person-fill"></i> Profile</button>                 
+                        <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("profile")}><i className="bi bi-person-fill"></i> Profile</button>                     
+                        {
+                            followed
+                            ?                            
+                            <button type="button" className="btn pa-button lR-button" onClick={unFollow}>UnFollow</button>   
+                            :                            
+                            <button type="button" className="btn pa-button lR-button" onClick={follow}>Follow</button>   
+                        }              
                         <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("address")}><i className="bi bi-geo-alt-fill"></i> Address</button>
                     </div>
                     {pADiv}
@@ -222,4 +255,4 @@ const ProfileMain =()=> {
     )
 }
 
-export default ProfileMain;
+export default ProfileOther;

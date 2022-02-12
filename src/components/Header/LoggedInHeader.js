@@ -19,7 +19,6 @@ const LoggedInHeader = ()=> {
         axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
             setProfilePic(REACT_APP_PROFILE_PIC_URL + result.data.userData.profile_pic);
         });
-
     }, [])
     
     const logOut = ()=> {
