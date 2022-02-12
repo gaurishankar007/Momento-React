@@ -53,15 +53,16 @@
     overflow-y: scroll;
 }
 
-#tag-follower {
+.tag-follower {
     border-color: black;
 }
-#tag-follower:checked {
+.tag-follower:focus {
+    border-color: black;
+    box-shadow: none;
+}
+.tag-follower:checked {
     background-color: #6200EA;
     border-color: #6200EA;
-}
-#tag-follower:checked {
-    box-shadow: none;
 }
 .follower-profilePic {
     height: 60px;

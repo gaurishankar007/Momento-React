@@ -22,6 +22,7 @@ import Notification from "./Notification";
 import ProfileMain from "./profile/ProfileMain";
 import Followers from "./profile/Followers";
 import Following from "./profile/Following";
+import PostEdit from "./post/PostEdit";
 import ProfileOther from "./profile/ProfileOther";
 import FollowersOther from "./profile/FollowersOther";
 import FollowingOther from "./profile/FollowingOther";
@@ -61,6 +62,7 @@ class Middle extends Component {
                     <Route path="/profile-main" element={<VerifyUser> <ProfileMain/> </VerifyUser>}/>
                     <Route path="/followers" element={<VerifyUser> <Followers/> </VerifyUser>}/>
                     <Route path="/following" element={<VerifyUser> <Following/> </VerifyUser>}/>
+                    <Route path="/post-edit/:post_id" element={<VerifyUser> <PostEdit/> </VerifyUser>}/>
                     <Route path="/profile-main/:user_id" element={<VerifyUser> <ProfileOther/> </VerifyUser>}/>
                     <Route path="/followers/:user_id" element={<VerifyUser> <FollowersOther/> </VerifyUser>}/>
                     <Route path="/following/:user_id" element={<VerifyUser> <FollowingOther/> </VerifyUser>}/>

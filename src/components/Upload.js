@@ -79,7 +79,7 @@ const Upload = ()=> {
                             {selectedImagesUrl.map(singleFileUrl=> {
                                 return (                  
                                     <Carousel.Item key={singleFileUrl}> 
-                                        <img className="d-block w-100" src={singleFileUrl} alt="First slide" />
+                                        <img className="d-block w-100" src={singleFileUrl} alt="postImages" />
                                     </Carousel.Item>
                                 )
                             })}
@@ -93,22 +93,28 @@ const Upload = ()=> {
                                 <label htmlFor="description">Description:</label> 
                                 <textarea type="text" className="form-control" id="description" placeholder="Tell about your post here....." rows="3" onChange={(e)=>setDescription(e.target.value.trim())}/>  
                                 <small id="helper" className="form-text ms-1">Optional</small>
-                            </div>                          
-                            <div className="form-group mb-3">
-                                <label htmlFor="user-follower">Followers:</label> 
-                                <div className="d-flex flex-column p-3" id="user-follower" >
-                                    {followers.map(singleFollower=> {
-                                        return (
-                                            <div className="d-flex align-items-center mb-2" key={singleFollower._id}>
-                                                <input className="form-check-input me-2" type="checkbox" value="" id="tag-follower" onClick={()=>{tagFollower(singleFollower.follower._id)}}/>
-                                                <img className="follower-profilePic me-3" src={REACT_APP_BASE_URL + "profiles/"+ singleFollower.follower.profile_pic} alt="follower-profilePic"/>
-                                                <label className="follower-username">{singleFollower.follower.username}</label>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                                <small id="helper" className="form-text ms-1">Tag followers</small>
-                            </div>                            
+                            </div>   
+                            {
+                                followers.length > 0
+                                ?
+                                <div className="form-group mb-3">
+                                    <label htmlFor="user-follower">Followers:</label> 
+                                    <div className="d-flex flex-column p-3" id="user-follower" >
+                                        {followers.map(singleFollower=> {
+                                            return (
+                                                <div className="d-flex align-items-center mb-2" key={singleFollower._id}>
+                                                    <input className="tag-follower form-check-input me-2" type="checkbox" onClick={()=>{tagFollower(singleFollower.follower._id)}}/>
+                                                    <img className="follower-profilePic me-3" src={REACT_APP_BASE_URL + "profiles/"+ singleFollower.follower.profile_pic} alt="follower-profilePic"/>
+                                                    <label className="follower-username">{singleFollower.follower.username}</label>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                    <small id="helper" className="form-text ms-1">Tag followers</small>
+                                </div>  
+                                :
+                                <div></div>
+                            }                             
                         </div>
                     </div>
                 </div>

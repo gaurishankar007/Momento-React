@@ -56,13 +56,13 @@ const AddressSetting = ()=> {
 
         const AddressData = {
             pCountry: pCountry,
-            pState: pState,
-            pCity: pCity,
-            pStreet: pStreet,
-            tCountry: tCountry,
-            tState: tState,
-            tCity: tCity,
-            tStreet: tStreet
+            pState: pState.trim(),
+            pCity: pCity.trim(),
+            pStreet: pStreet.trim(),
+            tCountry: tCountry.trim(),
+            tState: tState.trim(),
+            tCity: tCity.trim(),
+            tStreet: tStreet.trim()
         };
         
         const config = {
@@ -99,30 +99,30 @@ const AddressSetting = ()=> {
                         <Select className="mb-3" id="pCountry" placeholder={pCountry} options={countryOptions} value={pCountry} onChange={value=>setPCountry(value.label)} />
                         <div className="form-group mb-3">
                             <label htmlFor="pState">State:</label>  
-                            <input type="text" className="form-control" id="pState" value={pState}  placeholder="Enter a new state....." onChange={(e)=>setPState(e.target.value.trim())}/>
+                            <input type="text" className="form-control" id="pState" value={pState}  placeholder="Enter a new state....." onChange={(e)=>setPState(e.target.value)}/>
                         </div>  
                         <div className="form-group mb-3">
                             <label htmlFor="pCity">City</label>  
-                            <input type="text" className="form-control" id="pCity" value={pCity}  placeholder="Enter a new city....." onChange={(e)=>setPCity(e.target.value.trim())}/>
+                            <input type="text" className="form-control" id="pCity" value={pCity}  placeholder="Enter a new city....." onChange={(e)=>setPCity(e.target.value)}/>
                         </div>  
                         <div className="form-group mb-3">
                             <label htmlFor="pStreet">Street:</label>  
-                            <input type="text" className="form-control" id="pStreet" value={pStreet} placeholder="Enter a new street....." onChange={(e)=>setPStreet(e.target.value.trim())}/>
+                            <input type="text" className="form-control" id="pStreet" value={pStreet} placeholder="Enter a new street....." onChange={(e)=>setPStreet(e.target.value)}/>
                         </div>  
                         <h4 className="text-center address-type mb-2">Temporary</h4>
                         <label htmlFor="tCountry">Country:</label>  
                         <Select className="mb-3" id="tCountry" placeholder={tCountry} options={countryOptions} value={tCountry} onChange={value=>setTCountry(value.label)} />
                         <div className="form-group mb-3">
                             <label htmlFor="tState">State:</label>  
-                            <input type="text" className="form-control" id="tState" value={tState}  placeholder="Enter a new state....." onChange={(e)=>setTState(e.target.value.trim())}/>
+                            <input type="text" className="form-control" id="tState" value={tState}  placeholder="Enter a new state....." onChange={(e)=>setTState(e.target.value)}/>
                         </div>  
                         <div className="form-group mb-3">
                             <label htmlFor="tCity">City</label> 
-                            <input type="text" className="form-control" id="tCity" value={tCity}  placeholder="Enter a new city....." onChange={(e)=>setTCity(e.target.value.trim())}/>
+                            <input type="text" className="form-control" id="tCity" value={tCity}  placeholder="Enter a new city....." onChange={(e)=>setTCity(e.target.value)}/>
                         </div>  
                         <div className="form-group mb-3">
                             <label htmlFor="tStreet">Street:</label>  
-                            <input type="text" className="form-control" id="tStreet" value={tStreet} placeholder="Enter a new street....." onChange={(e)=>setTStreet(e.target.value.trim())}/>
+                            <input type="text" className="form-control" id="tStreet" value={tStreet} placeholder="Enter a new street....." onChange={(e)=>setTStreet(e.target.value)}/>
                         </div>  
                         <div className="d-flex justify-content-center align-items-center">                                          
                             <button type="button" className="btn lR-button" onClick={editAddress}>Update</button>

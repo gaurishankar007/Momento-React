@@ -38,6 +38,15 @@ const PersonalSetting = ()=> {
                 setFirstName(result.data.userProfile.first_name);
                 setLastName(result.data.userProfile.last_name);
                 setGender(result.data.userProfile.gender);
+
+                if(result.data.userProfile.gender==="Male") {                    
+                    document.getElementById("Male").checked = true
+                } else if(result.data.userProfile.gender==="Female") {                    
+                    document.getElementById("Female").checked = true
+                } else if(result.data.userProfile.gender==="Other") {                    
+                    document.getElementById("Other").checked = true
+                }
+
                 result.data.userProfile.birthday!==null ? setBirthday(result.data.userProfile.birthday.split("T")[0]) : setBirthday("");
                 setBiography(result.data.userProfile.biography);
             }
@@ -71,7 +80,7 @@ const PersonalSetting = ()=> {
                 Authorization: 'Bearer ' + localStorage.getItem('userToken')
             }
         }
-        const personalInformationData = {first_name, last_name, gender, birthday, biography};
+        const personalInformationData = {first_name: first_name, last_name: last_name, gender: gender, birthday : birthday, biography: biography.trim()};
         axios.put(`${REACT_APP_BASE_URL}profile/update`, personalInformationData, config).then((result)=> {
             if(result.data.message==="Profile updated.") {
                 setSResponse("Your profile has been updated."); 
@@ -106,31 +115,16 @@ const PersonalSetting = ()=> {
                         <div className="d-flex flex-column mb-3">   
                             <label>Gender:</label>                                
                            <div>
-                            <div className="form-check form-check-inline">
-                                    {
-                                    gender==="Male" ?                                     
-                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Male" value="Male" checked onClick={(e)=>setGender(e.target.value)}/>
-                                        :                                        
-                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Male" value="Male" onClick={(e)=>setGender(e.target.value)}/>
-                                    }
+                            <div className="form-check form-check-inline">                                       
+                                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Male" value="Male" onClick={(e)=>setGender(e.target.value)}/>
                                     <label className="form-check-label">Male</label>
                                 </div>
-                                <div className="form-check form-check-inline">
-                                    {
-                                    gender==="Female" ?                                     
-                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Female" value="Female" checked onClick={(e)=>setGender(e.target.value)}/>
-                                        :                                        
-                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Female" value="Female" onClick={(e)=>setGender(e.target.value)}/>
-                                    }
+                                <div className="form-check form-check-inline">                                     
+                                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Female" value="Female" onClick={(e)=>setGender(e.target.value)}/>
                                     <label className="form-check-label">Female</label>
                                 </div>
-                                <div className="form-check form-check-inline">
-                                    {
-                                    gender==="Other" ?       
-                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Other" value="Other" checked onClick={(e)=>setGender(e.target.value)}/>
-                                        :                                        
-                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Other" value="Other" onClick={(e)=>setGender(e.target.value)}/>
-                                    }
+                                <div className="form-check form-check-inline">                                       
+                                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="Other" value="Other" onClick={(e)=>setGender(e.target.value)}/>
                                     <label className="form-check-label">Other</label>
                                 </div>
                            </div>
@@ -141,7 +135,7 @@ const PersonalSetting = ()=> {
                         </div>                              
                         <div className="form-group mb-3">
                             <label htmlFor="biography">Biography:</label> 
-                            <textarea type="text" className="form-control" id="biography" value={biography}  placeholder="Enter your biography....." rows="3" onChange={(e)=>setBiography(e.target.value.trim())}/>  
+                            <textarea type="text" className="form-control" id="biography" value={biography}  placeholder="Enter your biography....." rows="3" onChange={(e)=>setBiography(e.target.value)}/>  
                             <small id="helper" className="form-text ms-1">Optional</small>
                         </div>
                         <div className="d-flex justify-content-center align-items-center">                               
