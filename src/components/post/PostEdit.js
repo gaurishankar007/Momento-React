@@ -12,6 +12,7 @@ const PostEdit = ()=> {
     const {post_id} = useParams();
     const [followers, setFollowers] = useState([]); 
     const [postImages, setPostImages] = useState([]); 
+    const [taggedFollowersData, setTaggedFollowersData] = useState([]); 
     const [taggedFollowers, setTaggedFollowers] = useState([]); 
     const [caption, setCaption] = useState(""); 
     const [description, setDescription] = useState(""); 
@@ -32,7 +33,8 @@ const PostEdit = ()=> {
             setPostImages(responses[1].data.attach_file)
             setCaption(responses[1].data.caption)
             setDescription(responses[1].data.description)
-            
+            setTaggedFollowersData(responses[1].data.tag_friend)
+
             var tempTaggedFollower = taggedFollowers;
             for( var i=0; i<responses[1].data.tag_friend.length; i++) {
                 if(!tempTaggedFollower.includes(responses[1].data.tag_friend[i]._id)) {                      
@@ -42,7 +44,13 @@ const PostEdit = ()=> {
             setTaggedFollowers(tempTaggedFollower)
 
             if(responses[0].data.length>0) {
-                setFollowers(responses[0].data);
+                var tempList = []
+                for( var i=0; i<responses[0].data.length; i++) {
+                    if(!taggedFollowers.includes(responses[0].data[i].follower._id)) {                      
+                        tempList.push(responses[0].data[i]);
+                    }
+                }
+                setFollowers(tempList);
             }
         }))
     }, [])
@@ -119,10 +127,19 @@ const PostEdit = ()=> {
                             <div className="form-group mb-3">
                                 <label htmlFor="user-follower">Followers:</label> 
                                 <div className="d-flex flex-column p-3" id="user-follower" >
+                                    {taggedFollowersData.map(singleTaggedFollower=> {
+                                        return (
+                                            <div className="d-flex align-items-center mb-2" key={singleTaggedFollower._id}>                                             
+                                                <input className="tag-follower form-check-input me-2" type="checkbox" defaultChecked onClick={()=>{tagFollower(singleTaggedFollower._id)}}/>
+                                                <img className="follower-profilePic me-3" src={REACT_APP_BASE_URL + "profiles/"+ singleTaggedFollower.profile_pic} alt="follower-profilePic"/>
+                                                <label className="follower-username">{singleTaggedFollower.username}</label>
+                                            </div>                                            
+                                        )
+                                    })}
                                     {followers.map(singleFollower=> {
                                         return (
                                             <div className="d-flex align-items-center mb-2" key={singleFollower._id}>                                             
-                                                <input className="tag-follower form-check-input me-2" type="checkbox" defaultChecked={taggedFollowers.includes(singleFollower.follower._id) ? true : false} id={singleFollower.follower._id} onClick={()=>{tagFollower(singleFollower.follower._id)}}/>
+                                                <input className="tag-follower form-check-input me-2" type="checkbox" onClick={()=>{tagFollower(singleFollower.follower._id)}}/>
                                                 <img className="follower-profilePic me-3" src={REACT_APP_BASE_URL + "profiles/"+ singleFollower.follower.profile_pic} alt="follower-profilePic"/>
                                                 <label className="follower-username">{singleFollower.follower.username}</label>
                                             </div>
