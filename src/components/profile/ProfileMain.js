@@ -7,13 +7,17 @@ import "../../css/ProfileMain.css";
 const { REACT_APP_BASE_URL } = process.env;
 const { REACT_APP_PROFILE_PIC_URL } = process.env;
 const { REACT_APP_COVER_PIC_URL } = process.env;
+const { REACT_APP_POST_URL } = process.env;
 
 const ProfileMain =()=> {
     const [userData, setUserData] = useState("")
     const [profileData, setProfileData] = useState("")
     const [addressData, setAddressData] = useState("")
-    const [pADiv, setPADiv] = useState("");
-    const [pADivState, setPADivState] = useState("");
+    const [pADiv, setPADiv] = useState("")
+    const [pADivState, setPADivState] = useState("")
+    const [myPost, setMyPost] = useState(true)
+    const [postData, setPostData] = useState([])
+    const [noPost, setNoPost] = useState("")
     const [userNum, setUserNum] = useState("")
 
     useEffect(()=> {
@@ -23,29 +27,33 @@ const ProfileMain =()=> {
             }
         }
 
-        axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(response=> {
-            setUserData(response.data.userData);
-        });
+        axios.all([          
+            axios.get(`${REACT_APP_BASE_URL}user/checkType`, config),
+            axios.get(`${REACT_APP_BASE_URL}number/user`, config),
+            axios.get(`${REACT_APP_BASE_URL}profile/get/my`, config),
+            axios.get(`${REACT_APP_BASE_URL}address/get/my`, config),
+            axios.get(`${REACT_APP_BASE_URL}posts/get/my`, config),
+        ])
+        .then(axios.spread((...responses)=> {
+            setUserData(responses[0].data.userData)
+            setUserNum(responses[1].data)
+            setProfileData(responses[2].data.userProfile)
+            setAddressData(responses[3].data.userAddress)
+            setPostData(responses[4].data)
 
-        axios.get(`${REACT_APP_BASE_URL}number/user`, config).then(response=> {
-            setUserNum(response.data);
-        });
-
-        axios.get(`${REACT_APP_BASE_URL}profile/get/my`, config).then(response=> {
-            setProfileData(response.data.userProfile)
-        })
-
-        axios.get(`${REACT_APP_BASE_URL}address/get/my`, config).then(response=> {
-            setAddressData(response.data.userAddress)
-        })
-
+            if(responses[4].data.length===0) {
+                setNoPost(
+                    <h1 className="text-center mb-3">No posts yet.</h1>
+                )
+            } 
+        }))
     }, [])
 
     function togglePADiv(divType) {         
         if(divType==="profile") {              
             if(pADivState==="" || pADivState==="address") {
                 setPADiv(
-                    <div className="d-flex justify-content-center my-3">                        
+                    <div className="d-flex justify-content-center">                        
                         <div className="pa-div d-flex flex-column align-items-center p-2">
                             <div className="d-flex align-items-center">                            
                                 <h2 className="keyPA me-3">First Name:</h2>
@@ -78,7 +86,7 @@ const ProfileMain =()=> {
         } else if(divType==="address") {               
             if(pADivState==="" || pADivState==="profile") {
                 setPADiv(
-                    <div className="d-flex justify-content-center my-3">                        
+                    <div className="d-flex justify-content-center mt-3">                        
                         <div className="pa-div d-flex flex-column align-items-center p-2">                         
                             <h2 className="keyPA mb-2"><u>Permanent</u></h2>
                             <div className="d-flex align-items-center">                            
@@ -125,15 +133,54 @@ const ProfileMain =()=> {
         }  
     }
 
+    function togglePostDiv(postDivType) {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
+
+        if(postDivType==="myPost") {
+            setMyPost(true)
+
+            axios.get(`${REACT_APP_BASE_URL}posts/get/my`, config)
+            .then((response)=> {
+                setPostData(response.data)
+                if(response.data.length===0) {
+                    setNoPost(
+                        <h1 className="text-center mb-3">No posts yet.</h1>
+                    )
+                } else {
+                    setNoPost("")
+                }
+            })          
+
+        } else if(postDivType==="taggedPost") {
+            setMyPost(false)
+
+            axios.get(`${REACT_APP_BASE_URL}posts/get/tagged`, config)
+            .then((response)=> {
+                setPostData(response.data)
+                if(response.data.length===0) {
+                    setNoPost(
+                        <h1 className="text-center mb-3">No posts yet.</h1>
+                    )
+                } else {
+                    setNoPost("")
+                }
+            })          
+        }
+    }
+
     return (
         <div>
             <LoggedInHeader></LoggedInHeader>
             <div className="d-flex justify-content-center mb-5">                
                 <div className="user-profile-div d-flex flex-column justify-content-center">
                     <div className="coverPFF">
-                        <img className="cover-pic" src={REACT_APP_COVER_PIC_URL + userData.cover_pic} alt="Cover Picture"/>
+                        <img className="cover-pic" src={REACT_APP_COVER_PIC_URL + userData.cover_pic} alt="CoverPicture"/>
                         <div className="profilePic-border"></div>
-                        <img className="profile-pic" src={REACT_APP_PROFILE_PIC_URL + userData.profile_pic} alt="Profile Picture"/>
+                        <img className="profile-pic" src={REACT_APP_PROFILE_PIC_URL + userData.profile_pic} alt="ProfilePicture"/>
                         <NavLink className="follower btn d-flex flex-column align-items-center" to="">
                             <h2 className="fNum">{userNum.followers}</h2>
                             <h2>Followers</h2>
@@ -143,22 +190,32 @@ const ProfileMain =()=> {
                             <h2>Following</h2>                                
                         </NavLink>
                     </div>
-                    <div className="d-flex justify-content-around my-2">  
+                    <div className="d-flex justify-content-around">  
                         <h1>{userData.username}</h1>          
                     </div>
-                    <div className="d-flex justify-content-around">                        
-                        <button type="button" className="btn lR-button" onClick={()=> togglePADiv("profile")}><i className="bi bi-person-fill"></i> Profile</button>                 
-                        <button type="button" className="btn lR-button" onClick={()=> togglePADiv("address")}><i className="bi bi-geo-alt-fill"></i> Address</button>
+                    <div className=" d-flex justify-content-around">                        
+                        <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("profile")}><i className="bi bi-person-fill"></i> Profile</button>                 
+                        <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("address")}><i className="bi bi-geo-alt-fill"></i> Address</button>
                     </div>
                     {pADiv}
-                    <div className="px-5">                        
+                    <div className="px-3">                        
                         <div className="post-nav-divider mt-3"></div>
-                        <div className="post-nav d-flex justify-content-around my-2">
-                            <i className="btn bi bi-grid-fill"></i>            
-                            <i className="btn bi bi-person-plus-fill"></i>                 
+                        <div className="post-nav d-flex justify-content-around">
+                            <i className="btn bi bi-grid-fill" style={myPost? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {togglePostDiv("myPost")}}></i>            
+                            <i className="btn bi bi-person-plus-fill" style={!myPost? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {togglePostDiv("taggedPost")}}></i>                 
                         </div>
-                        <div className="post-nav-divider mb-3"></div>
+                        <div className="post-nav-divider"></div>
                     </div>
+                    <div className="post-div my-3">
+                        {postData.map((singlePost)=> {
+                            return (
+                                <div key={singlePost._id} onClick={()=> {}}>            
+                                    <img className="post-pic img-fluid" src={REACT_APP_POST_URL + singlePost.attach_file[0]} alt="post-pic"/>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    {noPost}
                 </div>
             </div>
         </div>
