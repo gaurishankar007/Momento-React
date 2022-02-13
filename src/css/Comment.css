@@ -1,3 +1,7 @@
+.comment-div h4 {
+    width: 900px;
+}
+
 .edit-section .form-control::placeholder {
     color: black;
 }
@@ -19,13 +23,25 @@
     color: #6200EA;
 }
 
+@media screen and (max-width: 1260px) {
+    .comment-div h4 {
+        width: 600px;
+    }
+}
+
 @media screen and (max-width: 960px) {
+    .comment-div h4 {
+        width: 400px;
+    }
     .edit-section textarea {
         width: 300px;
     }
 }
 
 @media screen and (max-width: 660px) {
+    .comment-div h4 {
+        width: 225px;
+    }
     .edit-section textarea {
         width: 200px;
     }

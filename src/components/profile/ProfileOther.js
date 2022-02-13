@@ -233,8 +233,17 @@ const ProfileOther =()=> {
                     {pADiv}
                     <div className="px-3">                        
                         <div className="post-nav-divider mt-3"></div>
-                        <div className="post-nav d-flex justify-content-around">
-                            <i className="btn bi bi-grid-fill" style={myPost? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {togglePostDiv("myPost")}}></i>            
+                        <div className="post-nav d-flex justify-content-around align-items-center">
+                            <i className="btn bi bi-grid-fill" style={myPost? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {togglePostDiv("myPost")}}></i>        
+                            <h2> 
+                                {
+                                    myPost 
+                                    ?
+                                    userNum.postsNum
+                                    :
+                                    userNum.taggedPostsNum
+                                }
+                            </h2>                     
                             <i className="btn bi bi-person-plus-fill" style={!myPost? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {togglePostDiv("taggedPost")}}></i>                 
                         </div>
                         <div className="post-nav-divider"></div>

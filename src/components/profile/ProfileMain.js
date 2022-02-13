@@ -18,7 +18,6 @@ const ProfileMain =()=> {
     const [myPost, setMyPost] = useState(true)
     const [postData, setPostData] = useState([])
     const [postOpDiv, setPostOpDiv] = useState("")
-    const [targetedPostId, setTargetedPostId] = useState("")
     const [noPost, setNoPost] = useState("")
     const [userNum, setUserNum] = useState("")
 
@@ -51,6 +50,15 @@ const ProfileMain =()=> {
                 )
             } 
         }))
+
+        window.addEventListener("scroll", ()=> {
+            setPostOpDiv("")
+        })
+        return () => {
+          window.removeEventListener("scroll", ()=> {
+            setPostOpDiv("")
+        });
+        };
     }, [])
 
     function togglePADiv(divType) {         
@@ -176,13 +184,11 @@ const ProfileMain =()=> {
     }
 
     function viewPost(postId) {
-        setTargetedPostId("")
         setPostOpDiv("")
         navigate("/post-view/"+postId)
     }
 
     function editPost(postId) {
-        setTargetedPostId("")
         setPostOpDiv("")
         navigate("/post-edit/"+postId)
     }
@@ -195,30 +201,30 @@ const ProfileMain =()=> {
         }
         axios.delete(`${REACT_APP_BASE_URL}post-delete/${postId}`, config)
         .then(()=> {
-            axios.get(`${REACT_APP_BASE_URL}posts/get/my`, config)
-            .then((response)=> {
-                setPostData(response.data)
-                if(response.data.length===0) {
+            axios.all([          
+                axios.get(`${REACT_APP_BASE_URL}number/user`, config),
+                axios.get(`${REACT_APP_BASE_URL}posts/get/my`, config),
+            ])
+            .then(axios.spread((...responses)=> {
+                setUserNum(responses[0].data)
+                setPostData(responses[1].data)
+
+                if(responses[1].data.length===0) {
                     setNoPost(
                         <h1 className="text-center mb-3">No posts uploaded yet.</h1>
                     )
-                } else {
-                    setNoPost("")
-                }
-            })  
+                } 
+            }))
         }) 
-        setTargetedPostId("")
         setPostOpDiv("")
     }
 
     function closePostOpDiv() {
-        setTargetedPostId("")
         setPostOpDiv("")
     }
 
     function openPostOpDiv(postId) {
         if(myPost) {
-            setTargetedPostId(postId)
             setPostOpDiv(
                 <div className="d-flex flex-column" id="postOperation">
                     <i className="view-post btn bi bi-eye-fill" onClick={()=> {viewPost(postId)}}></i>
@@ -254,15 +260,24 @@ const ProfileMain =()=> {
                         <h1>{userData.username}</h1>          
                     </div>
                     <div className=" d-flex justify-content-around">                     
-                        <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("profile")}><i className="bi bi-person-fill"></i> Profile</button>                 
+                        <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("profile")}><i className="bi bi-person-fill"></i> Profile</button>          
                         <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("address")}><i className="bi bi-geo-alt-fill"></i> Address</button>
                     </div>
                     {pADiv}
                     {postOpDiv}
                     <div className="px-3">                        
                         <div className="post-nav-divider mt-3"></div>
-                        <div className="post-nav d-flex justify-content-around">
-                            <i className="btn bi bi-grid-fill" style={myPost? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {togglePostDiv("myPost")}}></i>            
+                        <div className="post-nav d-flex justify-content-around align-items-center">
+                            <i className="btn bi bi-grid-fill" style={myPost? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {togglePostDiv("myPost")}}></i>      
+                            <h2> 
+                                {
+                                    myPost 
+                                    ?
+                                    userNum.postsNum
+                                    :
+                                    userNum.taggedPostsNum
+                                }
+                            </h2>             
                             <i className="btn bi bi-person-plus-fill" style={!myPost? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {togglePostDiv("taggedPost")}}></i>                 
                         </div>
                         <div className="post-nav-divider"></div>

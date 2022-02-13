@@ -30,7 +30,7 @@ const Comment =()=> {
             setCommenterData(responses[0].data);
             if(responses[0].data.length===0) {
                 setNoCommenter(
-                    <h2 className="text-center mb-3">No one has liked this post yet.</h2>
+                    <h2 className="text-center mb-3">No one has commented on this post yet.</h2>
                 )
             } 
 
@@ -79,7 +79,7 @@ const Comment =()=> {
                     <div className="suggestion-message text-center">{response}</div>
                    {commenterData.map((singleComment)=> {
                         return (
-                            <div key={singleComment._id}>
+                            <div key={singleComment._id} className="comment-div">
                                 {
                                     singleComment.user_id._id === myId
                                     ?

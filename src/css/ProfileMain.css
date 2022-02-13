@@ -244,6 +244,9 @@
         width: 128px;  
         height: 80px;  
     } 
+    #postOperation  {
+        top: 35%;
+    }
     #postOperation i {
         font-size: 16px;
     }   
