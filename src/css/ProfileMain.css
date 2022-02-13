@@ -81,11 +81,32 @@
     padding-left: 16px;
     padding-right: 16px;
 }
-
 .post-div .post-pic {
     width: 400px;  
     height: 250px;  
     object-fit: cover;
+}
+.post-div .single-post {
+    padding: 0px;
+}
+
+#postOperation  {
+    position: fixed;
+    top: 45%;
+    left: 47%;
+    z-index: 1;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 3px 3px 10px #808080; 
+}
+#postOperation i {
+    font-size: 32px;
+}
+#postOperation .view-post, #postOperation .edit-post {
+    color: #6200EA;
+}
+#postOperation .delete-post {
+    color: red;
 }
 
 @media screen and (max-width: 1260px) { 
@@ -170,6 +191,11 @@
         width: 208px;  
         height: 130px;  
     }
+    #postOperation i {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        font-size: 24px;
+    }
 }
 
 @media screen and (max-width: 660px) {  
@@ -217,5 +243,8 @@
     .post-div .post-pic {
         width: 128px;  
         height: 80px;  
-    }    
+    } 
+    #postOperation i {
+        font-size: 16px;
+    }   
 }

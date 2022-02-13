@@ -241,10 +241,10 @@ const ProfileOther =()=> {
                     </div>
                     <div className="post-div my-3">
                         {postData.map((singlePost)=> {
-                            return (
-                                <div key={singlePost._id} onClick={()=> {}}>            
+                            return (     
+                                <NavLink key={singlePost._id} to={"/post-view/" + singlePost._id}>         
                                     <img className="post-pic img-fluid" src={REACT_APP_POST_URL + singlePost.attach_file[0]} alt="post-pic"/>
-                                </div>
+                                </NavLink>   
                             )
                         })}
                     </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios"; 
 import LoggedInHeader from "../Header/LoggedInHeader";
 import "../../css/ProfileMain.css";
@@ -17,8 +17,12 @@ const ProfileMain =()=> {
     const [pADivState, setPADivState] = useState("")
     const [myPost, setMyPost] = useState(true)
     const [postData, setPostData] = useState([])
+    const [postOpDiv, setPostOpDiv] = useState("")
+    const [targetedPostId, setTargetedPostId] = useState("")
     const [noPost, setNoPost] = useState("")
     const [userNum, setUserNum] = useState("")
+
+    const navigate = useNavigate()
 
     useEffect(()=> {
         const config = {
@@ -141,8 +145,6 @@ const ProfileMain =()=> {
         }
 
         if(postDivType==="myPost") {
-            setMyPost(true)
-
             axios.get(`${REACT_APP_BASE_URL}posts/get/my`, config)
             .then((response)=> {
                 setPostData(response.data)
@@ -153,7 +155,8 @@ const ProfileMain =()=> {
                 } else {
                     setNoPost("")
                 }
-            })          
+            })   
+            setMyPost(true)       
 
         } else if(postDivType==="taggedPost") {
             setMyPost(false)
@@ -169,6 +172,63 @@ const ProfileMain =()=> {
                     setNoPost("")
                 }
             })          
+        }
+    }
+
+    function viewPost(postId) {
+        setTargetedPostId("")
+        setPostOpDiv("")
+        navigate("/post-view/"+postId)
+    }
+
+    function editPost(postId) {
+        setTargetedPostId("")
+        setPostOpDiv("")
+        navigate("/post-edit/"+postId)
+    }
+
+    function deletePost(postId) {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
+        axios.delete(`${REACT_APP_BASE_URL}post-delete/${postId}`, config)
+        .then(()=> {
+            axios.get(`${REACT_APP_BASE_URL}posts/get/my`, config)
+            .then((response)=> {
+                setPostData(response.data)
+                if(response.data.length===0) {
+                    setNoPost(
+                        <h1 className="text-center mb-3">No posts uploaded yet.</h1>
+                    )
+                } else {
+                    setNoPost("")
+                }
+            })  
+        }) 
+        setTargetedPostId("")
+        setPostOpDiv("")
+    }
+
+    function closePostOpDiv() {
+        setTargetedPostId("")
+        setPostOpDiv("")
+    }
+
+    function openPostOpDiv(postId) {
+        if(myPost) {
+            setTargetedPostId(postId)
+            setPostOpDiv(
+                <div className="d-flex flex-column" id="postOperation">
+                    <i className="view-post btn bi bi-eye-fill" onClick={()=> {viewPost(postId)}}></i>
+                    <i className="edit-post btn bi bi-pen-fill" onClick={()=> {editPost(postId)}}></i>
+                    <i className="delete-post btn bi bi-trash" onClick={()=> {deletePost(postId)}}></i>
+                    <i className="cancel-post-op btn bi bi-x-circle-fill" onClick={()=> {closePostOpDiv()}}></i>
+                </div>
+            )
+        } else {
+            navigate("/post-view/"+postId)
         }
     }
 
@@ -198,6 +258,7 @@ const ProfileMain =()=> {
                         <button type="button" className="btn pa-button lR-button" onClick={()=> togglePADiv("address")}><i className="bi bi-geo-alt-fill"></i> Address</button>
                     </div>
                     {pADiv}
+                    {postOpDiv}
                     <div className="px-3">                        
                         <div className="post-nav-divider mt-3"></div>
                         <div className="post-nav d-flex justify-content-around">
@@ -209,9 +270,9 @@ const ProfileMain =()=> {
                     <div className="post-div my-3">
                         {postData.map((singlePost)=> {
                             return (
-                                <NavLink key={singlePost._id} to={"/post-view/" + singlePost._id}>            
+                                <div key={singlePost._id} className="btn single-post" onClick={()=>{openPostOpDiv(singlePost._id)}}>            
                                     <img className="post-pic img-fluid" src={REACT_APP_POST_URL + singlePost.attach_file[0]} alt="post-pic"/>
-                                </NavLink>
+                                </div>
                             )
                         })}
                     </div>
