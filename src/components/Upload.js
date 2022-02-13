@@ -6,6 +6,7 @@ import LoggedInHeader from "./Header/LoggedInHeader";
 import "../css/Upload.css";
 
 const { REACT_APP_BASE_URL } = process.env;
+const { REACT_APP_PROFILE_PIC_URL } = process.env;
 
 const Upload = ()=> {
     const [followers, setFollowers] = useState([]); 
@@ -86,11 +87,11 @@ const Upload = ()=> {
                         </Carousel>                   
                         <div className="upload-div-form px-4 mt-2">
                             <div className="form-group mb-3">
-                                <label htmlFor="caption">Caption:</label>    
+                                <label htmlFor="caption" className="fw-bold">Caption:</label>    
                                 <input type="text" className="form-control" id="caption" placeholder="Give a caption to your post....." onChange={(e)=>setCaption(e.target.value.trim())}/>
                             </div>                              
                             <div className="form-group mb-3">
-                                <label htmlFor="description">Description:</label> 
+                                <label htmlFor="description" className="fw-bold">Description:</label> 
                                 <textarea type="text" className="form-control" id="description" placeholder="Tell about your post here....." rows="3" onChange={(e)=>setDescription(e.target.value.trim())}/>  
                                 <small id="helper" className="form-text ms-1">Optional</small>
                             </div>   
@@ -98,13 +99,13 @@ const Upload = ()=> {
                                 followers.length > 0
                                 ?
                                 <div className="form-group mb-3">
-                                    <label htmlFor="user-follower">Followers:</label> 
+                                    <label htmlFor="user-follower" className="fw-bold">Followers:</label> 
                                     <div className="d-flex flex-column p-3" id="user-follower" >
                                         {followers.map(singleFollower=> {
                                             return (
-                                                <div className="d-flex align-items-center mb-2" key={singleFollower._id}>
+                                                <div className="d-flex align-items-center mb-3" key={singleFollower._id}>
                                                     <input className="tag-follower form-check-input me-2" type="checkbox" onClick={()=>{tagFollower(singleFollower.follower._id)}}/>
-                                                    <img className="follower-profilePic me-3" src={REACT_APP_BASE_URL + "profiles/"+ singleFollower.follower.profile_pic} alt="follower-profilePic"/>
+                                                    <img className="follower-profilePic me-3" src={REACT_APP_PROFILE_PIC_URL + singleFollower.follower.profile_pic} alt="follower-profilePic"/>
                                                     <label className="follower-username">{singleFollower.follower.username}</label>
                                                 </div>
                                             )
@@ -142,10 +143,9 @@ const Upload = ()=> {
         for(var i=0; i<postImages.length; i++) {;
             postData.append(`images`, postImages[i]);            
         }
-        for(var i=0; i<taggedFollowers.length; i++) {;
-            postData.append(`tag_friend[${i}]`, taggedFollowers[i]);            
+        for(var j=0; j<taggedFollowers.length; j++) {;
+            postData.append(`tag_friend[${j}]`, taggedFollowers[j]);            
         }
-
         
         const config = {
             headers: {
@@ -179,7 +179,7 @@ const Upload = ()=> {
                 <input type="file" className="form-control mb-3" ref={hiddenFileInput} id="post-images-selection" accept=".jpeg, .png, .jpg" onChange={onImagesSelect} multiple/> 
             </div>           
             <div className="upload-button-div mb-5">                                  
-                <button type="button" className="btn lR-button image-select-button" onClick={handleFileInputClick} ><i className="bi bi-arrow-down"></i> Select Images</button>              
+                <button type="button" className="btn lR-button image-select-button" onClick={handleFileInputClick} ><i className="bi bi-download"></i> Select Images</button>              
                 <button type="button" className="btn lR-button" onClick={uploadPost}><i className="bi bi-upload"></i> Upload Post</button>
             </div>
         </div>

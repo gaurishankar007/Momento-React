@@ -6,6 +6,7 @@ import axios from "axios";
 import LoggedInHeader from ".././Header/LoggedInHeader";
 
 const { REACT_APP_BASE_URL } = process.env;
+const { REACT_APP_PROFILE_PIC_URL } = process.env;
 const { REACT_APP_POST_URL } = process.env;
 
 const PostEdit = ()=> {
@@ -45,9 +46,9 @@ const PostEdit = ()=> {
 
             if(responses[0].data.length>0) {
                 var tempList = []
-                for( var i=0; i<responses[0].data.length; i++) {
-                    if(!taggedFollowers.includes(responses[0].data[i].follower._id)) {                      
-                        tempList.push(responses[0].data[i]);
+                for( var j=0; j<responses[0].data.length; j++) {
+                    if(!taggedFollowers.includes(responses[0].data[j].follower._id)) {                      
+                        tempList.push(responses[0].data[j]);
                     }
                 }
                 setFollowers(tempList);
@@ -113,11 +114,11 @@ const PostEdit = ()=> {
                     </Carousel>                   
                     <div className="upload-div-form px-4 mt-2">
                         <div className="form-group mb-3">
-                            <label htmlFor="caption">Caption:</label>    
+                            <label htmlFor="caption" className="fw-bold">Caption:</label>    
                             <input type="text" className="form-control" id="caption" value={caption} placeholder="Give a caption to your post....." onChange={(e)=>setCaption(e.target.value)}/>
                         </div>                              
                         <div className="form-group mb-3">
-                            <label htmlFor="description">Description:</label> 
+                            <label htmlFor="description" className="fw-bold">Description:</label> 
                             <textarea type="text" className="form-control" id="description" value={description} placeholder="Tell about your post here....." rows="3" onChange={(e)=>setDescription(e.target.value)}/>  
                             <small id="helper" className="form-text ms-1">Optional</small>
                         </div>       
@@ -125,20 +126,20 @@ const PostEdit = ()=> {
                             followers.length > 0
                             ?
                             <div className="form-group mb-3">
-                                <label htmlFor="user-follower">Followers:</label> 
+                                <label htmlFor="user-follower" className="fw-bold">Followers:</label> 
                                 <div className="d-flex flex-column p-3" id="user-follower" >
                                     {taggedFollowersData.map(singleTaggedFollower=> {
                                         return (
-                                            <div className="d-flex align-items-center mb-2" key={singleTaggedFollower._id}>                                             
+                                            <div className="d-flex align-items-center mb-3" key={singleTaggedFollower._id}>                                             
                                                 <input className="tag-follower form-check-input me-2" type="checkbox" defaultChecked onClick={()=>{tagFollower(singleTaggedFollower._id)}}/>
-                                                <img className="follower-profilePic me-3" src={REACT_APP_BASE_URL + "profiles/"+ singleTaggedFollower.profile_pic} alt="follower-profilePic"/>
+                                                <img className="follower-profilePic me-3" src={REACT_APP_PROFILE_PIC_URL + singleTaggedFollower.profile_pic} alt="follower-profilePic"/>
                                                 <label className="follower-username">{singleTaggedFollower.username}</label>
                                             </div>                                            
                                         )
                                     })}
                                     {followers.map(singleFollower=> {
                                         return (
-                                            <div className="d-flex align-items-center mb-2" key={singleFollower._id}>                                             
+                                            <div className="d-flex align-items-center mb-3" key={singleFollower._id}>                                             
                                                 <input className="tag-follower form-check-input me-2" type="checkbox" onClick={()=>{tagFollower(singleFollower.follower._id)}}/>
                                                 <img className="follower-profilePic me-3" src={REACT_APP_BASE_URL + "profiles/"+ singleFollower.follower.profile_pic} alt="follower-profilePic"/>
                                                 <label className="follower-username">{singleFollower.follower.username}</label>

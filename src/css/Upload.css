@@ -95,11 +95,19 @@
     .upload-div {
         width: 650px; 
     }
+    .carousel-indicators button{
+        height: 12px !important;
+        width: 12px !important;
+    }
 }
 
 @media screen and (max-width: 660px) {    
     .upload-div {
         width: 400px; 
+    }
+    .carousel-indicators button{
+        height: 10px !important;
+        width: 10px !important;
     }
     .upload-div-form {
         width: 300px;

@@ -19,19 +19,22 @@ const FollowingOther =()=> {
             }
         }
 
-        axios.post(`${REACT_APP_BASE_URL}followedUsers/get/other`, {user_id}, config).then(response=> {
-            setFollowingData(response.data);
-            if(response.data.length===0) {
+        axios.all([
+            axios.post(`${REACT_APP_BASE_URL}followedUsers/get/other`, {user_id}, config),   
+            axios.get(`${REACT_APP_BASE_URL}user/checkType`, config)
+        ])
+        .then(axios.spread((...responses)=> {
+            setFollowingData(responses[0].data);
+            if(responses[0].data.length===0) {
                 setNoFollowing(
                     <h2 className="text-center mb-3">This user has not followed anyone yet.</h2>
                 )
             } else {
                 setNoFollowing("")
             }
-        });    
-        axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
-            setMyId(result.data.userData._id);
-        });
+
+            setMyId(responses[1].data.userData._id);            
+        }))
     }, [])
 
     return (

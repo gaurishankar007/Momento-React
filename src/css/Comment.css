@@ -1,0 +1,36 @@
+
+.edit-section .form-control::placeholder {
+    color: black;
+}
+.edit-section .form-control {
+    border-color: black;
+}
+.edit-section .form-control:focus {
+    border-color: #6200EA;
+    box-shadow: 0px 0px 0px 1px #6200EA;
+}
+.edit-section textarea {
+    width: 500px;
+}
+.edit-section i {
+    color: #6200EA;
+    font-size: 24px;
+}
+.edit-section i:hover {
+    color: #6200EA;
+}
+
+@media screen and (max-width: 960px) {
+    .edit-section textarea {
+        width: 300px;
+    }
+}
+
+@media screen and (max-width: 660px) {
+    .edit-section textarea {
+        width: 200px;
+    }
+    .edit-section i {
+        font-size: 18px;
+    }
+}

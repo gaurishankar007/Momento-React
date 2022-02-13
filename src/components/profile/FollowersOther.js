@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios"; 
 import { NavLink, useParams } from "react-router-dom";
 import LoggedInHeader from "../Header/LoggedInHeader";
-import "../../css/Followers.css";
 
 const { REACT_APP_BASE_URL } = process.env;
 const { REACT_APP_PROFILE_PIC_URL } = process.env;
@@ -19,19 +18,22 @@ const FollowersOther =()=> {
                 Authorization: 'Bearer ' + localStorage.getItem('userToken')
             }      
         }
-        axios.post(`${REACT_APP_BASE_URL}followers/get/other`, {user_id}, config).then(response=> {
-            setFollowersData(response.data);
-            if(response.data.length===0) {
+        axios.all([
+            axios.post(`${REACT_APP_BASE_URL}followers/get/other`, {user_id}, config),     
+            axios.get(`${REACT_APP_BASE_URL}user/checkType`, config)
+        ])
+        .then(axios.spread((...responses)=> {
+            setFollowersData(responses[0].data);
+            if(responses[0].data.length===0) {
                 setNoFollowers(
                     <h2 className="text-center mb-3">No one has followed this user yet.</h2>
                 )
             } else {
                 setNoFollowers("")
-            }
-        });      
-        axios.get(`${REACT_APP_BASE_URL}user/checkType`, config).then(result=> {
-            setMyId(result.data.userData._id);
-        });
+            }       
+
+            setMyId(responses[1].data.userData._id);    
+        }))
     }, [])
 
     return (

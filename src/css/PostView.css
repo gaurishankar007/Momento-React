@@ -1,0 +1,57 @@
+.upload-div .postUser-profilePic {
+    height: 75px;
+    width: 75px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.postView-div .like-button {
+    padding: 0px;
+}
+.upload-div .postUser-username, .postView-div i {
+    font-size: 24px;
+}
+
+.postView-div a, .postView-div .comment-data {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
+
+.postView-div .comment-section .user-profilePic {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.postView-div .comment-section textarea {
+    width: 400px;
+}
+.postView-div .comment-section i, #post-liked {
+    color: #6200EA;
+}
+.postView-div .comment-section .delete-comment {
+    color: red;
+    font-size: 18px;
+}
+
+@media screen and (max-width: 660px) {
+    .upload-div .postUser-profilePic {
+        height: 50px;
+        width: 50px;
+    }
+    .upload-div .postUser-username, .postView-div i {
+        font-size: 20px;
+    }    
+    .postView-div a, .postView-div .comment-data {
+        font-size: 16px;
+    }    
+    .postView-div .comment-section .user-profilePic {
+        height: 35px;
+        width: 35px;
+    }    
+    .postView-div .comment-section textarea {
+        width: 250px;
+    } 
+}
