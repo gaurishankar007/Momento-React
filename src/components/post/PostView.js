@@ -131,7 +131,7 @@ const PostView = ()=> {
             <LoggedInHeader></LoggedInHeader>
             <div className="d-flex justify-content-center mt-3 mb-5">
                 <div className="upload-div d-flex flex-column justify-content-center align-items-start pb-3">
-                    <div className="d-flex justify-content-between align-items-center ps-1 py-2">
+                    <div className="d-flex align-items-center ps-1 py-2">
                         <img className="postUser-profilePic me-3" src={REACT_APP_PROFILE_PIC_URL + postUserData.profile_pic} alt="user-profilePic"/>  
                         <label className="fw-bold postUser-username">{postUserData.username}</label>
                     </div>

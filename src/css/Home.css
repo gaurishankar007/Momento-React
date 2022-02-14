@@ -1,0 +1,15 @@
+#followedPost-div {    
+    border: none;
+    border-radius: 0px;
+    box-shadow: none; 
+}
+
+.singlePost-div {   
+    border: 1px solid #808080;
+    box-shadow: 3px 3px 10px #808080; 
+}
+
+.singlePost-div a {  
+    text-decoration: none;
+    color: black;
+}

@@ -35,6 +35,12 @@
     font-size: 18px;
 }
 
+.postView-div .taggedFollowers {
+    max-height: 150px;
+    width: 500px;
+    overflow-y: scroll;
+}
+
 @media screen and (max-width: 660px) {
     .upload-div .postUser-profilePic {
         height: 50px;
@@ -52,5 +58,8 @@
     }    
     .postView-div .comment-section textarea {
         width: 250px;
-    } 
+    }
+     .postView-div .taggedFollowers {
+        width: 200px;
+    }
 }
