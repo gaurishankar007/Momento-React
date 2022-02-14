@@ -105,7 +105,7 @@ const Home = ()=> {
                                             <label className="fw-bold postUser-username">{singlePost.post.user_id.username}</label>
                                         </div>
                                     </NavLink>
-                                    <NavLink to={"/report/" + singlePost._id}><button className="btn lR-button" id="report-post">Report</button></NavLink>
+                                    <NavLink to={"/report/" + singlePost.post._id}><button className="btn lR-button" id="report-post">Report</button></NavLink>
                                 </div>
                                 <Carousel interval={null}>     
                                     {singlePost.post.attach_file.map(Image=> {

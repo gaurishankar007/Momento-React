@@ -27,6 +27,9 @@ const Report =()=> {
     ]
 
     function addReport(report_for) {
+        setResponse("");
+        setSResponse("");
+
         var tempReports = reports;
         if(!tempReports.includes(report_for)) {                    
             tempReports.push(report_for);
@@ -36,6 +39,9 @@ const Report =()=> {
     }    
 
     function removeReport(report_for) {
+        setResponse("");
+        setSResponse("");
+
         var tempReports = reports;
         if(tempReports.includes(report_for)) {                    
             tempReports.splice(tempReports.indexOf(report_for), 1);
@@ -46,10 +52,11 @@ const Report =()=> {
 
     function postReport() {
         if(reports.length===0) {
+            setResponse("You have not selected any report options.");  
             return;
         }
-        const ReportData = {
-            reported_post: post_id,
+        const reportData = {
+            post_id: post_id,
             report_for: reports
         };
         
@@ -58,9 +65,12 @@ const Report =()=> {
                 Authorization: 'Bearer ' + localStorage.getItem('userToken')
             }
         }        
-        axios.post(`${REACT_APP_BASE_URL}report/post`, ReportData, config).then((result)=> {
+        axios.post(`${REACT_APP_BASE_URL}report/post`, reportData, config).then((result)=> {
             if(result.data.message==="Reported.") {
-                setSResponse("Your report has been registered."); 
+                setResponse("")
+                setCurrentlySR("")
+                setReports([])
+                setSResponse("Your report has been registered.")
             }
             else {
                 setResponse(result.data.message);          
