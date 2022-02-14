@@ -11,6 +11,7 @@ const { REACT_APP_POST_URL } = process.env;
 
 const PostEdit = ()=> {
     const {post_id} = useParams();
+    const [actualFollowers, setActualFollowers] = useState([])
     const [followers, setFollowers] = useState([]); 
     const [postImages, setPostImages] = useState([]); 
     const [taggedFollowersData, setTaggedFollowersData] = useState([]); 
@@ -43,7 +44,7 @@ const PostEdit = ()=> {
                 }
             }
             setTaggedFollowers(tempTaggedFollower)
-
+            setActualFollowers(responses[0].data)
             if(responses[0].data.length>0) {
                 var tempList = []
                 for( var j=0; j<responses[0].data.length; j++) {
@@ -58,8 +59,8 @@ const PostEdit = ()=> {
 
     function tagFollower(follower_id) {
         var tempTaggedFollower = taggedFollowers;
-        if(tempTaggedFollower.includes(follower_id)) {            
-            tempTaggedFollower.pop(follower_id);
+        if(tempTaggedFollower.includes(follower_id)) {                  
+            tempTaggedFollower.splice(tempTaggedFollower.indexOf(follower_id), 1);  
         } else {                    
             tempTaggedFollower.push(follower_id);
         }
@@ -123,7 +124,7 @@ const PostEdit = ()=> {
                             <small id="helper" className="form-text ms-1">Optional</small>
                         </div>       
                         {
-                            followers.length > 0
+                            actualFollowers.length > 0
                             ?
                             <div className="form-group mb-3">
                                 <label htmlFor="user-follower" className="fw-bold">Followers:</label> 

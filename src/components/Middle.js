@@ -18,6 +18,7 @@ import Home from "./Home";
 import Search from "./Search";
 import Upload from "./Upload";
 import Notification from "./Notification";
+import Report from "./Report";
 
 import ProfileMain from "./profile/ProfileMain";
 import Followers from "./profile/Followers";
@@ -61,6 +62,7 @@ class Middle extends Component {
                     <Route path="/search" element={<VerifyUser> <Search/> </VerifyUser>}/>                   
                     <Route path="/upload" element={<VerifyUser> <Upload/> </VerifyUser>}/>
                     <Route path="/notification" element={<VerifyUser> <Notification/> </VerifyUser>}/>
+                    <Route path="/report/:post_id" element={<VerifyUser> <Report/> </VerifyUser>}/>
 
                     <Route path="/profile-main" element={<VerifyUser> <ProfileMain/> </VerifyUser>}/>
                     <Route path="/followers" element={<VerifyUser> <Followers/> </VerifyUser>}/>

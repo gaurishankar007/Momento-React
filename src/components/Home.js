@@ -13,7 +13,19 @@ const Home = ()=> {
     const [userData, setUserData] = useState("");
     const [postsData, setPostsData] = useState([]);
     const [comment, setComment] = useState("");
-    const [response, setResponse] = useState("");
+
+    const reportOptions = [
+        'Nudity or sexual activity',
+        'Scam or fraud',
+        'False information',
+        'Bullying or harassment',
+        'Intellectual property voilations',
+        'Voilent content',
+        'Innapropriate language',
+        'Selling illegal or regulated goods',
+        'Eating disorder',
+        'Hate speech or symbol',
+    ]
 
     useEffect(()=> {
         const config = {
@@ -32,8 +44,6 @@ const Home = ()=> {
     }, [])
 
     function postLike (post_id) {
-        setResponse("")
-
         const config = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('userToken')
@@ -48,10 +58,7 @@ const Home = ()=> {
     }
 
     function postComment(post_id) {
-        setResponse("")
-
         if(comment==="") {
-            setResponse("Empty comment field.");
             return;
         }
 
@@ -70,8 +77,6 @@ const Home = ()=> {
     }
     
     function deleteComment(post_id) {
-        setResponse("")
-
         const config = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('userToken')
@@ -92,13 +97,16 @@ const Home = ()=> {
                 <div className="upload-div d-flex flex-column justify-content-center align-items-start pb-3" id="followedPost-div">
                     {postsData.map((singlePost)=> {
                         return (
-                            <div className="singlePost-div d-flex flex-column justify-content-center align-items-start mb-3" key={singlePost.post._id}>
-                                <NavLink to={"/profile-main/" + singlePost.post.user_id._id}>
-                                    <div className="d-flex align-items-center ps-1 py-2">
-                                        <img className="postUser-profilePic me-3" src={REACT_APP_PROFILE_PIC_URL + singlePost.post.user_id.profile_pic} alt="user-profilePic"/>  
-                                        <label className="fw-bold postUser-username">{singlePost.post.user_id.username}</label>
-                                    </div>
-                                </NavLink>
+                            <div className="singlePost-div d-flex flex-column justify-content-center mb-3" key={singlePost.post._id}>
+                                <div className="d-flex justify-content-between align-items-center ps-1 pe-2 py-2">
+                                    <NavLink to={"/profile-main/" + singlePost.post.user_id._id}>
+                                        <div className="d-flex align-items-center">
+                                            <img className="postUser-profilePic me-3" src={REACT_APP_PROFILE_PIC_URL + singlePost.post.user_id.profile_pic} alt="user-profilePic"/>  
+                                            <label className="fw-bold postUser-username">{singlePost.post.user_id.username}</label>
+                                        </div>
+                                    </NavLink>
+                                    <NavLink to={"/report/" + singlePost._id}><button className="btn lR-button" id="report-post">Report</button></NavLink>
+                                </div>
                                 <Carousel interval={null}>     
                                     {singlePost.post.attach_file.map(Image=> {
                                         return (                  
@@ -121,7 +129,6 @@ const Home = ()=> {
                                         <NavLink to={"/comment/" + singlePost.post._id}>{singlePost.post.comment_num} commenter</NavLink>
                                     </div> 
                                     <label className="mb-2"><label className="fw-bold me-2">{singlePost.post.caption}</label><label>{singlePost.post.description}</label></label>
-                                    <div className="suggestion-message text-center">{response}</div>
                                     <div className="comment-section d-flex align-items-center my-3">
                                         <img className="user-profilePic me-3" src={REACT_APP_PROFILE_PIC_URL + userData.profile_pic} alt="user-profilePic"/>         
                                         {

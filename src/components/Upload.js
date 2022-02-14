@@ -44,7 +44,8 @@ const Upload = ()=> {
 
     function tagFollower(follower_id) {
         var tempTaggedFollower = taggedFollowers;
-        if(tempTaggedFollower.includes(follower_id)) {            
+        if(tempTaggedFollower.includes(follower_id)) {                  
+            // tempTaggedFollower.splice(tempTaggedFollower.indexOf(follower_id), 1);          
             tempTaggedFollower.pop(follower_id);
         } else {                    
             tempTaggedFollower.push(follower_id);

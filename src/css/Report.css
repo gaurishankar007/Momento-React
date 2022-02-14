@@ -1,0 +1,19 @@
+.follow-div .report-warning {  
+    color: darkorange;
+}
+
+.follow-div .report-options, .follow-div .add-report, .follow-div .remove-report {  
+    font-size: 24px;
+}
+.follow-div .add-report, .follow-div .csr {  
+    color: #6200EA;
+}
+.follow-div .remove-report {   
+    color: red;
+}
+
+@media screen and (max-width: 660px) {
+    .follow-div .report-options, .follow-div .add-report, .follow-div .remove-report {  
+        font-size: 18px;
+    }    
+}

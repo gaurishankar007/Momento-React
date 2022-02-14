@@ -7,8 +7,9 @@ const { REACT_APP_BASE_URL } = process.env;
 const { REACT_APP_PROFILE_PIC_URL } = process.env;
 
 const LoggedInHeader = ()=> {
-    const [profilePic, setProfilePic] = useState("");
+    const [profilePic, setProfilePic] = useState("")
     const [users, setUsers] = useState([])
+    const [usersNum, setUsersNum] = useState("")
 
     useEffect(()=> {
         const config = {
@@ -32,7 +33,8 @@ const LoggedInHeader = ()=> {
             }
         }
         axios.post(`${REACT_APP_BASE_URL}user/search/username`, {parameter: username}, config).then(response=> {
-            setUsers(response.data);
+            setUsers(response.data)
+            setUsersNum(response.data.length)
         });
     }
     
@@ -48,6 +50,7 @@ const LoggedInHeader = ()=> {
                 <div className="logged-in-nav-searchUser input-group dropdown">
                     <input type="text" className="form-control" id="searchUser-input" data-bs-toggle="dropdown" aria-expanded="false" placeholder="Search User" onChange={(e)=> {searchUser(e.target.value)}}></input>
                     <ul className="dropdown-menu p-2" aria-labelledby="searchUser-input" id="searched-user">
+                        <h2 className="text-center">{usersNum}</h2>
                         {users.map((singleUser)=> {
                             return(
                                 <NavLink to={"/profile-main/" + singleUser._id}  key={singleUser._id}>
