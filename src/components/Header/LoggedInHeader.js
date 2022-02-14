@@ -51,15 +51,13 @@ const LoggedInHeader = ()=> {
                         {users.map((singleUser)=> {
                             return(
                                 <NavLink to={"/profile-main/" + singleUser._id}  key={singleUser._id}>
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <div className="d-flex justify-content-start align-items-center my-2">
-                                            <img className="profile-pic me-3" src={REACT_APP_PROFILE_PIC_URL + singleUser.profile_pic} alt="ProfilePic"/>
-                                            <div>                                        
-                                                <h2>{singleUser.username}</h2>
-                                                <h4>{singleUser.email}</h4>
-                                            </div>
-                                        </div> 
-                                    </div>
+                                    <div className="d-flex justify-content-start align-items-center my-2">
+                                        <img className="profile-pic me-3" src={REACT_APP_PROFILE_PIC_URL + singleUser.profile_pic} alt="ProfilePic"/>
+                                        <div>                                        
+                                            <h2>{singleUser.username}</h2>
+                                            <h4>{singleUser.email}</h4>
+                                        </div>
+                                    </div> 
                                 </NavLink>
                             )
                         })}

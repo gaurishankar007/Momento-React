@@ -1,0 +1,20 @@
+.follow-div #searchUser-input {
+    border-radius: 5px;
+    border-color: #e9ecef;
+    background-color: #e9ecef;
+}
+.follow-div #searchUser-input:focus {
+    color: white;
+    border-color: #6200EA;
+    background-color: #6200EA;
+    box-shadow: none;
+}
+.follow-div #searchUser-input::placeholder {
+    color: black;
+}
+.follow-div #searchUser-input:focus::placeholder {
+    color: white;
+}
+.follow-div #searchUser-input {
+    box-shadow: 5px 5px 20px #e9ecef;
+}
