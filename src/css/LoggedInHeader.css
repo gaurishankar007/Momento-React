@@ -69,6 +69,9 @@
 .logged-in-nav-navigators .bell-icon  {
     font-size: 25px;
 }
+.logged-in-nav-navigators .bell-icon p {
+    font-size: 20px;
+}
 .logged-in-nav-navigators .nav-profile-picture {
     height: 28px;
     width: 28px;

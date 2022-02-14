@@ -26,7 +26,7 @@ const FollowersOther =()=> {
             setFollowersData(responses[0].data);
             if(responses[0].data.length===0) {
                 setNoFollowers(
-                    <h2 className="text-center mb-3">No one has followed this user yet.</h2>
+                    <h1 className="text-center mb-3">No one has followed this user yet.</h1>
                 )
             } else {
                 setNoFollowers("")

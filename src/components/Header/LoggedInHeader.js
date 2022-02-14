@@ -31,7 +31,7 @@ const LoggedInHeader = ()=> {
             <div className="logged-in-nav-container d-flex justify-content-between align-items-center">
                 <h3 className="logged-in-logo-text">Memento</h3>
                 <div className="logged-in-nav-searchUser input-group">
-                    <input type="text" className="form-control" id="searchUser-input" placeholder="Search" aria-label="Default" aria-describedby="inputGroup-sizing-default"></input>
+                    <input type="text" className="form-control" id="searchUser-input" placeholder="Search" onChange={()=> {console.log("a")}}></input>
                     <div className="input-group-prepend">
                         <span className="input-group-text" id="inputGroup-sizing-default"><i className="bi bi-search"></i></span>
                     </div>

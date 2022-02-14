@@ -21,7 +21,7 @@ const Following =()=> {
             setFollowingData(response.data);
             if(response.data.length===0) {
                 setNoFollowing(
-                    <h2 className="text-center mb-3">You have not followed anyone yet.</h2>
+                    <h1 className="text-center mb-3">You have not followed anyone yet.</h1>
                 )
             } else {
                 setNoFollowing("")
@@ -40,7 +40,7 @@ const Following =()=> {
                 setFollowingData(response1.data);
                 if(response1.data.length===0) {
                     setNoFollowing(
-                        <h2 className="text-center mb-3">You have not followed anyone yet.</h2>
+                        <h1 className="text-center mb-3">You have not followed anyone yet.</h1>
                     )
                 } else {
                     setNoFollowing("")

@@ -11,7 +11,8 @@
     border-radius: 50%;
     object-fit: cover;
 }
-.follow-div h2 {
+.follow-div h1 {
+    font-size: 24px;
     font-weight: bold;
 }
 .follow-div a {
@@ -33,8 +34,8 @@
         height: 75px;
         width: 75px;
     }
-    .follow-div h2, .follow-div h4 {
-        font-size: 24px;
+    .follow-div h1, .follow-div h4 {
+        font-size: 16px;
     }
 }
 
