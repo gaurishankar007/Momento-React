@@ -42,6 +42,15 @@ router.delete("/unFollow", auth.verifyUser, (req, res)=> {
     });
 });
 
+router.delete("/unFollow/:following_id", auth.verifyUser, (req, res)=> {
+    follow.deleteOne({
+        followed_user: req.params.following_id,
+        follower: req.userInfo._id,
+    }).then(()=> {
+        res.json({"message": "Stopped following."})
+    });
+});
+
 router.post("/follow/check", auth.verifyUser, (req, res)=> {
     follow.findOne({
         followed_user: req.body.user_id,
@@ -58,6 +67,15 @@ router.post("/follow/check", auth.verifyUser, (req, res)=> {
 router.delete("/removeFollower", auth.verifyUser, (req, res)=> {
     follow.deleteOne({
         follower: req.body.follower,
+        followed_user: req.userInfo._id,
+    }).then(()=> {
+        res.json({"message": "Follower removed."})
+    });
+});
+
+router.delete("/remove-follower/:follower_id", auth.verifyUser, (req, res)=> {
+    follow.deleteOne({
+        follower: req.params.follower_id,
         followed_user: req.userInfo._id,
     }).then(()=> {
         res.json({"message": "Follower removed."})

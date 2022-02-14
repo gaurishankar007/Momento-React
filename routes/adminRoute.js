@@ -77,34 +77,6 @@ router.put("/admin/ChangePhone", auth.verifyAdmin, (req, res)=> {
     }); 
 });
 
-router.put("/user/makeVerified", auth.verifyAdminSuper, (req, res)=>{
-    var username = "";
-    user.findOne({_id: req.body.user_id}).then((userData)=> {
-        username = userData.username;
-    });
-    user.updateOne({_id: req.body.user_id}, {verified: true})
-    .then(()=>{
-        res.json({message: `${username} has been verified.`});
-    })
-    .catch((e)=> {
-        res.json({error: e})
-    });
-});
-
-router.put("/user/makeUnverified", auth.verifyAdminSuper, (req, res)=>{
-    var username = "";
-    user.findOne({_id: req.body.user_id}).then((userData)=> {
-        username = userData.username;
-    });
-    user.updateOne({_id: req.body.user_id}, {verified: false})
-    .then(()=>{
-        res.json({message: `${username} has been unverified.`});
-    })
-    .catch((e)=> {
-        res.json({error: e})
-    });
-});
-
 router.put("/user/deactivate", auth.verifyAdminSuper, (req, res)=>{
     var username = "";
     user.findOne({_id: req.body.user_id}).then((userData)=> {

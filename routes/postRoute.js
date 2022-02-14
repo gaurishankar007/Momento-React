@@ -122,6 +122,24 @@ router.delete("/post/delete", auth.verifyUser, (req, res)=> {
     });
 });
 
+router.delete("/post-delete/:post_id", auth.verifyUser, (req, res)=> {
+    post.findById(req.params.post_id).then((postData)=> {
+        const attach_files = postData.attach_file.length;
+        for(i=0; i<attach_files; i++) {            
+            const image_path = `./uploads/posts/${postData.attach_file[i]}`;
+            fs.unlinkSync(image_path);
+        }
+
+        post.findByIdAndDelete(postData._id)
+        .then(function() {
+            res.json({message: "Post has been deleted."});
+        })
+        .catch((e)=> {
+            res.json({message: e});
+        });
+    });
+});
+
 router.get("/posts/get/my", auth.verifyUser, async (req, res) => { 
     const posts = await post.find({user_id: req.userInfo._id})
     .sort({createdAt: -1});
@@ -216,6 +234,51 @@ router.get("/posts/get/followedUser", auth.verifyUser, async (req, res) => {
    }
 
     res.send({followedPosts: posts, liked: liked, commented: commented});
+});
+
+router.get("/posts/get/followed-user", auth.verifyUser, async (req, res) => { 
+    const users = [];
+    const postsData = [];
+
+    const followed_user = await follow.find({
+        follower: req.userInfo._id
+    });
+
+    for(i=0; i<followed_user.length; i++) {
+        users.push(followed_user[i].followed_user);
+    }
+    
+    const posts = await post.find({user_id: users})
+    .populate("user_id", "username profile_pic")
+    .populate("tag_friend", "username profile_pic")
+    .sort({createdAt: -1});
+
+    for(i=0; i<posts.length; i++) {
+        var singlePost = {
+            post: null,
+            liked: false,
+            commented:  {check: false, data : null},
+        }
+
+        singlePost["post"] = posts[i];
+
+        await like.findOne({post_id: posts[i]._id, user_id: req.userInfo._id}).then((likeData)=> {
+           if(likeData!=null) {
+               singlePost["liked"] = true;
+           } 
+       })
+
+       await comment.findOne({post_id: posts[i]._id, user_id: req.userInfo._id}).then((commentData)=> {
+           if(commentData!=null) {
+               singlePost["commented"]["check"] = true;
+               singlePost["commented"]["data"] = commentData.comment;
+           }
+       })
+
+       postsData.push(singlePost);
+   }
+
+    res.send(postsData);
 });
 
 module.exports = router;

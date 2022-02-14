@@ -25,7 +25,8 @@ router.post("/comment/post", auth.verifyUser, (req, res)=> {
                 if(restrictData==null) {
                     notification.findOne({
                         notification_generator: req.userInfo._id,
-                        commented_post: postData._id,
+                        notification_for: "Comment",
+                        target_post: postData._id,
                     }).then((notificationData)=>{
                         if(notificationData==null) {
                             const newNotification = new notification({
@@ -66,6 +67,16 @@ router.put("/comment/edit", auth.verifyUser, (req, res)=> {
 
 router.delete("/comment/delete", auth.verifyUser, (req, res)=> {
     post.findOne({_id: req.body.post_id}).then((postData)=> {  
+        comment.deleteOne({post_id: postData._id, user_id: req.userInfo._id}).then(()=> {
+            post.updateOne({_id: postData._id}, {comment_num: (postData.comment_num-1)}).then(()=> {
+                res.json({message: "Comment deleted."});
+            });
+        });
+    });
+});
+
+router.delete("/comment-delete/:post_id", auth.verifyUser, (req, res)=> {
+    post.findOne({_id: req.params.post_id}).then((postData)=> {  
         comment.deleteOne({post_id: postData._id, user_id: req.userInfo._id}).then(()=> {
             post.updateOne({_id: postData._id}, {comment_num: (postData.comment_num-1)}).then(()=> {
                 res.json({message: "Comment deleted."});

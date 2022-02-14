@@ -37,7 +37,8 @@ router.post("/like/post", auth.verifyUser, (req, res)=> {
                     if(restrictData==null) {
                         notification.findOne({
                             notification_generator: req.userInfo._id,
-                            liked_post: postData._id,
+                            notification_for: "Like",
+                            target_post: postData._id,
                         }).then((notificationData)=>{
                             if(notificationData==null) {
                                 const newNotification = new notification({
