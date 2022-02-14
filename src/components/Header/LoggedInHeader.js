@@ -2,13 +2,13 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "../../css/LoggedInHeader.css";
+        
+const { REACT_APP_BASE_URL } = process.env;        
+const { REACT_APP_PROFILE_PIC_URL } = process.env;
 
 const LoggedInHeader = ()=> {
     const [profilePic, setProfilePic] = useState("");
     const [users, setUsers] = useState([])
-        
-    const { REACT_APP_BASE_URL } = process.env;        
-    const { REACT_APP_PROFILE_PIC_URL } = process.env;
 
     useEffect(()=> {
         const config = {
@@ -23,7 +23,17 @@ const LoggedInHeader = ()=> {
     }, [])
 
     function searchUser(username) {
-
+        if(username.trim()==="") {
+            return;
+        }
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
+        axios.post(`${REACT_APP_BASE_URL}user/search/username`, {parameter: username}, config).then(response=> {
+            setUsers(response.data);
+        });
     }
     
     const logOut = ()=> {
@@ -35,14 +45,25 @@ const LoggedInHeader = ()=> {
         <div className="logged-in-nav d-flex justify-content-center py-2 px-3 mb-2">                
             <div className="logged-in-nav-container d-flex justify-content-between align-items-center">
                 <h3 className="logged-in-logo-text">Memento</h3>
-                <div className="logged-in-nav-searchUser input-group">
-                    <input type="text" className="form-control" id="searchUser-input" placeholder="Search" onChange={()=> {console.log("a")}}></input>
-                    <div className="input-group-prepend dropdown">
-                        <span className="input-group-text" id="inputGroup-sizing-default" data-bs-toggle="dropdown" aria-expanded="false"><i className="bi bi-search"></i></span>
-                        <ul className="dropdown-menu" aria-labelledby="inputGroup-sizing-default" id="searched-user">
-                            
-                        </ul>
-                    </div>
+                <div className="logged-in-nav-searchUser input-group dropdown">
+                    <input type="text" className="form-control" id="searchUser-input" data-bs-toggle="dropdown" aria-expanded="false" placeholder="Search User" onChange={(e)=> {searchUser(e.target.value)}}></input>
+                    <ul className="dropdown-menu p-2" aria-labelledby="searchUser-input" id="searched-user">
+                        {users.map((singleUser)=> {
+                            return(
+                                <NavLink to={"/profile-main/" + singleUser._id}  key={singleUser._id}>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <div className="d-flex justify-content-start align-items-center my-2">
+                                            <img className="profile-pic me-3" src={REACT_APP_PROFILE_PIC_URL + singleUser.profile_pic} alt="ProfilePic"/>
+                                            <div>                                        
+                                                <h2>{singleUser.username}</h2>
+                                                <h4>{singleUser.email}</h4>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </NavLink>
+                            )
+                        })}
+                    </ul>
                 </div>
                 <div className="logged-in-nav-navigators d-flex justify-content-between align-items-center">
                         <NavLink className="home-icon" to="/home" style={({ isActive }) => isActive ? { color: '#6200EA'} : { color: 'black' }}>
@@ -58,7 +79,7 @@ const LoggedInHeader = ()=> {
                             <i className="bi bi-bell-fill"></i>
                         </NavLink>
                         <div className="dropdown">
-                            <img className="nav-profile-picture" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" src={profilePic} alt="Profile"/>
+                            <img className="nav-profile-picture btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" src={profilePic} alt="Profile"/>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li>
                                     <NavLink className="person-icon dropdown-item" to="/profile-main" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>

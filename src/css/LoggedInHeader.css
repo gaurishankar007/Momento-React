@@ -20,7 +20,6 @@
 }
 
 #searched-user {
-    width: 300px;
     height: 250px;
     background-color: white;
     border: 1px solid #808080;
@@ -29,9 +28,22 @@
     overflow-y: scroll;
     z-index: 1;
 }
+#searched-user .profile-pic {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+#searched-user a{
+    color: black;
+    text-decoration: none;
+}
+#searched-user h2, #searched-user h4{
+    font-size: 16px
+}
 
 .logged-in-nav-searchUser .form-control {
-    border-radius: 5px 0px 0px 5px;
+    border-radius: 5px;
     border-color: #e9ecef;
     background-color: #e9ecef;
 }
@@ -49,15 +61,6 @@
 }
 .logged-in-nav-searchUser {
     box-shadow: 5px 5px 20px #e9ecef;
-}
-.logged-in-nav-searchUser #inputGroup-sizing-default {
-    border-radius: 0px 5px 5px 0px;
-    border-color: #e9ecef;
-    color: black;
-}
-.logged-in-nav-searchUser:hover #inputGroup-sizing-default {
-    border-color: #6200EA;
-    background-color: #6200EA;
 }
 
 .logged-in-nav-navigators > a  {
@@ -84,8 +87,9 @@
     font-size: 20px;
 }
 .logged-in-nav-navigators .nav-profile-picture {
-    height: 28px;
-    width: 28px;
+    padding: 0;
+    height: 30px;
+    width: 30px;
     object-fit: cover;
     border-radius: 50%;
 }
@@ -108,16 +112,8 @@
     .logged-in-nav-searchUser {
         width: 125px;
     }
-    #searched-user {
-        width: 200px;
-        height: 200;
-    }
     .logged-in-nav-searchUser .form-control {
         height: 25px;
-    }
-    .logged-in-nav-searchUser #inputGroup-sizing-default {
-        height: 25px;
-        font-size: 12px;
     }
     
     .logged-in-nav-navigators  {
@@ -137,8 +133,8 @@
         font-size: 21px;
     }
     .logged-in-nav-navigators .nav-profile-picture {
-        height: 24px;
-        width: 24px;
+        height: 25px;
+        width: 25px;
         object-fit: cover;
         border-radius: 50%;
     }
