@@ -19,6 +19,17 @@
     width: 225px;
 }
 
+#searched-user {
+    width: 300px;
+    height: 250px;
+    background-color: white;
+    border: 1px solid #808080;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px #808080; 
+    overflow-y: scroll;
+    z-index: 1;
+}
+
 .logged-in-nav-searchUser .form-control {
     border-radius: 5px 0px 0px 5px;
     border-color: #e9ecef;
@@ -96,6 +107,10 @@
 @media screen and (max-width: 660px) {    
     .logged-in-nav-searchUser {
         width: 125px;
+    }
+    #searched-user {
+        width: 200px;
+        height: 200;
     }
     .logged-in-nav-searchUser .form-control {
         height: 25px;

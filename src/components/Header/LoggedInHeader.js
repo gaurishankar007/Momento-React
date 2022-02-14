@@ -5,6 +5,7 @@ import "../../css/LoggedInHeader.css";
 
 const LoggedInHeader = ()=> {
     const [profilePic, setProfilePic] = useState("");
+    const [users, setUsers] = useState([])
         
     const { REACT_APP_BASE_URL } = process.env;        
     const { REACT_APP_PROFILE_PIC_URL } = process.env;
@@ -20,6 +21,10 @@ const LoggedInHeader = ()=> {
             setProfilePic(REACT_APP_PROFILE_PIC_URL + result.data.userData.profile_pic);
         });
     }, [])
+
+    function searchUser(username) {
+
+    }
     
     const logOut = ()=> {
         localStorage.clear();
@@ -32,8 +37,11 @@ const LoggedInHeader = ()=> {
                 <h3 className="logged-in-logo-text">Memento</h3>
                 <div className="logged-in-nav-searchUser input-group">
                     <input type="text" className="form-control" id="searchUser-input" placeholder="Search" onChange={()=> {console.log("a")}}></input>
-                    <div className="input-group-prepend">
-                        <span className="input-group-text" id="inputGroup-sizing-default"><i className="bi bi-search"></i></span>
+                    <div className="input-group-prepend dropdown">
+                        <span className="input-group-text" id="inputGroup-sizing-default" data-bs-toggle="dropdown" aria-expanded="false"><i className="bi bi-search"></i></span>
+                        <ul className="dropdown-menu" aria-labelledby="inputGroup-sizing-default" id="searched-user">
+                            
+                        </ul>
                     </div>
                 </div>
                 <div className="logged-in-nav-navigators d-flex justify-content-between align-items-center">
@@ -50,7 +58,7 @@ const LoggedInHeader = ()=> {
                             <i className="bi bi-bell-fill"></i>
                         </NavLink>
                         <div className="dropdown">
-                            <img className="nav-profile-picture dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" src={profilePic} alt="Profile"/>
+                            <img className="nav-profile-picture" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" src={profilePic} alt="Profile"/>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li>
                                     <NavLink className="person-icon dropdown-item" to="/profile-main" style={({ isActive }) => isActive ? { color:"white", backgroundColor: '#6200EA', } : { color: 'black', backgroundColor: 'white'}}>
