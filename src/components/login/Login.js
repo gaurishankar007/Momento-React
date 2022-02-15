@@ -42,9 +42,15 @@ const Login = ()=> {
         const { REACT_APP_BASE_URL } = process.env;
         const userData = {username_email, password};
         axios.post(`${REACT_APP_BASE_URL}user/login`, userData).then((result)=> {
-            if(result.data.token) {
-                localStorage.setItem('userToken', result.data.token);                 
-                navigate("/home");  
+            if(result.data.token) {               
+                if (result.data.userData.admin===false && result.data.userData.superuser===false) { 
+                    localStorage.setItem('userToken', result.data.token);                
+                    navigate("/home"); 
+                }
+                else if (result.data.userData.admin===true){ 
+                    localStorage.setItem('adminToken', result.data.token);                               
+                    navigate("/admin-home");   
+                }
             }
             else {
                 setResponse(result.data.message);

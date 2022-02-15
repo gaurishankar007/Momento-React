@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios"; 
-import LoggedInHeader from "../Header/LoggedInHeader";
-import SettingNav from "../Header/SettingNav";
+import AdminHeader from "./AdminHeader";
+import ASettingNav from "./ASettingNav";
 
-const PasswordSetting =()=> {
+const APasswordSetting =()=> {
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,14 +31,14 @@ const PasswordSetting =()=> {
         const { REACT_APP_BASE_URL } = process.env;
         const config = {
             headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+                Authorization: 'Bearer ' + localStorage.getItem('adminToken')
             }
         }
         const passData = {
             currPassword: currentPassword,
             newPassword: newPassword
         }
-        const apiResponse = axios.put(`${REACT_APP_BASE_URL}user/changePassword`, passData, config)
+        const apiResponse = axios.put(`${REACT_APP_BASE_URL}admin/changePassword`, passData, config)
         apiResponse.then((result)=> {
             if (result.data.message==="Your password has been changed.") {
                 setSResponse(result.data.message);    
@@ -89,10 +89,10 @@ const PasswordSetting =()=> {
 
     return(
         <div>            
-            <LoggedInHeader></LoggedInHeader> 
+            <AdminHeader></AdminHeader> 
             <div className="d-flex justify-content-center">                         
                 <div className="setting py-3 mt-2">
-                    <SettingNav/>  
+                    <ASettingNav/>  
                     <form className="setting-form d-flex flex-column justify-content-center">
                         <div className="mb-2">
                             <div className="suggestion-message text-center">{response}</div>           
@@ -129,4 +129,4 @@ const PasswordSetting =()=> {
     )
 }
 
-export default PasswordSetting;
+export default APasswordSetting;

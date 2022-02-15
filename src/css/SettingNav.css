@@ -6,6 +6,10 @@
     align-items: flex-start;
 }
 
+#admin-setting-nav {
+    justify-content: start;     
+}
+
 .setting-nav > a  {
     text-decoration: none;
     width: 245px;

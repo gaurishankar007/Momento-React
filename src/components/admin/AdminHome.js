@@ -1,19 +1,19 @@
 import { Component } from "react/cjs/react.production.min";
 import { useState, useEffect } from "react";
 import axios from "axios"; 
-import LoggedInHeader from "./Header/LoggedInHeader";
+import AdminHeader from "./AdminHeader";
 
-const HomeAdmin = ()=> {
+const AdminHome = ()=> {
     useEffect(()=> {
     }, [])
 
     return (
         <div>
-            <LoggedInHeader></LoggedInHeader>
+            <AdminHeader></AdminHeader>
 
         </div>
     )
 }
 
 
-export default HomeAdmin;
+export default AdminHome;

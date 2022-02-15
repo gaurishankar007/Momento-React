@@ -38,7 +38,10 @@ import PasswordSetting from "./setting/PasswordSetting";
 import ProfileSetting from "./setting/ProfilePicSetting";
 import CoverSetting from "./setting/CoverPicSetting";
 
-import HomeAdmin from "./HomeAdmin";
+import AdminHome from "./admin/AdminHome";
+import APasswordSetting from "./admin/APasswordSetting";
+import AProfileSetting from "./admin/AProfilePicSetting";
+import AdminSetting from "./admin/AdminSetting";
 
 class Middle extends Component {
     render() {
@@ -83,7 +86,10 @@ class Middle extends Component {
                     <Route path="/address-setting" element={<VerifyUser> <AddressSetting/> </VerifyUser>}/>
 
                     {/* Admin routes */}
-                    <Route path="/home-admin" element={<VerifyAdmin> <HomeAdmin/> </VerifyAdmin>} />
+                    <Route path="/admin-home" element={<VerifyAdmin> <AdminHome/> </VerifyAdmin>} />
+                    <Route path="/admin-profile-setting" element={<VerifyAdmin> <AProfileSetting/> </VerifyAdmin>}/>
+                    <Route path="/admin-password-setting" element={<VerifyAdmin> <APasswordSetting/> </VerifyAdmin>}/>
+                    <Route path="/admin-setting" element={<VerifyAdmin> <AdminSetting/> </VerifyAdmin>}/>
 
                 </Routes>
             </div>
