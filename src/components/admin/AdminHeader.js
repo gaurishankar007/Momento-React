@@ -33,9 +33,6 @@ const AdminHeader = ()=> {
                         <NavLink className="home-icon me-4" to="/admin-home" style={({ isActive }) => isActive ? { color: '#6200EA'} : { color: 'black' }}>
                             <i className="bi bi-house-fill"></i>
                         </NavLink>
-                        <NavLink className="chat-icon me-4" to="/admin-search" style={({ isActive }) => isActive ? { color: '#6200EA' } : { color: 'black' }}>
-                            <i className="bi bi-search"></i>
-                        </NavLink>
                         <div className="dropdown">
                             <img className="nav-profile-picture btn me-4" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" src={profilePic} alt="Profile"/>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">

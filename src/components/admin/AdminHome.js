@@ -83,12 +83,32 @@ const AdminHome = ()=> {
         }
     }
 
-    function blockUser(user_id) {
-        console.log(user_id)
+    function deactivateUser(user_id) {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        }
+        axios.put(`${REACT_APP_BASE_URL}user/deactivate`, {user_id}, config).then(response=> {
+            axios.get(`${REACT_APP_BASE_URL}reports/get`, config).then(response=> {
+                setReports(response.data)
+                setReportsNum(response.data.length)
+            });  
+        });
     }
 
-    function unBlockUser(user_id) {
-        console.log(user_id)
+    function activateUser(user_id) {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        }
+        axios.put(`${REACT_APP_BASE_URL}user/activate`, {user_id}, config).then(response=> {
+            axios.get(`${REACT_APP_BASE_URL}reports/get`, config).then(response=> {
+                setReports(response.data)
+                setReportsNum(response.data.length)
+            });  
+        });
     }
 
     function deleteReport(report_id) {
@@ -145,9 +165,9 @@ const AdminHome = ()=> {
                                             {
                                                 singleReport.reported_post.user_id.is_active
                                                 ?
-                                                <button type="button" className="btn lR-button" id="report-post" onClick={()=> {blockUser(singleReport.reported_post.user_id._id)}}>Block reported user</button>
+                                                <button type="button" className="btn lR-button" id="report-post" onClick={()=> {deactivateUser(singleReport.reported_post.user_id._id)}}>Deactivate</button>
                                                 :
-                                                <button type="button" className="btn lR-button" id="report-post" onClick={()=> {unBlockUser(singleReport.reported_post.user_id._id)}}>UnBlock reported user</button>
+                                                <button type="button" className="btn lR-button" id="report-post" onClick={()=> {activateUser(singleReport.reported_post.user_id._id)}}>Activate</button>
                                             }                                            
                                         </div>
                                         <Carousel interval={null}>     
@@ -170,9 +190,9 @@ const AdminHome = ()=> {
                                     {
                                         singleReport.reporter.is_active
                                         ?             
-                                        <button type="button" className="btn lR-button" id="report-post" onClick={()=> {blockUser(singleReport.reporter._id)}}>Block reporter</button>
+                                        <button type="button" className="btn lR-button" id="report-post" onClick={()=> {deactivateUser(singleReport.reporter._id)}}>Deactivate</button>
                                         :
-                                        <button type="button" className="btn lR-button" id="report-post" onClick={()=> {unBlockUser(singleReport.reporter._id)}}>UnBlock reporter</button>                       
+                                        <button type="button" className="btn lR-button" id="report-post" onClick={()=> {activateUser(singleReport.reporter._id)}}>Activate</button>                       
                                     }
                                 </div>
                                 <div className="d-flex flex-column px-2 my-2">  
