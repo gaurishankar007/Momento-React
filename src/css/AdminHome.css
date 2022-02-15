@@ -1,0 +1,31 @@
+.upload-div #searchUser-input {
+    border-radius: 5px;
+    border-color: #e9ecef;
+    background-color: #e9ecef;
+}
+.upload-div #searchUser-input:focus {
+    color: white;
+    border-color: #6200EA;
+    background-color: #6200EA;
+    box-shadow: none;
+}
+.upload-div #searchUser-input::placeholder {
+    color: black;
+}
+.upload-div #searchUser-input:focus::placeholder {
+    color: white;
+}
+.upload-div #searchUser-input {
+    box-shadow: 5px 5px 20px #e9ecef;
+}
+
+.upload-div .sBy{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 960px) { 
+    .upload-div .sBy {
+        font-size: 16px;
+    }
+}

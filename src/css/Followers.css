@@ -11,7 +11,7 @@
     border-radius: 50%;
     object-fit: cover;
 }
-.follow-div h1 {
+.follow-div h1, .follow-div h2 {
     font-size: 24px;
     font-weight: bold;
 }
@@ -34,7 +34,7 @@
         height: 75px;
         width: 75px;
     }
-    .follow-div h1, .follow-div h4 {
+    .follow-div h1, .follow-div h2, .follow-div h4 {
         font-size: 16px;
     }
 }
@@ -46,9 +46,6 @@
     .follow-div .profile-pic {
         height: 50px;
         width: 50px;
-    }
-    .follow-div h2, .follow-div h4 {
-        font-size: 16px;
     }
     .follow-div button {
         font-size: 12px;
