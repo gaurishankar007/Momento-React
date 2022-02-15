@@ -6,8 +6,9 @@ const bcryptjs = require("bcryptjs");
 // Importing self made js files....
 const user = require("../models/userModel.js");
 const auth = require("../auth/auth.js");
+const profileUpload = require("../uploadSettings/profile.js");
 
-router.post("/admin/register", auth.verifySuper, (req, res) => {
+router.post("/admin/register", auth.verifySuper, profileUpload.single("profile"), (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const phone = req.body.phone;
@@ -42,7 +43,7 @@ router.post("/admin/register", auth.verifySuper, (req, res) => {
                         res.json({message: "New admin has been registered."})
                     })
                     .catch(function(e) {
-                        res.json({error: e});
+                        res.json({error: e.message});
                     })
                 });
             });
@@ -60,7 +61,7 @@ router.put("/admin/deactivate", auth.verifySuper, (req, res)=>{
         res.json({message: `${username} has been deactivated.`});
     })
     .catch((e)=> {
-        res.json({error: e})
+        res.json({error: e.message})
     });
 });
 
@@ -74,7 +75,7 @@ router.put("/admin/activate", auth.verifySuper, (req, res)=>{
         res.json({message: `${username} has been activated.`});
     })
     .catch((e)=> {
-        res.json({error: e})
+        res.json({error: e.message})
     });
 });
 
@@ -88,7 +89,7 @@ router.delete("/admin/delete", auth.verifySuper, (req, res)=>{
         res.json({message:  `${username} has been deleted.`});
     })
     .catch((e)=> {
-        res.json({error: e})
+        res.json({error: e.message})
     });
 });
 

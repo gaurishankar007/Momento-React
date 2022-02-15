@@ -108,13 +108,13 @@ router.post("/user/login", (req, res)=> {
                             res.json({message: "Sorry, your account has been deactivated."});
                         }
                         else if (userData1.admin==false && userData1.superuser==false) {
-                            res.json({token: token, message: "Login success"});                              
+                            res.json({token: token, message: "Login success", userData: userData1});                              
                         }
                         else if(userData1.admin) {
-                            res.json({token: token, message: "Login success as admin."});  
+                            res.json({token: token, message: "Login success as admin.", userData: userData1});  
                         }
                         else if(userData1.superuser) {
-                            res.json({token: token, message: "Login success as super."});  
+                            res.json({token: token, message: "Login success as super.", userData: userData1});  
                         }
                     }          
                 }); 
@@ -132,13 +132,13 @@ router.post("/user/login", (req, res)=> {
                     res.json({message: "Sorry, your account has been deactivated."});
                 }
                 else if (userData.admin==false && userData.superuser==false){
-                    res.json({token: token, message: "Login success"});                              
+                    res.json({token: token, message: "Login success", userData: userData});                              
                 }
                 else if(userData.admin) {
-                    res.json({token: token, message: "Login success as admin."});  
+                    res.json({token: token, message: "Login success as admin.", userData: userData});  
                 }
                 else if(userData.superuser) {
-                    res.json({token: token, message: "Login success as super."});  
+                    res.json({token: token, message: "Login success as super.", userData: userData});  
                 }
             });
         }
@@ -159,7 +159,7 @@ router.get("/user/checkType", (req, res)=> {
         });
     }
     catch(e) {
-        res.json({message: "Invalid Token!", error: e});
+        res.json({message: "Invalid Token!", error: e.message});
     }
 });
 
@@ -225,7 +225,7 @@ router.put("/user/changePassword", auth.verifyUser, (req, res)=> {
                     res.json({message: "Your password has been changed."});
                 })
                 .catch((e)=> {
-                    res.json({error: e});
+                    res.json({message: e});
                 });
             });
         });
@@ -331,7 +331,7 @@ router.put("/user/ChangePhone", auth.verifyUser, (req, res)=> {
             res.json({message: "Your phone number has been changed."});
         })
         .catch((e)=> {
-            res.json({error: e})
+            res.json({error: e.message})
         });
     }); 
 });
@@ -344,7 +344,7 @@ router.post("/user/search/username", auth.verifyUser, async (req, res)=> {
     // Using async function show that only after searching all the users, it will send the users 
     // Otherwise it will produce error 
     // Because it will start to run the code below it even though all the users have not been completely searched
-    const usernameUsers = await user.find(keyUsername).find({_id: {$ne: req.userInfo._id}});
+    const usernameUsers = await user.find(keyUsername).find({_id: {$ne: req.userInfo._id,}, admin: false, superuser: false});
     res.json(usernameUsers); 
 });
 
@@ -353,7 +353,7 @@ router.post("/user/search/email", auth.verifyUser, async (req, res)=> {
     ? {email: { $regex: req.body.parameter, $options: "i" }}
     :{}; 
 
-    const emailUsers = await user.find(keyEmail).find({_id: {$ne: req.userInfo._id}});      
+    const emailUsers = await user.find(keyEmail).find({_id: {$ne: req.userInfo._id}, admin: false, superuser: false});      
     res.json(emailUsers); 
 });
 

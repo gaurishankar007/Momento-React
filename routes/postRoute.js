@@ -73,7 +73,6 @@ router.post("/post/add", auth.verifyUser, postUpload.array("images", 12), async 
         res.json({message: "Post uploaded"});
     }
     catch (err) {
-        console.log(err);
         res.send({message: err.message});
     }
 });
