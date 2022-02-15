@@ -132,7 +132,7 @@ const AdminHome = ()=> {
         <div>
             <AdminHeader></AdminHeader>
             <div className="d-flex justify-content-center mb-5">  
-                <div className="upload-div d-flex flex-column pb-3" id="followedPost-div">    
+                <div className="upload-div admin-div d-flex flex-column pb-3" id="followedPost-div">    
                     <div className="post-nav d-flex justify-content-around align-items-center">     
                         <h1 className="sBy btn" style={searchBy === "reporter" ? { color: '#6200EA'} : { color: 'black' }} onClick={()=> {setSearchBy("reporter")}}>Reporter</h1> 
                         <h1 className="sBy text-center">{reportsNum}</h1>         

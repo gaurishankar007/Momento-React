@@ -13,19 +13,7 @@ const Home = ()=> {
     const [userData, setUserData] = useState("");
     const [postsData, setPostsData] = useState([]);
     const [comment, setComment] = useState("");
-
-    const reportOptions = [
-        'Nudity or sexual activity',
-        'Scam or fraud',
-        'False information',
-        'Bullying or harassment',
-        'Intellectual property voilations',
-        'Voilent content',
-        'Innapropriate language',
-        'Selling illegal or regulated goods',
-        'Eating disorder',
-        'Hate speech or symbol',
-    ]
+    const [targetPost, setTargetPost] = useState("");
 
     useEffect(()=> {
         const config = {
@@ -57,10 +45,15 @@ const Home = ()=> {
         });
     }
 
+    function commenting(post_id, comment) {
+        setTargetPost(post_id)
+        setComment(comment)
+    }
+
     function postComment(post_id) {
-        if(comment==="") {
+        if(comment==="" || targetPost!==post_id) {
             return;
-        }
+        } 
 
         const config = {
             headers: {
@@ -71,6 +64,7 @@ const Home = ()=> {
             axios.get(`${REACT_APP_BASE_URL}posts/get/followed-user`, config) 
             .then((response)=> {
                 setComment("")
+                setTargetPost("")
                 setPostsData(response.data)
             })
         });
@@ -140,7 +134,7 @@ const Home = ()=> {
                                             </div>
                                             :
                                             <div className="d-flex align-items-center">
-                                                <textarea type="text" className="form-control me-2" placeholder="Comment on this post....." onChange={(e)=>setComment(e.target.value.trim())}/>    
+                                                <textarea type="text" className="form-control me-2" placeholder="Comment on this post....." onChange={(e)=>commenting(singlePost.post._id, e.target.value.trim())}/>    
                                                 <i className="btn bi bi-send-fill" onClick={()=>{postComment(singlePost.post._id)}}></i>  
                                             </div>
                                         }             
