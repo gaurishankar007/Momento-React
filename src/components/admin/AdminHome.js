@@ -27,11 +27,11 @@ const AdminHome = ()=> {
             if(response.data.length===0) {
                 setInfoText(<h1 className="sBy text-center">No reports found.</h1>)
             }
-            console.log(response.data)
         });
     }, [])
     
     function allReport() {
+        setInfoText("")
         setAll(true)
         const config = {
             headers: {
@@ -84,11 +84,28 @@ const AdminHome = ()=> {
     }
 
     function blockUser(user_id) {
-
+        console.log(user_id)
     }
 
     function unBlockUser(user_id) {
-        
+        console.log(user_id)
+    }
+
+    function deleteReport(report_id) {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        }
+        axios.delete(`${REACT_APP_BASE_URL}report/delete/${report_id}`, config).then(response=> { 
+            axios.get(`${REACT_APP_BASE_URL}reports/get`, config).then(response=> {
+                setReports(response.data)
+                setReportsNum(response.data.length)
+                if(response.data.length===0) {
+                    setInfoText(<h1 className="sBy text-center">No reports found.</h1>)
+                }
+            });                   
+        });   
     }
 
     return (
@@ -107,7 +124,7 @@ const AdminHome = ()=> {
                         ?
                         <div></div>
                         :
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex justify-content-center my-2">
                             <button type="button" className="btn lR-button" id="report-post" onClick={()=> {allReport()}}>Show All</button>
                         </div>
                     }               
@@ -119,7 +136,7 @@ const AdminHome = ()=> {
                                     ?
                                     <div className="suggestion-message text-center my-2">The post has been removed by the reported user.</div>  
                                     :        
-                                    <div className=""> 
+                                    <div> 
                                         <div className="d-flex justify-content-between align-items-center px-2 my-1">
                                             <div className="d-flex align-items-center">
                                                 <img className="postUser-profilePic me-3" src={REACT_APP_PROFILE_PIC_URL + singleReport.reported_post.user_id.profile_pic} alt="user-profilePic"/>  
@@ -128,9 +145,9 @@ const AdminHome = ()=> {
                                             {
                                                 singleReport.reported_post.user_id.is_active
                                                 ?
-                                                <button type="button" className="btn lR-button" id="report-post" onClick={()=> {blockUser( singleReport.reported_post.user_id._id)}}>Block reported user</button>
+                                                <button type="button" className="btn lR-button" id="report-post" onClick={()=> {blockUser(singleReport.reported_post.user_id._id)}}>Block reported user</button>
                                                 :
-                                                <button type="button" className="btn lR-button" id="report-post" onClick={()=> {unBlockUser( singleReport.reported_post.user_id._id)}}>UnBlock reported user</button>
+                                                <button type="button" className="btn lR-button" id="report-post" onClick={()=> {unBlockUser(singleReport.reported_post.user_id._id)}}>UnBlock reported user</button>
                                             }                                            
                                         </div>
                                         <Carousel interval={null}>     
@@ -142,7 +159,7 @@ const AdminHome = ()=> {
                                                 )
                                             })}
                                         </Carousel>             
-                                        <label className="mb-2"><label className="fw-bold mx-2 mt-2">{singleReport.reported_post.caption}</label><label>{singleReport.reported_post.description}</label></label>
+                                        <label className="px-2 mb-2"><label className="fw-bold mr-2 mt-2">{singleReport.reported_post.caption}</label><label>{singleReport.reported_post.description}</label></label>
                                     </div>    
                                 } 
                                 <div className="d-flex justify-content-between align-items-center px-2 my-1">
@@ -153,17 +170,20 @@ const AdminHome = ()=> {
                                     {
                                         singleReport.reporter.is_active
                                         ?             
-                                        <button type="button" className="btn lR-button" id="report-post" onClick={()=> {blockUser( singleReport.reporter._id)}}>Block reporter</button>
+                                        <button type="button" className="btn lR-button" id="report-post" onClick={()=> {blockUser(singleReport.reporter._id)}}>Block reporter</button>
                                         :
-                                        <button type="button" className="btn lR-button" id="report-post" onClick={()=> {unBlockUser( singleReport.reporter._id)}}>UnBlock reporter</button>                       
+                                        <button type="button" className="btn lR-button" id="report-post" onClick={()=> {unBlockUser(singleReport.reporter._id)}}>UnBlock reporter</button>                       
                                     }
                                 </div>
                                 <div className="d-flex flex-column px-2 my-2">  
                                     {singleReport.report_for.map((singleRF, index)=> {
                                        return (
-                                           <h4 key={singleRF}>{index+1}. {singleRF}</h4>
+                                           <label className="postUser-username" key={singleRF}>{index+1}. {singleRF}</label>
                                        )
                                     })}
+                                </div>
+                                <div className="d-flex justify-content-center mb-2">                                               
+                                    <span className="delete-report btn bi bi-trash" onClick={()=> {deleteReport(singleReport._id)}}></span>
                                 </div>
                             </div>
                         )
