@@ -73,7 +73,7 @@ const ProfileOther =()=> {
                             </div>
                             <div className="d-flex align-items-center">                            
                                 <h2 className="keyPA me-3">Birthday:</h2>
-                                <h2>{profileData.birthday.split("T")[0]}</h2>
+                                <h2>{profileData.birthday===null ? "" : profileData.birthday.split("T")[0]}</h2>
                             </div>
                             <div className="d-flex align-items-center">                            
                                 <h2 className="keyPA me-3">Biography:</h2>
