@@ -10,6 +10,7 @@ const like = require("../models/likeModel.js");
 const comment = require("../models/commentModel.js");
 const follow = require("../models/followModel.js");
 const notification = require("../models/notificationModel.js");
+const report = require("../models/reportModel");
 const auth = require("../auth/auth.js");
 const postUpload = require("../uploadSettings/post.js");
 
@@ -111,6 +112,10 @@ router.delete("/post/delete", auth.verifyUser, (req, res)=> {
             fs.unlinkSync(image_path);
         }
 
+        like.deleteMany({post_id: postData._id}).then()
+        comment.deleteMany({post_id: postData._id}).then()
+        report.deleteMany({reported_post: postData._id}).then()
+
         post.findByIdAndDelete(postData._id)
         .then(function() {
             res.json({message: "Post has been deleted."});
@@ -128,6 +133,10 @@ router.delete("/post-delete/:post_id", auth.verifyUser, (req, res)=> {
             const image_path = `./uploads/posts/${postData.attach_file[i]}`;
             fs.unlinkSync(image_path);
         }
+
+        like.deleteMany({post_id: postData._id}).then()
+        comment.deleteMany({post_id: postData._id}).then()
+        report.deleteMany({reported_post: postData._id}).then()
 
         post.findByIdAndDelete(postData._id)
         .then(function() {
