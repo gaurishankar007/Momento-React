@@ -78,6 +78,9 @@ const LoggedInHeader = ()=> {
                             </NavLink>
                         <NavLink className="bell-icon" to="/notification" style={({ isActive }) => isActive ? { color: '#6200EA' } : { color: 'black' }}>
                             <i className="bi bi-bell-fill"></i>
+                        </NavLink> 
+                        <NavLink className="bell-icon" to="/chat" style={({ isActive }) => isActive ? { color: '#6200EA' } : { color: 'black' }}>
+                            <i className="bi bi-messenger"></i>
                         </NavLink>
                         <div className="dropdown">
                             <img className="nav-profile-picture btn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" src={profilePic} alt="Profile"/>
