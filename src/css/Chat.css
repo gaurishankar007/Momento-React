@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 3rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+#form {
+  background: lightskyblue;
+  padding: 0.25rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  height: 3rem;
+  box-sizing: border-box;
+  backdrop-filter: blur(10px);
+}
+#input {
+  border: none;
+  padding: 0 1rem;
+  flex-grow: 1;
+  border-radius: 2rem;
+  margin: 0.25rem;
+}
+#input:focus {
+  outline: none;
+}
+#form > button {
+  background: blue;
+  border: none;
+  padding: 0 1rem;
+  margin: 0.25rem;
+  border-radius: 10px;
+  outline: none;
+  color: #fff;
+}
+
+#message-container {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.join-div {
+  padding: 5px 10px 5px 10px;
+  color: lightskyblue;
+  border-radius: 20px;
+}
+
+.my-message-div {
+  padding: 5px 10px 5px 10px;
+  color: lightskyblue;
+  border-radius: 20px;
+  width: inherit;
+}
+
+.other-message-div {
+  padding: 5px 10px 5px 10px;
+  color: lightskyblue;
+  border-radius: 20px;
+  width: inherit;
+}
+
+.message-text {
+  color: black;
+}
