@@ -1,22 +1,203 @@
-body {
+* {
+  box-sizing: border-box;
+}
+#container {
+  width: 750px;
+  height: 600px;
+  background: #eff3f7;
+  margin: 0 auto;
+  font-size: 0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+aside {
+  width: 260px;
+  height: inherit;
+  background-color: #3b3e49;
+  display: inline-block;
+  font-size: 15px;
+  vertical-align: top;
+  overflow-y: scroll;
+}
+
+aside header {
+  padding: 30px 20px;
+}
+aside input {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 50px 0 20px;
+  background-color: #5e616a;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_search.png);
+  background-repeat: no-repeat;
+  background-position: 170px;
+  background-size: 40px;
+}
+aside input::placeholder {
+  color: #fff;
+}
+aside ul {
+  padding-left: 0;
   margin: 0;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  list-style-type: none;
+  height: inherit;
+}
+aside li {
+  padding: 10px 0;
+}
+aside li:hover {
+  background-color: #5e616a;
+}
+h2,
+h3 {
+  margin: 0;
+}
+aside li img {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: 20px;
+  margin-right: 8px;
+}
+
+aside li div {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 12px;
+}
+aside li h2 {
+  font-size: 14px;
+  color: #fff;
+  font-weight: normal;
+  margin-bottom: 5px;
+}
+aside li h3 {
+  font-size: 12px;
+  color: white;
+  font-weight: normal;
+}
+
+.status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 7px;
+}
+.green {
+  background-color: #58b666;
+}
+.orange {
+  background-color: #ff725d;
+}
+.blue {
+  background-color: #6fbced;
+  margin-right: 0;
+  margin-left: 7px;
+}
+
+main {
+  width: 490px;
+  display: inline-block;
+  height: inherit;
+  position: relative;
+  font-size: 15px;
+  vertical-align: top;
+  background-color: beige;
+}
+
+main header {
+  height: 110px;
+  padding: 30px 20px 30px 40px;
+}
+main header > * {
+  display: inline-block;
+  vertical-align: top;
+}
+main header img:first-child {
+  border-radius: 50%;
+}
+main header img:last-child {
+  width: 24px;
+  margin-top: 8px;
+}
+main header div {
+  margin-left: 10px;
+  margin-right: 145px;
+}
+main header h2 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+main header h3 {
+  font-size: 14px;
+  font-weight: normal;
+  color: #7e818a;
+}
+
+#chat {
+  padding-left: 0;
   padding-bottom: 3rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+  list-style-type: none;
+  overflow-y: scroll;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  height: inherit;
+}
+
+#chat li {
+  padding: 10px 10px;
+}
+
+#chat h3 {
+  text-align: center;
+  font-size: 13px;
+  font-weight: normal;
+  color: grey;
+  margin-bottom: 5px;
+}
+
+#chat img {
+  height: 30px;
+  width: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+#chat .message {
+  padding: 20px;
+  color: #fff;
+  line-height: 25px;
+  max-width: 50%;
+  display: inline-block;
+  text-align: left;
+  border-radius: 5px;
+}
+#chat .me {
+  text-align: right;
+}
+#chat .you .message {
+  background-color: #58b666;
+}
+#chat .me .message {
+  background-color: #6fbced;
 }
 
 #form {
   background: lightskyblue;
+  margin-right: 1rem;
   padding: 0.25rem;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
   height: 3rem;
+  position: absolute;
+  bottom: 0;
+  width: inherit;
   box-sizing: border-box;
   backdrop-filter: blur(10px);
 }
@@ -38,36 +219,4 @@ body {
   border-radius: 10px;
   outline: none;
   color: #fff;
-}
-
-#message-container {
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-}
-
-.join-div {
-  padding: 5px 10px 5px 10px;
-  color: lightskyblue;
-  border-radius: 20px;
-}
-
-.my-message-div {
-  padding: 5px 10px 5px 10px;
-  color: lightskyblue;
-  border-radius: 20px;
-  width: inherit;
-}
-
-.other-message-div {
-  padding: 5px 10px 5px 10px;
-  color: lightskyblue;
-  border-radius: 20px;
-  width: inherit;
-}
-
-.message-text {
-  color: black;
 }
