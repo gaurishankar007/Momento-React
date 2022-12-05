@@ -39,7 +39,7 @@ router.post("/message/send", auth.verifyUser, async (req, res)=> {
     }
 });
 
-router.get("/message/fetchAll", auth.verifyUser, async (req, res)=> {
+router.post("/message/fetchAll", auth.verifyUser, async (req, res)=> {
     try{
         const messages = await message.find({chat_id: req.body.chat_id})
         .populate("sender", "username profile_pic email")

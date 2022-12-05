@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/uploads"));
 
-require("./database/db");
+require("./database/database");
 
 const userRoute = require("./routes/userRoute");
 app.use(userRoute);
