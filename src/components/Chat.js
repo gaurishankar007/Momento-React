@@ -42,7 +42,9 @@ const Chat = () => {
       chatUsers.push(id);
     }
 
-    socket.emit("setup", { onlineUsers: chatUsers, userId: userData._id });
+    setInterval(() => {
+      socket.emit("setup", { onlineUsers: chatUsers, userId: userData._id });
+    }, 1000);
 
     setTimeout(() => {
       const messageContainer = document.getElementById("chat");
