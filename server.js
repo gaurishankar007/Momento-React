@@ -73,33 +73,28 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("setup", (userData) => {
-    socket.join(userData._id);
-    socket.emit("connected");
+  socket.on("setup", (connection) => {
+    socket.join(connection.userId);
+    connection.onlineUsers.forEach((userId) => {
+      socket.to(userId).emit("online", connection.userId);
+    });
   });
 
   socket.on("join chat", (room) => {
     socket.join(room);
-    console.log("User Joined Room: " + room);
   });
 
-  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("typing", (typeData) =>
+    socket.in(typeData.room).emit("typing", typeData.profile)
+  );
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
-  socket.on("new message", (newMessageReceived) => {
-    var chat = newMessageReceived.chat;
-
-    if (!chat.users) return console.log("chat.users not defined");
-
-    chat.users.forEach((user) => {
-      if (user._id == newMessageReceived.sender._id) return;
-
-      socket.in(user._id).emit("message received", newMessageReceived);
-    });
+  socket.on("new message", (messageData) => {
+    socket.in(messageData.room).emit("message received", messageData.message);
   });
 
   socket.off("setup", () => {
-    console.log("USER DISCONNECTED");
-    socket.leave(userData._id);
+    socket.leave(userId);
+    console.log("user disconnected");
   });
 });
