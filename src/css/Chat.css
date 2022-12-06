@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
 }
+
 #container {
   width: 750px;
   height: 600px;
@@ -10,6 +11,7 @@
   border-radius: 5px;
   overflow: hidden;
 }
+
 aside {
   width: 260px;
   height: inherit;
@@ -23,6 +25,7 @@ aside {
 aside header {
   padding: 30px 20px;
 }
+
 aside input {
   width: 100%;
   height: 50px;
@@ -37,25 +40,31 @@ aside input {
   background-position: 170px;
   background-size: 40px;
 }
+
 aside input::placeholder {
   color: #fff;
 }
+
 aside ul {
   padding-left: 0;
   margin: 0;
   list-style-type: none;
   height: inherit;
 }
+
 aside li {
   padding: 10px 0;
 }
+
 aside li:hover {
   background-color: #5e616a;
 }
+
 h2,
 h3 {
   margin: 0;
 }
+
 aside li img {
   height: 40px;
   width: 40px;
@@ -70,12 +79,14 @@ aside li div {
   vertical-align: top;
   margin-top: 12px;
 }
+
 aside li h2 {
   font-size: 14px;
   color: #fff;
   font-weight: normal;
   margin-bottom: 5px;
 }
+
 aside li h3 {
   font-size: 12px;
   color: white;
@@ -89,12 +100,15 @@ aside li h3 {
   display: inline-block;
   margin-right: 7px;
 }
+
 .green {
   background-color: #58b666;
 }
+
 .orange {
   background-color: #ff725d;
 }
+
 .blue {
   background-color: #6fbced;
   margin-right: 0;
@@ -112,28 +126,33 @@ main {
 }
 
 main header {
-  height: 110px;
-  padding: 30px 20px 30px 40px;
+  padding: 10px;
 }
+
 main header > * {
   display: inline-block;
   vertical-align: top;
 }
+
 main header img:first-child {
   border-radius: 50%;
 }
+
 main header img:last-child {
   width: 24px;
   margin-top: 8px;
 }
+
 main header div {
   margin-left: 10px;
   margin-right: 145px;
 }
+
 main header h2 {
   font-size: 16px;
   margin-bottom: 5px;
 }
+
 main header h3 {
   font-size: 14px;
   font-weight: normal;
@@ -155,11 +174,18 @@ main header h3 {
 }
 
 #chat h3 {
-  text-align: center;
   font-size: 13px;
   font-weight: normal;
   color: grey;
   margin-bottom: 5px;
+}
+
+#chat .you h3 {
+  text-align: start;
+}
+
+#chat .me h3 {
+  text-align: end;
 }
 
 #chat img {
@@ -219,4 +245,17 @@ main header h3 {
   border-radius: 10px;
   outline: none;
   color: #fff;
+}
+
+@media screen and (max-width: 800px) {
+  #container{
+    width: 490px;
+  }
+
+  aside {
+    width: 170px;
+  }
+  main {
+    width: 320px;
+  }
 }

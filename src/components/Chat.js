@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import LoggedInHeader from "./Header/LoggedInHeader";
 import { io } from "socket.io-client";
@@ -12,14 +11,18 @@ const config = {
     Authorization: "Bearer " + localStorage.getItem("userToken"),
   },
 };
+const user = localStorage.getItem("userData");
+const userData = JSON.parse(user);
 const socket = io("ws://localhost:4040");
 
 const Chat = () => {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [chats, setChats] = useState([]);
-  const [selectedChat, setSelectedChat] = useState([]);
+  const [selectedChatId, setSelectedChatId] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+  const [online, setOnline] = useState([]);
   const [content, setContent] = useState("");
+  const [isTyping, setIsTyping] = useState("");
 
   useEffect(async () => {
     const chatData = await axios.get(
@@ -28,14 +31,76 @@ const Chat = () => {
     );
 
     setChats(chatData.data);
-    accessMessages(chatData.data[0]);
+    accessMessages(chatData.data[0]._id);
+
+    const chatUsers = [];
+    for (let i = 0; i < chatData.data.length; i++) {
+      const id = chatData.data[i].users.filter(
+        (singleUser) => singleUser._id !== userData._id
+      )[0]._id;
+
+      chatUsers.push(id);
+    }
+
+    socket.emit("setup", { onlineUsers: chatUsers, userId: userData._id });
+
+    setTimeout(() => {
+      const messageContainer = document.getElementById("chat");
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }, 1000);
   }, []);
 
-  const accessChat = async (userId) => {
+  useEffect(() => {
+    socket.on("online", (userId) => {
+      console.log(userId);
+      const temp = online;
+
+      if (!temp.includes(userId)) {
+        temp.push(userId);
+      }
+
+      setOnline([]);
+      setOnline(temp);
+    });
+
+    socket.on("typing", (profile) => {
+      setIsTyping(profile);
+
+      const messageContainer = document.getElementById("chat");
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    });
+
+    socket.on("stop typing", () => setIsTyping(""));
+
+    socket.on("message received", (message) => {
+      const messageContainer = document.getElementById("chat");
+      const divElement = document.createElement("li");
+      divElement.setAttribute("class", "you");
+
+      const imgElement = document.createElement("img");
+      imgElement.setAttribute("class", "profile-pic");
+      imgElement.setAttribute(
+        "src",
+        REACT_APP_PROFILE_PIC_URL + message.sender.profile_pic
+      );
+
+      const textElement = document.createElement("div");
+      textElement.setAttribute("class", "message");
+      textElement.innerText = message.content;
+
+      divElement.appendChild(imgElement);
+      divElement.appendChild(textElement);
+      messageContainer.appendChild(divElement);
+
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    });
+  }, []);
+
+  const accessChat = async (user) => {
     const chatData = await axios.post(
       `${REACT_APP_BASE_URL}chat/access`,
       {
-        user_id: userId,
+        user_id: userData._id,
       },
       config
     );
@@ -57,15 +122,32 @@ const Chat = () => {
     accessMessages(chatData);
   };
 
-  const accessMessages = async (chatData) => {
+  const accessMessages = async (chatId) => {
+    socket.emit("join chat", chatId);
+
     const messages = await axios.post(
       `${REACT_APP_BASE_URL}message/fetchAll`,
-      { chat_id: chatData._id },
+      { chat_id: chatId },
       config
     );
 
-    setSelectedChat(chatData);
+    setSelectedChatId(chatId);
     setChatMessages(messages.data);
+  };
+
+  const typing = (content) => {
+    if (content === "") {
+      socket.emit("stop typing", selectedChatId);
+      setContent(content);
+      setIsTyping("");
+      return;
+    }
+
+    setContent(content);
+    socket.emit("typing", {
+      room: selectedChatId,
+      profile: userData.profile_pic,
+    });
   };
 
   const sendMessage = async () => {
@@ -73,13 +155,36 @@ const Chat = () => {
       return;
     }
 
+    socket.emit("stop typing", selectedChatId);
+    setIsTyping("");
+
     const message = await axios.post(
       `${REACT_APP_BASE_URL}message/send`,
-      { chat_id: selectedChat._id, content: content },
+      { chat_id: selectedChatId, content: content },
       config
     );
 
+    displayMessage(content);
+    socket.emit("new message", {
+      message: message.data,
+      room: selectedChatId,
+    });
     setContent("");
+  };
+
+  const displayMessage = (content) => {
+    const messageContainer = document.getElementById("chat");
+    const divElement = document.createElement("li");
+    divElement.setAttribute("class", "me");
+
+    const textElement = document.createElement("div");
+    textElement.setAttribute("class", "message");
+    textElement.innerText = content;
+
+    divElement.appendChild(textElement);
+    messageContainer.appendChild(divElement);
+
+    messageContainer.scrollTop = messageContainer.scrollHeight;
   };
 
   const searchUser = (username) => {
@@ -154,25 +259,46 @@ const Chat = () => {
                     key={singleChat._id}
                     className="d-flex justify-content-start align-items-center"
                     onClick={() => {
-                      accessMessages(singleChat);
+                      accessMessages(singleChat._id);
                     }}
                     style={{
                       backgroundColor:
-                        singleChat._id === selectedChat._id
+                        singleChat._id === selectedChatId
                           ? "lightskyblue"
                           : "transparent",
                     }}
                   >
                     <img
-                      src={`${REACT_APP_PROFILE_PIC_URL}${singleChat.users[1].profile_pic}`}
+                      src={`${REACT_APP_PROFILE_PIC_URL}${
+                        singleChat.users.filter(
+                          (singleUser) => singleUser._id !== userData._id
+                        )[0].profile_pic
+                      }`}
                       alt=""
                     />
                     <div>
-                      <h2>{singleChat.users[1].username}</h2>
-                      <h3>
-                        <span className="status orange"></span>
-                        offline
-                      </h3>
+                      <h2>
+                        {
+                          singleChat.users.filter(
+                            (singleUser) => singleUser._id !== userData._id
+                          )[0].username
+                        }
+                      </h2>
+                      {online.includes(
+                        singleChat.users.filter(
+                          (singleUser) => singleUser._id !== userData._id
+                        )[0]._id
+                      ) ? (
+                        <h3>
+                          <span className="status green"></span>
+                          online
+                        </h3>
+                      ) : (
+                        <h3>
+                          <span className="status orange"></span>
+                          offline
+                        </h3>
+                      )}
                     </div>
                   </li>
                 );
@@ -190,11 +316,33 @@ const Chat = () => {
           <main>
             {chatMessages.length > 0 ? (
               <ul id="chat">
-                <li className="you">
-                  <h3>10:12AM, Today</h3>
-                  <div className="d-flex align-items-center">
+                {chatMessages.map((singleChatMessage) => {
+                  return singleChatMessage.sender._id !== userData._id ? (
+                    <li
+                      className="you d-flex align-items-center"
+                      key={singleChatMessage._id}
+                    >
+                      <img
+                        src={`${REACT_APP_PROFILE_PIC_URL}${singleChatMessage.sender.profile_pic}`}
+                        alt=""
+                        style={{
+                          height: "40px",
+                          width: "40px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <div className="message">{singleChatMessage.content}</div>
+                    </li>
+                  ) : (
+                    <li className="me" key={singleChatMessage._id}>
+                      <div className="message">{singleChatMessage.content}</div>
+                    </li>
+                  );
+                })}
+                {isTyping !== "" ? (
+                  <li className="you d-flex align-items-center">
                     <img
-                      src={`https://www.bhaktiphotos.com/wp-content/uploads/2018/04/Mahadev-Bhagwan-Photo-for-Devotee.jpg`}
+                      src={REACT_APP_PROFILE_PIC_URL + isTyping}
                       alt=""
                       style={{
                         height: "40px",
@@ -202,19 +350,11 @@ const Chat = () => {
                         objectFit: "cover",
                       }}
                     />
-                    <div className="message">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                      Aenean commodo ligula eget dolor.
-                    </div>
-                  </div>
-                </li>
-                <li className="me">
-                  <h3>10:12AM, Today</h3>
-                  <div className="message">
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                    Aenean commodo ligula eget dolor.
-                  </div>
-                </li>
+                    <div className="message">typing....</div>
+                  </li>
+                ) : (
+                  <div></div>
+                )}
               </ul>
             ) : (
               <ul
@@ -228,7 +368,7 @@ const Chat = () => {
                     marginBottom: "20px",
                   }}
                 >
-                  Say hi to
+                  Say hi
                 </h2>
               </ul>
             )}
@@ -239,7 +379,7 @@ const Chat = () => {
                 autoComplete="off"
                 value={content}
                 onChange={(e) => {
-                  setContent(e.target.value);
+                  typing(e.target.value);
                 }}
               />
               <button
