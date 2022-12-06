@@ -34,15 +34,15 @@ const Chat = () => {
     accessMessages(chatData.data[0]._id);
 
     const chatUsers = [];
-    for (let i = 0; i < chatData.data.length; i++) {
-      const id = chatData.data[i].users.filter(
-        (singleUser) => singleUser._id !== userData._id
-      )[0]._id;
-
-      chatUsers.push(id);
-    }
 
     setInterval(() => {
+      for (let i = 0; i < chatData.data.length; i++) {
+        const id = chatData.data[i].users.filter(
+          (singleUser) => singleUser._id !== userData._id
+        )[0]._id;
+
+        chatUsers.push(id);
+      }
       socket.emit("setup", { onlineUsers: chatUsers, userId: userData._id });
     }, 1000);
 
@@ -54,7 +54,6 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on("online", (userId) => {
-      console.log(userId);
       const temp = online;
 
       if (!temp.includes(userId)) {
