@@ -76,7 +76,7 @@ io.on("connection", (socket) => {
   socket.on("setup", (connection) => {
     socket.join(connection.userId);
     connection.onlineUsers.forEach((userId) => {
-      socket.to(userId).emit("online", connection.userId);
+      socket.to(userId).volatile.emit("online", connection.userId);
     });
   });
 
