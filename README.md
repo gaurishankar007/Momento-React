@@ -24,50 +24,50 @@ A social media web/mobile app like instragram in react/flutter and Node.js is us
 # Web Screenshots
 
 <div display="flex" flex-wrap="wrap" align="start">
-    <img src="./screenshots/Login.png" width="350" alt="screenshot">
-    <img src="./screenshots/Registration.png" width="350" alt="screenshot">
-    <img src="./screenshots/ForgotPassword.png" width="350" alt="screenshot">
-    <img src="./screenshots/HomePage1.png" width="350" alt="screenshot">
-    <img src="./screenshots/HomePage2.png" width="350" alt="screenshot">
-    <img src="./screenshots/AddComment.png" width="350" alt="screenshot">
-    <img src="./screenshots/PostLiker.png" width="350" alt="screenshot">
-    <img src="./screenshots/PostCommenter.png" width="350" alt="screenshot">
-    <img src="./screenshots/Report.png" width="350" alt="screenshot">
-    <img src="./screenshots/Setting.png" width="350" alt="screenshot">
-    <img src="./screenshots/SearchUsers.png" width="350" alt="screenshot">
-    <img src="./screenshots/PostUploadPage.png" width="350" alt="screenshot">
-    <img src="./screenshots/PostUploadPage1.png" width="350" alt="screenshot">
-    <img src="./screenshots/Notifications.png" width="350" alt="screenshot">
-    <img src="./screenshots/Profile.png" width="350" alt="screenshot">
-    <img src="./screenshots/Profile1.png" width="350" alt="screenshot">
-    <img src="./screenshots/Profile2.png" width="350" alt="screenshot">
-    <img src="./screenshots/Watcher.png" width="350" alt="screenshot">
-    <img src="./screenshots/Watching.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Login.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Registration.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/ForgotPassword.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/HomePage1.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/HomePage2.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/AddComment.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/PostLiker.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/PostCommenter.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Report.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Setting.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/SearchUsers.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/PostUploadPage.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/PostUploadPage1.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Notifications.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Profile.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Profile1.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Profile2.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Watcher.png" width="350" alt="screenshot">
+    <img src="./screenshots/web/Watching.png" width="350" alt="screenshot">
 </div>
 
 # Mobile Screenshots
 
 <div display="flex" flex-wrap="wrap" align="start">
-<img src=".screenshots/Login.png" width="250" alt="screenshot">
-<img src=".screenshots/Registration.png" width="250" alt="screenshot">
-<img src=".screenshots/ForgotPassword.png" width="250" alt="screenshot">
-<img src=".screenshots/HomePage1.png" width="250" alt="screenshot">
-<img src=".screenshots/HomePage2.png" width="250" alt="screenshot">
-<img src=".screenshots/HomePage3.png" width="250" alt="screenshot">
-<img src=".screenshots/HomePageDarkTheme.png" width="250" alt="screenshot">
-<img src=".screenshots/AddComment.png" width="250" alt="screenshot">
-<img src=".screenshots/PostLiker.png" width="250" alt="screenshot">
-<img src=".screenshots/PostCommenter.png" width="250" alt="screenshot">
-<img src=".screenshots/Report.png" width="250" alt="screenshot">
-<img src=".screenshots/Setting.png" width="250" alt="screenshot">
-<img src=".screenshots/SearchUsers.png" width="250" alt="screenshot">
-<img src=".screenshots/PostUploadPage.png" width="250" alt="screenshot">
-<img src=".screenshots/PostUploadPage1.png" width="250" alt="screenshot">
-<img src=".screenshots/Notifications.png" width="250" alt="screenshot">
-<img src=".screenshots/Profil.png" width="250" alt="screenshot">
-<img src=".screenshots/Profile1.png" width="250" alt="screenshot">
-<img src=".screenshots/ProflePageDarkTheme.png" width="250" alt="screenshot">
-<img src=".screenshots/ProflePageDarkTheme1.png" width="250" alt="screenshot">
-<img src=".screenshots/Watcher.png" width="250" alt="screenshot">
-<img src=".screenshots/Watching.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Login.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Registration.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/ForgotPassword.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/HomePage1.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/HomePage2.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/HomePage3.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/HomePageDarkTheme.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/AddComment.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/PostLiker.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/PostCommenter.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Report.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Setting.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/SearchUsers.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/PostUploadPage.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/PostUploadPage1.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Notifications.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Profil.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Profile1.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/ProflePageDarkTheme.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/ProflePageDarkTheme1.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Watcher.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Watching.png" width="250" alt="screenshot">
 </div>
