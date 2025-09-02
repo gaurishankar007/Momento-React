@@ -64,10 +64,10 @@ A social media web/mobile app like instragram in react/flutter and Node.js is us
     <img src="./screenshots/mobile/PostUploadPage.png" width="250" alt="screenshot">
     <img src="./screenshots/mobile/PostUploadPage1.png" width="250" alt="screenshot">
     <img src="./screenshots/mobile/Notifications.png" width="250" alt="screenshot">
-    <img src="./screenshots/mobile/Profil.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/Profile.png" width="250" alt="screenshot">
     <img src="./screenshots/mobile/Profile1.png" width="250" alt="screenshot">
-    <img src="./screenshots/mobile/ProflePageDarkTheme.png" width="250" alt="screenshot">
-    <img src="./screenshots/mobile/ProflePageDarkTheme1.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/ProfilePageDarkTheme.png" width="250" alt="screenshot">
+    <img src="./screenshots/mobile/ProfilePageDarkTheme1.png" width="250" alt="screenshot">
     <img src="./screenshots/mobile/Watcher.png" width="250" alt="screenshot">
     <img src="./screenshots/mobile/Watching.png" width="250" alt="screenshot">
 </div>
