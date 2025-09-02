@@ -1,7 +1,5 @@
-A social media web app like instragram in react.
-
-# Note
-The backend for this react project is made in Node.js and the bakcend is in the github reopository named "Memento-WatchMe-Backend".
+# Momento/WatchMe
+A social media web/mobile app like instragram in react/flutter and Node.js is used for backend.
 
 # Features
 1. Upload post (1-12 images) 
