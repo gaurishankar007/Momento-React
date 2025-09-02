@@ -22,22 +22,24 @@ The backend for this react project is made in Node.js and the bakcend is in the 
 16. view upload and tagged posts
 
 # Screenshots
-![My Image](screenshots/Login.png)
-![My Image](screenshots/Registration.png)
-![My Image](screenshots/ForgotPassword.png)
-![My Image](screenshots/HomePage1.png)
-![My Image](screenshots/HomePage2.png)
-![My Image](screenshots/AddComment.png)
-![My Image](screenshots/PostLiker.png)
-![My Image](screenshots/PostCommenter.png)
-![My Image](screenshots/Report.png)
-![My Image](screenshots/Setting.png)
-![My Image](screenshots/SearchUsers.png)
-![My Image](screenshots/PostUploadPage.png)
-![My Image](screenshots/PostUploadPage1.png)
-![My Image](screenshots/Notifications.png)
-![My Image](screenshots/Profile.png)
-![My Image](screenshots/Profile1.png)
-![My Image](screenshots/Profile2.png)
-![My Image](screenshots/Watcher.png)
-![My Image](screenshots/Watching.png)
+<div display="flex" flex-wrap="wrap" align="start">
+    <img src="./screenshots/Login.png" width="350" alt="screenshot">
+    <img src="./screenshots/Registration.png" width="350" alt="screenshot">
+    <img src="./screenshots/ForgotPassword.png" width="350" alt="screenshot">
+    <img src="./screenshots/HomePage1.png" width="350" alt="screenshot">
+    <img src="./screenshots/HomePage2.png" width="350" alt="screenshot">
+    <img src="./screenshots/AddComment.png" width="350" alt="screenshot">
+    <img src="./screenshots/PostLiker.png" width="350" alt="screenshot">
+    <img src="./screenshots/PostCommenter.png" width="350" alt="screenshot">
+    <img src="./screenshots/Report.png" width="350" alt="screenshot">
+    <img src="./screenshots/Setting.png" width="350" alt="screenshot">
+    <img src="./screenshots/SearchUsers.png" width="350" alt="screenshot">
+    <img src="./screenshots/PostUploadPage.png" width="350" alt="screenshot">
+    <img src="./screenshots/PostUploadPage1.png" width="350" alt="screenshot">
+    <img src="./screenshots/Notifications.png" width="350" alt="screenshot">
+    <img src="./screenshots/Profile.png" width="350" alt="screenshot">
+    <img src="./screenshots/Profile1.png" width="350" alt="screenshot">
+    <img src="./screenshots/Profile2.png" width="350" alt="screenshot">
+    <img src="./screenshots/Watcher.png" width="350" alt="screenshot">
+    <img src="./screenshots/Watching.png" width="350" alt="screenshot">
+</div>
